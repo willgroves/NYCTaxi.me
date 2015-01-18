@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8" />
+
+<title>jQery Slide Drawer Plugin Demo</title>
+
+<link rel="stylesheet" type="text/css" media="all" href="slidetest.css" />
+
+</head>
+
+<body>
+	
+	<div class="background-image">
+		<img src="http://icastwork.com/projects/slidedrawer/images/005.jpg" />
+	</div>
+	
+	<section class="drawer">
+		<!-- <div> -->
+			<header class="clickme">Current Events</header>
+		<!-- </div> -->
+		<div class="drawer-content">
+			<div class="drawer-items">
+				<ul>
+					<li>
+						<a href="#">
+						<div class="title">Item 1</div>
+						<div class="time">8:00am</div>
+						<div class="location">Other Info</div>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+						<div class="title">Item 2</div>
+						<div class="time">8:00am</div>
+						<div class="location">Other Info</div>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+						<div class="title">Item 3</div>
+						<div class="time">8:00am</div>
+						<div class="location">Other Info</div>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+						<div class="title">Item 4</div>
+						<div class="time">8:00am</div>
+						<div class="location">Other Info</div>
+						</a>
+					</li>
+				</ul>
+			</div>	
+		</div>
+	</section>
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript" src="jquery.slidedrawer.js"></script>
+	<script>
+	$(function(){
+		$('.drawer').slideDrawer({
+			showDrawer: false,
+			// slideTimeout: true,
+			slideSpeed: 600,
+			slideTimeoutCount: 3000,
+		});
+	});
+	</script>
+</body>
+
+</html>

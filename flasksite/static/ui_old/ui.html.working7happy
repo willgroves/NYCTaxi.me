@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>NYC Taxi Hail Optimizer -- Nearest location for your best taxi hail.</title>
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+<script src='/static/reqwest.min.js'></script>
+<script src='/static/leaflet.src.js'></script>
+<link href='/static/leaflet.css' rel='stylesheet' type='text/css' />
+<script src='/static/wax.leaf.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.css' rel='stylesheet' />
+<link href='/static/map.css' rel='stylesheet' />
+<link rel="stylesheet" href="css/font-awesome.css"/><!-- //maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"/><!-- css/font-awesome.css"/ -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqgrid/4.6.0/js/jquery.jqGrid.min.js"></script>
+<link rel="stylesheet" type="text/css" media="all" href="slidetest.css" />
+<link href='/static/tablesorter.css' rel='stylesheet' />
+<script type="text/javascript" src="/static/jquery.tablesorter.js"></script>
+<script type="text/javascript" src="/static/jsonTable.js"></script>
+<style>
+  body { margin:0; padding:0; }
+  #map { position:absolute; top:0; bottom:0; margin-bottom: 49px; width:100%; }
+</style>
+</head>
+<body onload="onceonload()">
+
+<nav id='menu-ui' class='menu-ui'></nav>
+<div id='map' ></div>
+<section class="drawer">
+		<!-- <div> -->
+			<header class="clickme"><i style="color:white;" class="fa fa-chevron-circle-up"></i> Show Results</header>
+		<!-- </div> -->
+		<div class="drawer-content" style=" background-color:#eeeeee; ">
+<div style="padding: 5px; ">
+
+</i><i class="fa fa-clock-o"></i> Query Time: <a onclick="incrTime(-15);return false;" href="#">-15 mins <i class="fa fa-chevron-left"></i></a> <input id='time' size=40 value=''></input> <a href="#" onclick="incrTime(15);return false;"><i class="fa fa-chevron-right"></i> +15 mins</a>
+<br/>
+<i class="fa fa-location-arrow"></i> Location (Lat/Long) <input id='lat' size=5 value='40.7'></input> 
+<input id='long' size=5 value='-74.00'></input> 
+<button id='butgetloc' onclick="getLocationWG()"><i class="fa fa-crosshairs"></i> Get Location</button> 
+<!--<button id='butcenter' onclick="setMapCenter()"><i class="fa fa-close"></i> Set Query</button> -->
+<button id='butqueryloc' onclick="queryLocation()"><i class="fa fa-cogs"></i> Query Location</button>
+<hr width='50%'/>
+</div>
+<div id="divqueryoutput"></div>    <center>
+    <table id="dataTable" class="tablesorter" style=" width: 100%; position:relative; ">
+            <thead><tr><th>Rank</th><th>Distance (mi)</th><th>Direction</th><th>Lat</th><th>Long</th><th>Expected Wait (mins)</th><th>DO:PU ratio</th><th>Intersection</th></tr></thead>
+            <tbody>
+              <tr><td colspan="8"><center><b>Set your location to center of map and query to start ...</b></center></td></tr>
+              <tr><td colspan="8"><center><b>&nbsp;</b></center></td></tr>
+              <tr><td colspan="8"><center><b>&nbsp;</b></center></td></tr>
+              <tr><td colspan="8"><center><b>&nbsp;</b></center></td></tr>
+              <tr><td colspan="8"><center><b>&nbsp;</b></center></td></tr>
+              <tr><td colspan="8"><center><b>&nbsp;</b></center></td></tr>
+              <tr><td colspan="8"><center><b>&nbsp;</b></center></td></tr>
+              <tr><td colspan="8"><center><b>&nbsp;</b></center></td></tr>
+
+            </tbody>
+    </table>
+    
+    </center>
+
+			</div>	
+		</div>
+	</section>
+	
+	
+	<script type="text/javascript" src="jquery.slidedrawer.js"></script>
+	<script>
+	$(function(){
+	$('.drawer').slideDrawer({
+	drawerHeight: 300,
+	//drawerContentHeight: 300, 
+	drawerHiddenHeight: 89,
+	showDrawer: false,
+			// slideTimeout: true,
+			slideSpeed: 600,
+			slideTimeoutCount: 3000,
+		});
+	});
+	</script>
+
+    
+<script>
+var markerl = Array();
+var tilejson = {
+  tilejson: '1.0.0',
+  scheme: 'tms',
+  tiles: ['http://127.0.0.1:8080/mb_layer/{z}/{x}/{y}.png'],
+  grids: ['http://127.0.0.1:8080/mb_layer/{z}/{x}/{y}.grid.json'],
+  formatter: function(options, data) { return data.NAME }
+};
+
+
+//#L.tileLayer('https://{s}.tiles.mapbox.com/v3/my.map/{z}/{x}/{y}.png').addTo(map);
+var oldlayer = new wax.leaf.connector(tilejson);
+var map = new L.Map('map', {center: [40.7, -74.0], zoom:13});
+//map.addLayer(oldlayer);
+//map.scrollWheelZoom = false;
+//map.touchZoom = false;
+//map.dragging = false;
+//map.attributionControl = false;
+oldlayer.addTo(map);
+
+//wax.leaf.interaction(map, tilejson);
+//map.options.maxZoom = 17;
+//map.options.minZoom = 10;
+//map.minZoom = 10;
+//map.maxZoom = 18;
+//map.maxNativeZoom = 17;
+
+
+
+setTimeout(function(){ //alert("Hello");
+//add another layer for speculative testing purposes
+var tilejsonoverlay = {
+  tilejson: '1.0.0',
+  scheme: 'tms',
+  tiles: ['http://127.0.0.1:8080/composite_o00/{z}/{x}/{y}.png'],
+  grids: ['http://127.0.0.1:8080/composite_o00/{z}/{x}/{y}.grid.json'],
+  formatter: function(options, data) { return data.NAME }
+};
+
+
+var newlayer = new wax.leaf.connector(tilejsonoverlay);
+//map.addLayer(newlayer);
+newlayer.addTo(map);
+//map.removeLayer(oldlayer);
+}, 8000);
+
+/*
+//addLayer(L.mapbox.tileLayer('groves.vgmvlsor'), 'USGS Roads', 1);
+//addLayer(L.mapbox.tileLayer('groves.0c2z9f6r'), 'Dropoffs at 12a', 2);
+//addLayer(L.mapbox.tileLayer('groves.89rafw29'), 'Dropoffs at 12p', 3);
+addLayer(L.mapbox.tileLayer('examples.map-i86nkdio'), 'USGS Roads', 1);
+addLayer(L.mapbox.tileLayer('examples.map-20v6611k'), 'Dropoffs at 12a', 2);
+addLayer(L.mapbox.tileLayer('examples.map-2k9d7u0c'), 'Dropoffs at 12p', 3);
+*/
+var layers = document.getElementById('menu-ui');
+
+function addLayer(layer, name, zIndex) {
+    layer
+        .setZIndex(zIndex)
+        .addTo(map);
+
+    // Create a simple layer switcher that
+    // toggles layers on and off.
+    var link = document.createElement('a');
+        link.href = '#';
+        link.className = 'active';
+        link.innerHTML = name;
+
+    link.onclick = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (map.hasLayer(layer)) {
+            map.removeLayer(layer);
+            this.className = '';
+        } else {
+            map.addLayer(layer);
+            this.className = 'active';
+        }
+    };
+
+    layers.appendChild(link);
+}
+</script>
+
+<script>
+var iboxlong = document.getElementById("long");
+var iboxlat = document.getElementById("lat");
+var iboxtime = document.getElementById("time");
+function getLocationWG() {
+    if (navigator.geolocation) {
+        if (window.location.protocol == 'file:') {
+            showPositionWG({'coords':{'latitude':40.6,'longitude':-74.02}});
+        }
+else {
+        wgallowposupdate = 1;
+        navigator.geolocation.getCurrentPosition(showPositionWG);
+        }
+    } else { 
+        iboxlong.innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+
+var wgallowposupdate = 0;
+
+function showPositionWG(position) {
+    console.log("in callback for showPositionWG"+JSON.stringify(position));
+    iboxlat.value = Math.round(position.coords.latitude * 10000) / 10000;
+    iboxlong.value = Math.round( position.coords.longitude * 10000) / 10000;
+    if (wgallowposupdate == 1) {
+        setMapCenter();
+        wgallowposupdate = 0;
+    } else { console.log("in callback for showpositionWG redundant! not updating!"); }
+}
+
+function queryLocation() { // query busyness and add info to map
+    outputdiv = document.getElementById('divqueryoutput');
+    //outputdiv.innerHTML = "Removing existing markers and querying...";
+    
+    //remove all existing markers
+    console.log("removing all markers");
+    while (markerl.length > 0) {
+        newmarker = markerl.pop();
+        map.removeLayer(newmarker);
+    }
+    console.log("all markers removed");
+    
+    latlng = map.getCenter();
+    newmarker = L.marker([
+        latlng.lat, latlng.lng
+    ], {
+        icon: L.divIcon({
+            // Specify a class name we can refer to in CSS.
+            className: 'count-icon',
+            // Define what HTML goes in each marker.
+            html: 'X',
+            // Set a markers width and height.
+            iconSize: [38, 38]
+        })
+    })
+    markerl.push(newmarker);
+    newmarker.addTo(map);
+    
+    //outputdiv.innerHTML = "added thing to map";
+    
+    ttime = new Date(document.getElementById('time').value);
+    $.ajax({
+  dataType: "json",
+  url: "/suggestapi",
+  data: {'lat':latlng.lat,'lng':latlng.lng,'time':Math.round(ttime.getTime()/1000)},
+  success: function( json ) {
+    console.log("received json!" + JSON.stringify(json));
+    outputdiv = document.getElementById('divqueryoutput');
+    //outputdiv.innerHTML = JSON.stringify(json);
+
+    newlocationl = json.nearestplaces;
+    
+    var tparent = document.getElementById('dataTable');
+    while(tparent.hasChildNodes())
+    {
+    tparent.removeChild(tparent.firstChild);
+    }
+    
+    
+    //ADD JSON TABLE HANDLING HERE
+    var options = {
+                source: json.nearestplaces,
+                rowClass: "classy",
+                callback: function(){
+                }
+            };
+            
+            ///////////////////////////////
+            // Test on a pre-existing table
+	$("#dataTable").jsonTable({
+		        head : ['Rank','Distance (mi)','Direction','Lat','Long','Expected Wait (mins)','DO:PU ratio','Intersection'],
+		        json : ['rank','dst_mi','direction','lat_txt','lon_txt','pu_wait','do_pu_ratio','intersection_name']
+	        });
+	$("#dataTable").jsonTableUpdate(options);
+    
+    /*
+    $("#jqGridTable").jqGrid({
+                datatype: "json",
+                   jsonReader : {
+      root:"invdata",
+      page: "currpage",
+      total: "totalpages",
+      records: "totalrecords",
+      repeatitems: false,
+      id: "0"
+   },
+                data:{
+   "page":"1",
+   "total":2,
+   "records":"13", 
+   "rows": newlocationl},
+                height: 250,
+                width: 780,
+                colModel: [
+                    { label: 'Lat', name: 'id', width: 75, key:true },
+                    { label: 'Lng', name: 'invdate', width: 90 }
+                ],
+                
+                viewrecords: true, // show the current page, data rang and total records on the toolbar
+                caption: "Nearby Places",
+            });
+    */
+    i = 1;
+    while (newlocationl.length > 0) {
+        newlocation = newlocationl.shift();
+        markerlatlng = [newlocation.lat, newlocation.lon];
+        console.log("adding marker at"+markerlatlng);
+        newmarker = L.marker(markerlatlng, {
+        icon: L.divIcon({
+            // Specify a class name we can refer to in CSS.
+            className: 'count-icon',
+            // Define what HTML goes in each marker.
+            html: i,
+            // Set a markers width and height.
+            iconSize: [38, 38]
+        })
+       })
+        markerl.push(newmarker);
+        newmarker.addTo(map);
+        var line = Array();
+        line.push(latlng);
+        line.push(markerlatlng);
+        var polyline_options = {
+        color: '#000',
+        opacity: 0.5,         // Stroke opacity
+        weight: 5         // Stroke weight
+        };
+
+        var polyline = L.polyline(line, polyline_options).addTo(map);
+        markerl.push(polyline);
+        i=i+1;
+    }
+    console.log("finished parsing nearby places");
+    
+
+  }
+});
+
+
+} //end of queryLocation
+
+function setMapCenter() {
+    console.log("set map center fired"+iboxlat.value+" "+iboxlong.value);
+    map.setView([iboxlat.value, iboxlong.value], 15);
+}
+
+function onceonload() { // What to do on page load:
+
+map.addEventListener('moveend',function (v) {
+latlng = map.getCenter();
+showPositionWG({'coords':{'latitude':latlng.lat, 'longitude':latlng.lng}});
+});
+
+var dateobj = new Date();
+document.getElementById('time').value = ''+dateobj;
+
+
+}//end of onceonload
+
+</script>
+
+<script>
+
+function incrTime(incr) {
+
+    ttime = new Date(document.getElementById('time').value);
+    newtime = new Date(ttime.getTime()+incr*1000*60);
+    tbut = document.getElementById('time');
+    tbut.value = ''+newtime;
+}
+
+
+// Set button behaviors
+
+//$('#')[0].onclick=wgprev;
+//$('.changeimagen')[0].onclick=wgnext;
+</script>
+
+
+</body>
+</html>
