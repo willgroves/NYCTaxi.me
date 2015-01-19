@@ -18,7 +18,7 @@ def getNearestDataHour2Digit(hour):
 determines which hour to request based on the data we have
     '''
     closest = hour%24
-    availhourl = [0,1,3,7,8,10,12,13,14,15,16,17,18,19,20,21,22,23]
+    availhourl = list(range(0,24))#[0,1,3,7,8,10,12,13,14,15,16,17,18,19,20,21,22,23]
     dsthourtupl = zip([abs(closest-h) for h in availhourl],availhourl)
     dsthourtupl.sort()
     return "%02d"%dsthourtupl[0][1]
@@ -43,15 +43,38 @@ def robots():
 def table():
     return redirect('/static/splash/index.html')#url_for('static/splash/', filename='index.html'))
 
+@app.route('/unset', methods=['GET', 'POST'])
+def unset():
+    cookieval = request.cookies.get('alreadyvisited',None)
+    resp = flask.make_response("Unsetting your already visited cookie. Its value: %s %s"%(str(type(cookieval)),str(cookieval)))
+    resp.set_cookie('alreadyvisited',expires=0)
+    return resp
+
 @app.route('/ui', methods=['GET', 'POST'])
 def ui():
-    error = None
-    return render_template('ui.html',servername=localconfig.servername,mapserverport=localconfig.mapserverport)
+    cookieval = request.cookies.get('alreadyvisited','')
+    app.logger.debug("value of the cookie:"+str(cookieval))
+    addscript = ''
+    if 'yes' not in cookieval: #if the cookie is not set
+        addscript = "setTimeout(showInstructions,5000);"
+    app.logger.debug("addscript string:"+addscript)
+    resp = flask.make_response(render_template('ui.html',servername=localconfig.servername,mapserverport=localconfig.mapserverport,addscript=addscript))
+    resp.set_cookie('alreadyvisited', 'yes')
+    return resp
+
+@app.route('/uifirst', methods=['GET', 'POST'])
+def uifirst():
+    addscript = "setTimeout(showInstructions,5000);"
+    resp = flask.make_response(render_template('ui.html',servername=localconfig.servername,mapserverport=localconfig.mapserverport,addscript=addscript))
+    return resp
 
 @app.route('/ui.js', methods=['GET', 'POST'])
 def uijs():
     error = None
-    return render_template('ui.js',servername=localconfig.servername,mapserverport=localconfig.mapserverport)
+    resp = flask.make_response(render_template('ui.js',servername=localconfig.servername,mapserverport=localconfig.mapserverport),
+                               )
+    resp.mimetype='application/javascript'
+    return resp
 
 @app.route('/suggestapi', methods=['GET'])
 def suggestapi():
@@ -90,4 +113,4 @@ if __name__ == "__main__":
     print "loading data to allow queries:"
 
     print "done loading data"
-    app.run(debug=False,host='0.0.0.0',port=80)
+    app.run(debug=True,host='0.0.0.0',port=5001)
