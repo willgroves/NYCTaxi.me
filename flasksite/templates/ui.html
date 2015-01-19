@@ -57,10 +57,10 @@
       background-image: none;
       border: 1px solid transparent;
       white-space: nowrap;
-      padding: 6px 12px;
-      font-size: 13px;
+      padding: 4px 8px;
+      font-size: 11px;
       line-height: 1.42857143;
-      border-radius: 4px;
+      border-radius: 2px;
       text-decoration: none;
       }
     </style>
@@ -74,50 +74,47 @@
     <div class="drawer-label" style=" background-color:#000000; color:white; " onclick="toggleDrawer();">
       <center>
 	<table><tr><td>
-	      <img id="waittimelegend" src="/static/waittimepu.svg" style="width: 250px; height:30px;"/>
-	    </td>
-	    <td>
-	      <a class="btn btn-danger togglebutton" href="#" style="">
-		<i style=" color:#eeeeee; " class="fa fa-chevron-up" id="chevron1"></i> Show Results
-		<i style="text-color:#FFFFFF;" class="fa fa-chevron-up" id="chevron2"></i>
-	      </a>
-	    </td>
+	  <img id="waittimelegend" src="/static/waittimepu.svg" style="width: 250px; height:30px;"/>
+	</td>
+	<td>
+	  <a class="btn btn-danger togglebutton" href="#" style="">
+	    <i style=" color:#eeeeee; " class="fa fa-chevron-up" id="chevron1"></i> Show<br/>Results
+	    
+	  </a>
+	</td>
 	</tr></table>
       </center>
 
     </div>
     <div class="drawer-content" style=" background-color:#eeeeee; ">
       <div style="padding: 3px; margin-top: 0px; "><center>
-</i><i class="fa fa-clock-o"></i> Set Query Time/Date: <input type='text' id='wgtimeinput' size='6' value=""></input> <input type='text' id='wgdateinput' size='10' value=""></input></center>
+	<i class="fa fa-clock-o"></i>&nbsp;Set Query Time/Date: <input type='text' id='wgtimeinput' size='6' value=""></input> <input type='text' id='wgdateinput' size='10' value=""></input><!--<i class="fa fa-location-arrow"></i> Location (Lat/Long) -->
+	<input id='lat' size=5 value='40.7' type='hidden'></input> 
+	<input type='hidden' id='long' size=5 value='-74.00'></input> 
+</center></div>
+      <div id="divqueryoutput">  
+	<table id="dataTable" class="tablesorter" style=" width: 100%; position:relative; ">
+	  <thead><tr><th>#</th><th>Walk<br/>(mins)</th><th>Direction</th><th>Avg. Wait<br/>(mins)</th><th>DO:PU ratio</th><th>Intersection</th></tr></thead>
+	  <tbody>
+	    <tr><td colspan="6"><center><b>Set your location to center of map and query to start ...</b></center></td></tr>
+	    <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
+	    <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
+	    <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
+	    <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
+	    <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
+	    <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
+	    <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
+	  </tbody>
+	</table>
+	<center>
+	<!-- <div style="background-color: #FFFFFF; color: #000000; padding: 0px; margin: 0px;"> &copy; 2015 - {{ servername }}</div> -->
+        </center>
+      </div>  
+    </div>	
 
-<br/>
-<!--<i class="fa fa-location-arrow"></i> Location (Lat/Long) -->
-<input id='lat' size=5 value='40.7' type='hidden'></input> 
-<input type='hidden' id='long' size=5 value='-74.00'></input> 
-</div>
-<div id="divqueryoutput"></div>    <center>
-  <table id="dataTable" class="tablesorter" style=" width: 100%; position:relative; ">
-    <thead><tr><th>#</th><th>Walk<br/>(mins)</th><th>Direction</th><th>Avg. Wait<br/>(mins)</th><th>DO:PU ratio</th><th>Intersection</th></tr></thead>
-    <tbody>
-      <tr><td colspan="6"><center><b>Set your location to center of map and query to start ...</b></center></td></tr>
-      <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
-      <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
-      <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
-      <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
-      <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
-      <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
-      <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
-
-    </tbody>
-  </table>
-  <br/>
-  &copy; 2015 - {{ servername }}
-</center>
-</div>	
-</div>    
-<script src="/ui.js"></script>
-<script type="text/javascript">
-  {{ addscript }}
-</script>
-</body>
+    <script src="/ui.js"></script>
+    <script type="text/javascript">
+      {{ addscript }}
+    </script>
+  </body>
 </html>

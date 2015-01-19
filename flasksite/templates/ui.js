@@ -391,17 +391,17 @@ function toggleDrawer() {
     if (drawermode == 0) {
 	$('body').scrollTo('#dataTable',1000);
 	$('#chevron1')[0].classList.remove('fa-chevron-up');
-	$('#chevron2')[0].classList.remove('fa-chevron-up');
+	
 	$('#chevron1')[0].classList.add('fa-chevron-down');
-	$('#chevron2')[0].classList.add('fa-chevron-down');
+	
 	drawermode = 1;
     }
     else {
 	$('body').scrollTop(1000);
 	$('#chevron1')[0].classList.remove('fa-chevron-down');
-	$('#chevron2')[0].classList.remove('fa-chevron-down');
+	
 	$('#chevron1')[0].classList.add('fa-chevron-up');
-	$('#chevron2')[0].classList.add('fa-chevron-up');
+	
 	drawermode = 0;
     }
 }
