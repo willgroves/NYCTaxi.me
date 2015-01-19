@@ -45,6 +45,24 @@
       opacity: .9;
       display: none;
       }
+      .togglebutton {
+      background-color: #21b384;
+      display: inline-block;
+      color: #FFFFFF;
+      margin-bottom: 0;
+      font-weight: normal;
+      text-align: center;
+      vertical-align: middle;
+      cursor: pointer;
+      background-image: none;
+      border: 1px solid transparent;
+      white-space: nowrap;
+      padding: 6px 12px;
+      font-size: 13px;
+      line-height: 1.42857143;
+      border-radius: 4px;
+      text-decoration: none;
+      }
     </style>
   </head>
   <body onload="onceonload()"  onorientationchange="updateOrientation();">
@@ -53,38 +71,53 @@
     <img id='instructions' src="/static/instructions.svg"/>
     <nav id='menu-ui' class='menu-ui'></nav>
     <div id='map' ></div>
-    <div class="drawer-label" style=" background-color:#000000; color:white; " onclick="$('body').scrollTo('#dataTable',1000);">
-      <center><i style=" color:#eeeeee; " class="fa fa-chevron-down"></i> Show Results <i style="text-color:#FFFFFF;" class="fa fa-chevron-down"></i></center>
+    <div class="drawer-label" style=" background-color:#000000; color:white; " onclick="toggleDrawer();">
+      <center>
+	<table><tr><td>
+	      <img id="waittimelegend" src="/static/waittimepu.svg" style="width: 250px; height:30px;"/>
+	    </td>
+	    <td>
+	      <a class="btn btn-danger togglebutton" href="#" style="">
+		<i style=" color:#eeeeee; " class="fa fa-chevron-up" id="chevron1"></i> Show Results
+		<i style="text-color:#FFFFFF;" class="fa fa-chevron-up" id="chevron2"></i>
+	      </a>
+	    </td>
+	</tr></table>
+      </center>
+
     </div>
     <div class="drawer-content" style=" background-color:#eeeeee; ">
-      <div style="padding: 5px; margin-top: 2px; "><center>
-	</i><i class="fa fa-clock-o"></i> Set Query Time/Date: <input type='text' id='wgtimeinput' size='6' value=""></input> <input type='text' id='wgdateinput' size='10' value=""></input></center>
+      <div style="padding: 3px; margin-top: 0px; "><center>
+</i><i class="fa fa-clock-o"></i> Set Query Time/Date: <input type='text' id='wgtimeinput' size='6' value=""></input> <input type='text' id='wgdateinput' size='10' value=""></input></center>
 
-	<br/>
-	<!--<i class="fa fa-location-arrow"></i> Location (Lat/Long) -->
-	<input id='lat' size=5 value='40.7' type='hidden'></input> 
-	<input type='hidden' id='long' size=5 value='-74.00'></input> 
-      </div>
-      <div id="divqueryoutput"></div>    <center>
-      <table id="dataTable" class="tablesorter" style=" width: 100%; position:relative; ">
-        <thead><tr><th>#</th><th>Walk<br/>(mins)</th><th>Direction</th><th>Avg. Wait<br/>(mins)</th><th>DO:PU ratio</th><th>Intersection</th></tr></thead>
-        <tbody>
-          <tr><td colspan="6"><center><b>Set your location to center of map and query to start ...</b></center></td></tr>
-          <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
-          <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
-          <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
-          <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
-          <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
-          <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
-          <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
+<br/>
+<!--<i class="fa fa-location-arrow"></i> Location (Lat/Long) -->
+<input id='lat' size=5 value='40.7' type='hidden'></input> 
+<input type='hidden' id='long' size=5 value='-74.00'></input> 
+</div>
+<div id="divqueryoutput"></div>    <center>
+  <table id="dataTable" class="tablesorter" style=" width: 100%; position:relative; ">
+    <thead><tr><th>#</th><th>Walk<br/>(mins)</th><th>Direction</th><th>Avg. Wait<br/>(mins)</th><th>DO:PU ratio</th><th>Intersection</th></tr></thead>
+    <tbody>
+      <tr><td colspan="6"><center><b>Set your location to center of map and query to start ...</b></center></td></tr>
+      <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
+      <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
+      <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
+      <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
+      <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
+      <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
+      <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
 
-        </tbody>
-      </table>
-      <br/>
-      &copy; 2015 - {{ servername }}
-    </center>
-  </div>	
+    </tbody>
+  </table>
+  <br/>
+  &copy; 2015 - {{ servername }}
+</center>
+</div>	
 </div>    
 <script src="/ui.js"></script>
+<script type="text/javascript">
+  {{ addscript }}
+</script>
 </body>
 </html>
