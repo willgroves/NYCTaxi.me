@@ -63,6 +63,7 @@
       border-radius: 2px;
       text-decoration: none;
       }
+
     </style>
   </head>
   <body onload="onceonload()"  onorientationchange="updateOrientation();">
@@ -74,7 +75,10 @@
     <div class="drawer-label" style=" background-color:#000000; color:white; " onclick="toggleDrawer();">
       <center>
 	<table><tr><td>
-	  <img id="waittimelegend" src="/static/waittimepu.svg" />
+	      <div style="width:250px; height:30px; ">
+		<img id="legendpu" src="/static/waittimepu.svg" style="width:250px;position:absolute;" />
+		<img id="legenddo" src="/static/waittimedo.svg" style="width:250px;position:absolute;visibility:hidden;" />
+</div>
 	</td>
 	<td>
 	  <a class="btn btn-danger togglebutton" href="#" style="">

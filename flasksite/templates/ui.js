@@ -156,17 +156,21 @@ var permithourchange = 0; //only allow change of hour once per call
 
 var hourset = "00";
 
+$("#waittimelegend")[0].width = "250px";
+
 function setMapHour(hour2digit) {
     if (permithourchange > 0) {
 	hourset = hour2digit;
 
 	if (dopumode == 0) {
 	    dropoffstr = "d";
-	    $("#waittimelegend")[0].src = "/static/waittimedo.svg";
+	    $("#legenddo")[0].style.visibility = 'visible';
+	    $("#legendpu")[0].style.visibility = 'hidden';
 	}
 	else {
 	    dropoffstr = "";
-	    $("#waittimelegend")[0].src = "/static/waittimepu.svg";
+	    $("#legendpu")[0].style.visibility = 'visible';
+	    $("#legenddo")[0].style.visibility = 'hidden';
 	}
 	//add another layer for speculative testing purposes
 	var tilejsonoverlay = {
@@ -408,22 +412,24 @@ function toggleDrawer() {
 
 //change map on change of time
 //if changing the query time or day, then modify the map
-$('#wgtimeinput')[0].onchange = function() { console.log('onchange fired for the time input box');
+function eventchangetime() 
+{ console.log('onchange fired for the time input box');
 
-					     var ttime = new Date();//document.getElementById('time').value);
-					     var yr = parseFloat($('#wgdateinput')[0].value.slice(0,4));
-					     ttime.setYear(yr);
-					     ttime.setMonth(parseFloat($('#wgdateinput')[0].value.slice(5,7))-1);
-					     ttime.setDate(parseFloat($('#wgdateinput')[0].value.slice(8,10)));
-					     ttime.setHours(parseFloat($('#wgtimeinput')[0].value.slice(0,2)));
-					     ttime.setMinutes(parseFloat($('#wgtimeinput')[0].value.slice(3,5)));
-					     console.log('querying time:'+ttime);
-					     if (ttime.getHours() >= 0 && ttime.getHours() <= 23) { 
-						 var twodigithr = ("0" + ttime.getHours()).slice(-2);
-						 if (hourset != twodigithr) {
-						     permithourchange = 1;
-						     hourset = twodigithr;
-						     setMapHour(hourset);
-						 }
-					     }
-					   };
+  var ttime = new Date();//document.getElementById('time').value);
+  var yr = parseFloat($('#wgdateinput')[0].value.slice(0,4));
+  ttime.setYear(yr);
+  ttime.setMonth(parseFloat($('#wgdateinput')[0].value.slice(5,7))-1);
+  ttime.setDate(parseFloat($('#wgdateinput')[0].value.slice(8,10)));
+  ttime.setHours(parseFloat($('#wgtimeinput')[0].value.slice(0,2)));
+  ttime.setMinutes(parseFloat($('#wgtimeinput')[0].value.slice(3,5)));
+  console.log('querying time:'+ttime);
+  if (ttime.getHours() >= 0 && ttime.getHours() <= 23) { 
+      var twodigithr = ("0" + ttime.getHours()).slice(-2);
+      if (hourset != twodigithr) {
+	  permithourchange = 1;
+	  hourset = twodigithr;
+	  setMapHour(hourset);
+      }
+  }
+}
+$('#wgtimeinput')[0].onchange = eventchangetime;
