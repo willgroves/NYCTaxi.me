@@ -11,6 +11,7 @@ import flask, os, time
 
 #local imports
 from WaitTimeQueryKDTree import WaitTimeQuery
+import localconfig
 
 def getNearestDataHour2Digit(hour):
     '''
@@ -37,31 +38,20 @@ def robots():
     response = flask.make_response("""User-agent: *\nDisallow: /\n""")
     response.headers["Content-type"] = "text/plain"
     return response
-#@app.route('/', methods=['GET','POST'])
-#def ui():
-#    return redirect(url_for('static', filename='ui.html'))
 
 @app.route('/', methods=['GET',])
 def table():
     return redirect('/static/splash/index.html')#url_for('static/splash/', filename='index.html'))
 
-##
-#@app.route('/table', methods=['GET',])
-#def table():
-#    return redirect(url_for('static/jsonTable', filename='index.html'))
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
+@app.route('/ui', methods=['GET', 'POST'])
+def ui():
     error = None
-    if request.method == 'POST':
-        if request.form['username'] != 'admin' or \
-                request.form['password'] != 'secret':
-            flash(u'Invalid password provided', 'error')
-            error = 'Invalid credentials'
-        else:
-            flash('You were successfully logged in')
-            return redirect(url_for('index'))
-    return render_template('login.html', error=error)
+    return render_template('ui.html',servername=localconfig.servername,mapserverport=localconfig.mapserverport)
+
+@app.route('/ui.js', methods=['GET', 'POST'])
+def uijs():
+    error = None
+    return render_template('ui.js',servername=localconfig.servername,mapserverport=localconfig.mapserverport)
 
 @app.route('/suggestapi', methods=['GET'])
 def suggestapi():

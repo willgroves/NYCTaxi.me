@@ -274,7 +274,7 @@ function max(a,b) {
 }
 
 function updateOrientation() {
-    $('#map').height($(window).height() - 50);
+    $('#map').height($(window).height() - 80);
 }
 
 function onceonload() { // What to do on page load:
