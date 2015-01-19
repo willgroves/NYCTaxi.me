@@ -80,7 +80,10 @@ function addButton(name, func) {
 //addButton('Clear Map',false);
 addButton('<i class="fa fa-crosshairs"></i> Get Location',function () { getLocationWG(); });
 addButton('<i class="fa fa-gears"></i> Query Location',function () { queryLocation(); });
-
+addButton('<i class="fa fa-question-circle"></i> Show Help',function () { showInstructions(); });
+addButton('----',function () {});
+addButton('<i class="fa fa-square" id="dropcheck"></i> Dropoff Intensity',function () {});
+addButton('<i class="fa fa-check-square" id="pickcheck"></i> Pickup Intensity',function () {});
 //addButton('Dropoff Intensity',false);
 //addButton('Pickup Intensity',false);
 
@@ -277,6 +280,17 @@ function updateOrientation() {
     $('#map').height($(window).height() - 80);
 }
 
+function showInstructions(){
+    $("#cover").show();
+    $("#instructions").show( "slow" );
+};
+
+function dismissInstructions(){
+    $("#instructions").fadeOut( "fast" );
+    $("#cover").hide();
+};
+
+
 function onceonload() { // What to do on page load:
     updateOrientation(); 
 
@@ -290,7 +304,9 @@ function onceonload() { // What to do on page load:
     map = new L.Map('map', {center: [40.7, -74.0], zoom:13});
     oldlayer.addTo(map);
 
-
+    $('#instructions').click(dismissInstructions);
+    $('#cover').click(dismissInstructions);
+    
     setTimeout(function(){ 
 	var date = new Date();
 	currentHours = date.getHours();
