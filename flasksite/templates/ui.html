@@ -24,44 +24,101 @@
     <style>
       body { margin:0; padding:0; background-color:#000000; font: 13px/1.5 "Verdana", sans-serif; } 
       #map { top:0; bottom:0; margin-bottom: 2px; width:100%; height: 500px; }
+      #cover {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 100;
+      display: none;
+      background-color: #000000;
+      opacity: .65;
+      filter:progid:DXImageTransform.Microsoft.BasicImage(opacity=.7);}
+      #instructions{
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 640px;
+      height: 700px;
+      z-index: 101;
+      opacity: .9;
+      display: none;
+      }
+      .togglebutton {
+      background-color: #21b384;
+      display: inline-block;
+      color: #FFFFFF;
+      margin-bottom: 0;
+      font-weight: normal;
+      text-align: center;
+      vertical-align: middle;
+      cursor: pointer;
+      background-image: none;
+      border: 1px solid transparent;
+      white-space: nowrap;
+      padding: 4px 8px;
+      font-size: 11px;
+      line-height: 1.42857143;
+      border-radius: 2px;
+      text-decoration: none;
+      }
+
     </style>
   </head>
   <body onload="onceonload()"  onorientationchange="updateOrientation();">
 
+    <div id='cover' >&nbsp;</div>
+    <img id='instructions' src="/static/instructions.svg"/>
     <nav id='menu-ui' class='menu-ui'></nav>
     <div id='map' ></div>
-    <div class="drawer-label" style=" background-color:#000000; color:white; " onclick="$('body').scrollTo('#dataTable',1000);">
-      <center><i style=" color:#eeeeee; " class="fa fa-chevron-down"></i> Show Results <i style="text-color:#FFFFFF;" class="fa fa-chevron-down"></i></center>
+    <div class="drawer-label" style=" background-color:#000000; color:white; " onclick="toggleDrawer();">
+      <center>
+	<table><tr><td>
+	      <div style="width:250px; height:30px; ">
+		<img id="legendpu" src="/static/waittimepu.svg" style="width:250px;position:absolute;" />
+		<img id="legenddo" src="/static/waittimedo.svg" style="width:250px;position:absolute;visibility:hidden;" />
+</div>
+	</td>
+	<td>
+	  <a class="btn btn-danger togglebutton" href="#" style="">
+	    <i style=" color:#eeeeee; " class="fa fa-chevron-up" id="chevron1"></i> Show<br/>Results
+	    
+	  </a>
+	</td>
+	</tr></table>
+      </center>
+
     </div>
     <div class="drawer-content" style=" background-color:#eeeeee; ">
-      <div style="padding: 5px; margin-top: 2px; "><center>
-	</i><i class="fa fa-clock-o"></i> Set Query Time/Date: <input type='text' id='wgtimeinput' size='6' value=""></input> <input type='text' id='wgdateinput' size='10' value=""></input></center>
-
-	<br/>
-	<!--<i class="fa fa-location-arrow"></i> Location (Lat/Long) -->
+      <div style="padding: 3px; margin-top: 0px; "><center>
+	<i class="fa fa-clock-o"></i>&nbsp;Set Query Time/Date: <input type='text' id='wgtimeinput' size='6' value=""></input> <input type='text' id='wgdateinput' size='10' value=""></input><!--<i class="fa fa-location-arrow"></i> Location (Lat/Long) -->
 	<input id='lat' size=5 value='40.7' type='hidden'></input> 
 	<input type='hidden' id='long' size=5 value='-74.00'></input> 
-      </div>
-      <div id="divqueryoutput"></div>    <center>
-      <table id="dataTable" class="tablesorter" style=" width: 100%; position:relative; ">
-        <thead><tr><th>#</th><th>Walk<br/>(mins)</th><th>Direction</th><th>Avg. Wait<br/>(mins)</th><th>DO:PU ratio</th><th>Intersection</th></tr></thead>
-        <tbody>
-          <tr><td colspan="6"><center><b>Set your location to center of map and query to start ...</b></center></td></tr>
-          <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
-          <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
-          <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
-          <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
-          <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
-          <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
-          <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
+</center></div>
+      <div id="divqueryoutput">  
+	<table id="dataTable" class="tablesorter" style=" width: 100%; position:relative; ">
+	  <thead><tr><th>#</th><th>Walk<br/>(mins)</th><th>Direction</th><th>Avg. Wait<br/>(mins)</th><th>DO:PU ratio</th><th>Intersection</th></tr></thead>
+	  <tbody>
+	    <tr><td colspan="6"><center><b>Set your location to center of map and query to start ...</b></center></td></tr>
+	    <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
+	    <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
+	    <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
+	    <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
+	    <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
+	    <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
+	    <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
+	  </tbody>
+	</table>
+	<center>
+	<!-- <div style="background-color: #FFFFFF; color: #000000; padding: 0px; margin: 0px;"> &copy; 2015 - {{ servername }}</div> -->
+        </center>
+      </div>  
+    </div>	
 
-        </tbody>
-      </table>
-      <br/>
-      &copy; 2015 - {{ servername }}
-    </center>
-  </div>	
-</div>    
-<script src="/ui.js"></script>
-</body>
+    <script src="/ui.js"></script>
+    <script type="text/javascript">
+      {{ addscript }}
+    </script>
+  </body>
 </html>

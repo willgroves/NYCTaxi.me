@@ -33,7 +33,7 @@ class WaitTimeQuery:
         print("finished loading wait time query data!")
         pass
 
-    def query(self,lat,lng,epoch,k=6,maxdst=0.5):
+    def query(self,lat,lng,epoch,k=7,maxdst=0.5):
         '''Query the data sources based on the lat, lng, and time (will
 regularize to 15 minute intervals on rows identified by
 weekday-hour-quarterhour). Returns a dictionary of the mean arrival
@@ -87,7 +87,7 @@ interval along with some other information based on the query location.
         grp3min.sort(key=lambda x: x['pu_wait'])
 
         #resultl.sort(key=lambda x: x['dst_mi'])
-        resultl = grp1min[:2]+grp2min[:2]+grp3min[:2]
+        resultl = grp1min[:3]+grp2min[:2]+grp3min[:5]
         resultl = resultl[:k]
         for i, result in enumerate(resultl):
             result['rank'] = i+1

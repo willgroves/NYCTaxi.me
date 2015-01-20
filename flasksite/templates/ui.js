@@ -77,10 +77,45 @@ function addButton(name, func) {
     layers.appendChild(link);
 }
 
-//addButton('Clear Map',false);
-addButton('<i class="fa fa-crosshairs"></i> Get Location',function () { getLocationWG(); });
-addButton('<i class="fa fa-gears"></i> Query Location',function () { queryLocation(); });
+function animateWG(id,arradd) {
+    elem = $(id)[0]
+    for (i=0; i<arradd.length; i++) {
+	elem.classList.add(arradd[i]);
+    }
+}
 
+function unanimateWG(id,arrrem,arradd) {
+    elem = $(id)[0]
+    for (i=0; i<arradd.length; i++) {
+	elem.classList.add(arradd[i]);
+    }
+    for (i=0; i<arrrem.length; i++) {
+	elem.classList.remove(arrrem[i]);
+    }
+}
+
+var dopumode = 1; //0 is dropoff, 1 is pickup
+
+//addButton('Clear Map',false);
+addButton('<i class="fa fa-crosshairs" id="getlocationicon"></i> Get Location',function () { animateWG("#getlocationicon",['fa-spin','fa-spinner']); getLocationWG();  });
+addButton('<i class="fa fa-gears" id="querylocationicon"></i> Query Location',function () { animateWG("#querylocationicon",['fa-spin','fa-spinner']); queryLocation(); });
+addButton('<i class="fa fa-question-circle"></i> Show Help',function () { showInstructions(); });
+//addButton('----',function () {});
+addButton('<i class="fa fa-square" id="dropcheckicon"></i> Dropoff Intensity',function () { if (dopumode == 1) {
+    dopumode = 0;
+    unanimateWG("#dropcheckicon",['fa-square'],['fa-check-square']);
+    unanimateWG("#pickcheckicon",['fa-check-square'],['fa-square']);
+    permithourchange = 1;
+    setMapHour(hourset);
+}
+											  });
+addButton('<i class="fa fa-check-square" id="pickcheckicon"></i> Pickup Intensity',function () { if (dopumode == 0) {
+    dopumode = 1;
+    unanimateWG("#pickcheckicon",['fa-square'],['fa-check-square']);
+    unanimateWG("#dropcheckicon",['fa-check-square'],['fa-square']);
+    permithourchange = 1;
+    setMapHour(hourset);
+} });
 //addButton('Dropoff Intensity',false);
 //addButton('Pickup Intensity',false);
 
@@ -101,6 +136,7 @@ function getLocationWG() {
     } else { 
 	iboxlong.innerHTML = "Geolocation is not supported by this browser.";
     }
+    
 }
 
 var wgallowposupdate = 0; //only allow position update once per call
@@ -112,19 +148,36 @@ function showPositionWG(position) {
     if (wgallowposupdate == 1) {
 	setMapCenter();
 	wgallowposupdate = 0;
+	unanimateWG("#getlocationicon",['fa-spin','fa-spinner'],['fa-crosshairs']);
     } else { console.log("in callback for showpositionWG redundant! not updating!"); }
 }
 
 var permithourchange = 0; //only allow change of hour once per call
 
+var hourset = "00";
+
+$("#waittimelegend")[0].width = "250px";
+
 function setMapHour(hour2digit) {
     if (permithourchange > 0) {
+	hourset = hour2digit;
+
+	if (dopumode == 0) {
+	    dropoffstr = "d";
+	    $("#legenddo")[0].style.visibility = 'visible';
+	    $("#legendpu")[0].style.visibility = 'hidden';
+	}
+	else {
+	    dropoffstr = "";
+	    $("#legendpu")[0].style.visibility = 'visible';
+	    $("#legenddo")[0].style.visibility = 'hidden';
+	}
 	//add another layer for speculative testing purposes
 	var tilejsonoverlay = {
 	    tilejson: '1.0.0',
 	    scheme: 'tms',
-	    tiles: ['http://{{ servername }}:{{ mapserverport }}/composite_o'+hour2digit+'/{z}/{x}/{y}.png'],
-	    grids: ['http://{{ servername }}:{{ mapserverport }}/composite_o'+hour2digit+'/{z}/{x}/{y}.grid.json'],
+	    tiles: ['http://{{ servername }}:{{ mapserverport }}/composite'+dropoffstr+'_o'+hour2digit+'/{z}/{x}/{y}.png'],
+	    grids: ['http://{{ servername }}:{{ mapserverport }}/composite'+dropoffstr+'_o'+hour2digit+'/{z}/{x}/{y}.grid.json'],
 	    formatter: function(options, data) { return data.NAME }
 	};
 
@@ -134,6 +187,7 @@ function setMapHour(hour2digit) {
 	map.removeLayer(oldlayer);
 	oldlayer = newlayer;
 	permithourchange = 0;
+
     }
 }
 
@@ -239,15 +293,15 @@ function queryLocation() { // query busyness and add info to map
 		i=i+1;
 	    }
 	    console.log("finished parsing nearby places");
-
+	    unanimateWG("#querylocationicon",['fa-spin','fa-spinner'],['fa-gears']);
 	    permithourchange = 1;
 	    setTimeout(function() { setMapHour(json.hour2digit); },1000);
 
-	    setTimeout(function() { $('body').scrollTo('#dataTable',1000);
-				    //window.scrollTo(0,document.body.scrollHeight);
+	    setTimeout(function() { toggleDrawer();
 				  },2500);
 
 	}
+
     });
 
 
@@ -274,8 +328,32 @@ function max(a,b) {
 }
 
 function updateOrientation() {
-    $('#map').height($(window).height() - 80);
+    $('#map').height($(window).height() - 85);
+    //also change instructions source if needed
+    if ($(window).width() < 500) {
+	$('#instructions')[0].src = "/static/instructionssmall.svg";
+    }
+    else if ($(window).height() < 500) {
+	$('#instructions')[0].src = "/static/instructionswide.svg";
+    }
+    else  {
+	$('#instructions')[0].src = "/static/instructions.svg";
+    }
 }
+
+
+
+function showInstructions(){
+    updateOrientation();
+    $("#cover").show();
+    $("#instructions").show( "slow" );
+};
+
+function dismissInstructions(){
+    $("#instructions").fadeOut( "fast" );
+    $("#cover").hide();
+};
+
 
 function onceonload() { // What to do on page load:
     updateOrientation(); 
@@ -290,16 +368,12 @@ function onceonload() { // What to do on page load:
     map = new L.Map('map', {center: [40.7, -74.0], zoom:13});
     oldlayer.addTo(map);
 
-
+    $('#instructions').click(dismissInstructions);
+    $('#cover').click(dismissInstructions);
+    
     setTimeout(function(){ 
 	var date = new Date();
 	currentHours = date.getHours();
-	if (currentHours == 2) { currentHours = 3 };
-	if (currentHours == 4) { currentHours = 3 };
-	if (currentHours == 5) { currentHours = 3 };
-	if (currentHours == 6) { currentHours = 3 };
-	if (currentHours == 9) { currentHours = 10 };
-	if (currentHours == 11) { currentHours = 12 };
 	currentHours = ("0" + currentHours).slice(-2);
 	permithourchange = 1;
 	setMapHour(currentHours);
@@ -313,3 +387,49 @@ function onceonload() { // What to do on page load:
 
 }//end of onceonload
 
+
+//results drawer code
+var drawermode = 0; //0 at top, 1 at bottom 
+
+function toggleDrawer() {
+    if (drawermode == 0) {
+	$('body').scrollTo('#dataTable',1000);
+	$('#chevron1')[0].classList.remove('fa-chevron-up');
+	
+	$('#chevron1')[0].classList.add('fa-chevron-down');
+	
+	drawermode = 1;
+    }
+    else {
+	$('body').scrollTop(1000);
+	$('#chevron1')[0].classList.remove('fa-chevron-down');
+	
+	$('#chevron1')[0].classList.add('fa-chevron-up');
+	
+	drawermode = 0;
+    }
+}
+
+//change map on change of time
+//if changing the query time or day, then modify the map
+function eventchangetime() 
+{ console.log('onchange fired for the time input box');
+
+  var ttime = new Date();//document.getElementById('time').value);
+  var yr = parseFloat($('#wgdateinput')[0].value.slice(0,4));
+  ttime.setYear(yr);
+  ttime.setMonth(parseFloat($('#wgdateinput')[0].value.slice(5,7))-1);
+  ttime.setDate(parseFloat($('#wgdateinput')[0].value.slice(8,10)));
+  ttime.setHours(parseFloat($('#wgtimeinput')[0].value.slice(0,2)));
+  ttime.setMinutes(parseFloat($('#wgtimeinput')[0].value.slice(3,5)));
+  console.log('querying time:'+ttime);
+  if (ttime.getHours() >= 0 && ttime.getHours() <= 23) { 
+      var twodigithr = ("0" + ttime.getHours()).slice(-2);
+      if (hourset != twodigithr) {
+	  permithourchange = 1;
+	  hourset = twodigithr;
+	  setMapHour(hourset);
+      }
+  }
+}
+$('#wgtimeinput')[0].onchange = eventchangetime;
