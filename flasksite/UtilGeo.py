@@ -31,11 +31,13 @@ dir2xnorm, dir2ynorm = dir2xfixed/math.sqrt(dir2xfixed*dir2xfixed+dir2yfixed*dir
 #print('dir2xnorm, dir2ynorm',dir2xnorm, dir2ynorm)
 
 def londisplatdisptomanhattandst(londisp,latdisp):
-    eastmi = londisp*londstmi
-    northmi = latdisp*latdstmi
+    eastmi = abs(londisp)*londstmi
+    northmi = abs(latdisp)*latdstmi
     manhatnorthmi = dir1xnorm*eastmi+dir1ynorm*northmi
+    print "manhattan north mi", manhatnorthmi
     manhateastmi = dir2xnorm*eastmi+dir2ynorm*northmi
-    return manhatnorthmi+manhateastmi
+    print "manhattan east mi", manhateastmi
+    return abs(manhatnorthmi)+abs(manhateastmi)
 
 def distancelonlatlonlatman(lon1,lat1,lon2,lat2):
     '''corrected version of manhattan distance that projects the data in
@@ -54,3 +56,12 @@ if __name__ == '__main__':
     print('exampledst:',distancelonlatlonlat(x1,y1,x2,y2))
     print('manhatexampledst:',londisplatdisptomanhattandst(x2-x1,y2-y1))
         
+    
+    x1,y1 = -73.9879,40.7564 
+    x2,y2 = -73.9878,40.7498
+    londelta = x2-x1
+    latdelta = y2-y1
+
+    print('exampledst:',distancelonlatlonlat(x1,y1,x2,y2))
+    print('manhatexampledst:',londisplatdisptomanhattandst(x2-x1,y2-y1))
+    

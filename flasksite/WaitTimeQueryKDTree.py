@@ -95,11 +95,19 @@ interval along with some other information based on the query location.
             result['total'] = "<div class='rowgetter' id='rowgetter%d'>%.2f</div>"%(i+1,result['pu_wait']+result['walkmins'])
             result['dst_mi'] = "%.3f"%result['dst_mi']
             result['dst_walk'] = "%s %.2f"%(glyph(result['walkmins']),result['walkmins'])
-            result['lat_txt'] = "%.3f"%result['lat']
-            result['lon_txt'] = "%.3f"%result['lon']
+            result['lat_txt'] = "%.4f"%result['lat']
+            result['lon_txt'] = "%.4f"%result['lon']
+            result['lat_txt_start'] = "%.4f"%place[1]
+            result['lon_txt_start'] = "%.4f"%place[0]
             result['pu_wait'] = "%.2f"%result['pu_wait']
             result['do_pu_ratio'] = "%.2f"%result['do_pu_ratio']
             result['direction'] = direction(place[0],place[1],result['lon'],result['lat'])
+            print('lon1 %0.4f lat1 %0.4f lon2 %0.4f lat2 %0.4f '%(place[0],place[1],result['lon'],result['lat']),end='')
+            print(' dst_walk',result['dst_walk'],end='')
+            print(' dst_mi',result['dst_mi'],end='')
+            print(' total',result['total'],)
+
+
         return resultl
 
 def glyph(dstwalk):
@@ -113,7 +121,7 @@ given two locations, determine the bearing to go from 1 to 2. We return
 the result as a string with the general direction (e.g. NE 36 deg)
 '''
     rv = ''
-    print('lon1 lat1 lon2 lat2',lon1,lat1,lon2,lat2)
+    #print('lon1 lat1 lon2 lat2',lon1,lat1,lon2,lat2)
     londisp = float(lon2)-float(lon1)
     latdisp = float(lat2)-float(lat1)
     #print("londisp, latdisp", londisp, latdisp)

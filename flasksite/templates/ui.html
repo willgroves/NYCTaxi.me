@@ -98,7 +98,8 @@
 </center></div>
       <div id="divqueryoutput">  
 	<table id="dataTable" class="tablesorter" style=" width: 100%; position:relative; ">
-	  <thead><tr><th>Walk +<br/>Wait (mins)</th><th>Walk<br/>(mins)</th><th>Direction</th><th>Avg. Wait<br/>(mins)</th><th>Dropoff &divide;<br/>Pickup ratio</th><th>Intersection</th></tr></thead>
+	  <thead>
+	  <tr><th><span style="align: center;" onclick='$( "#dialogtotal" ).dialog( "open" ); return false;'>Wait +<br/>Walk (mins)</span></th><th><span style="align: center;" onclick='$( "#dialogdst_walk" ).dialog( "open" ); return false;'>Walk<br/>(mins)</span></th><th><span style="align: center;" onclick='$( "#dialogspanection" ).dialog( "open" ); return false;'>Compass</span></th><th><span style="align: center;" onclick='$( "#dialogpu_wait" ).dialog( "open" ); return false;'>Avg. Wait<br/>(mins)</span></th><th><span style="align: center;" onclick='$( "#dialogdo_pu_ratio" ).dialog( "open" ); return false;'>Dropoff &divide; Pickup</span></th><th><span style="align: center;" onclick='$( "#dialogintersection_name" ).dialog( "open" ); return false;'>Intersection</span></th></tr></thead>
 	  <tbody>
 	    <tr><td colspan="6"><center><b>Set your location to center of map and query to start ...</b></center></td></tr>
 	    <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
@@ -116,7 +117,15 @@
       </div>  
     </div>	
 
-    <div id="yahdialog" title="Location Info" style="display: none;">You are here. All distances are based on this location as a starting point.</div>    
+    <div id="dialogyah" title="Location Info" style="display: none;">You are here. All distances are based on this location as a starting point.<br/>Center the map by dragging to set a different starting point.</div>    
+    
+    <div id="dialogtotal" title="Walking + Est. Waiting Time" style="display: none;">Sum (in minutes) of walking time plus average waiting time for this location based on walking from the starting location. Estimates entire time to get a taxi by walking to this intersection.</div> 
+    <div id="dialogdst_walk" title="Walking Time" style="display: none;">Walking distance (in minutes) from the starting location. <i class="fa fa-bicycle fa-lg"></i> denotes a long walk. <i class="fa fa-male fa-lg"></i> denotes a medium walk. <i class="fa fa-anchor fa-lg"></i> is minimal walking.</div>    
+    <div id="dialogdirection" title="Compass Walking Direction" style="display: none;">Direction of this intersection from the starting location. Assumes average walking pace of 20 mins/mile.</div>    
+    <div id="dialogpu_wait" title="Avg. Wait (in minutes)" style="display: none;">Average wait time for finding a taxi. Computed as 1/2 * <i>mean interarrival time</i>.</div>    
+    <div id="dialogdo_pu_ratio" title="Dropoff &divide; Pickup Ratio" style="display: none;">This number indicates the level of imbalance between dropoffs and pickups at this intersection. For finding a taxi, a number greater than 1 is better (i.e. more dropoffs than pickups observed).</div>    
+    <div id="dialogintersection_name" title="Intersection Name" style="display: none;">Name of the two interescting streets where taxis have been observed to pick up or drop off.</div>    
+
     <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
     <script src="/ui.js"></script>
     <script type="text/javascript">

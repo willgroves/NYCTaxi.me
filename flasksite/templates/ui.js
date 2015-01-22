@@ -248,7 +248,7 @@ function queryLocation() { // query busyness and add info to map
     //popup.closeButton = false;
     
     //newmarker.bindPopup(popup);
-    newmarker.on('click', function() { $( "#yahdialog" ).dialog( "open" ); return false; });
+    newmarker.on('click', function() { $( "#dialogyah" ).dialog( "open" ); return false; });
     markerl.push(newmarker);
     newmarker.addTo(map);
     
@@ -289,11 +289,19 @@ function queryLocation() { // query busyness and add info to map
 	    ///////////////////////////////
 	    // Test on a pre-existing table
 	    $("#dataTable").jsonTable({
-		head : ['Wait +<br/>Walk (mins)','Walk<br/>(mins)','Direction','Avg. Wait<br/>(mins)','Dropoff &divide; Pickup ratio','Intersection'],
+		head : //['Wait +<br/>Walk (mins)','Walk<br/>(mins)','Direction','Avg. Wait<br/>(mins)','Dropoff &divide; Pickup ratio','Intersection'],
+	    ['<span onclick=\'$( "#dialogtotal" ).dialog( "open" ); return false;\'>Wait +<br/>Walk (mins)</span>',
+	     '<span onclick=\'$( "#dialogdst_walk" ).dialog( "open" ); return false;\'>Walk<br/>(mins)</span>',
+	     '<span onclick=\'$( "#dialogdirection" ).dialog( "open" ); return false;\'>Compass</span>',
+	     '<span onclick=\'$( "#dialogpu_wait" ).dialog( "open" ); return false;\'>Avg. Wait<br/>(mins)</span>',
+	     '<span onclick=\'$( "#dialogdo_pu_ratio" ).dialog( "open" ); return false;\'>Dropoff &divide; Pickup</span>',
+	     '<span onclick=\'$( "#dialogintersection_name" ).dialog( "open" ); return false;\'>Intersection</span>'],
+
 		json : ['total','dst_walk','direction','pu_wait','do_pu_ratio','intersection_name']
 	    });
-	    $("#dataTable").jsonTableUpdate(options);
 	    
+	    $("#dataTable").jsonTableUpdate(options);
+
 	    i = 1;
 	    while (newlocationl.length > 0) {
 		newlocation = newlocationl.shift();
@@ -323,13 +331,14 @@ function queryLocation() { // query busyness and add info to map
 		    }
 		    document.getElementsByClassName(markerclass)[0].classList.add('highlightmarker');
 		    
-		    $('body').scrollTo(markerid,1000);
+
 		    //$('#rowhighlight').each(function() { this.classList.remove('rowhighlight'); });
 		    var highlightl = document.getElementsByClassName('rowhighlight');
 		    for (i=0; i<highlightl.length; i++) {
 			highlightl[i].classList.remove('rowhighlight');
 		    }
 		    $(markerid)[0].parentNode.parentNode.classList.add('rowhighlight');
+		    $('body').scrollTo(markerid,1000);
 		    return false; } })(markerid,markerobjid) );
 		
 		var tmphighlightfn = (function (markerid,markerclass) { return function() {
@@ -341,13 +350,14 @@ function queryLocation() { // query busyness and add info to map
 		    }
 		    document.getElementsByClassName(markerclass)[0].classList.add('highlightmarker');
 		    
-		    $('body').scrollTo(markerid,1000);
+
 		    //$('#rowhighlight').each(function() { this.classList.remove('rowhighlight'); });
 		    var highlightl = document.getElementsByClassName('rowhighlight');
 		    for (i=0; i<highlightl.length; i++) {
 			highlightl[i].classList.remove('rowhighlight');
 		    }
 		    $(markerid)[0].parentNode.parentNode.classList.add('rowhighlight');
+		    $('body').scrollTo('#nothingattop',1000);
 		    return false; } })(markerid,markerobjid);
 //		$(markerid)[0].onclick=tmphighlightfn;
 		$(markerid).parent().parent().each(function() { this.onclick=tmphighlightfn; });
@@ -387,7 +397,7 @@ function setMapCenter(lat, lon, z) {
 	alert("Hello, it looks like you are not in NYC or your GPS location is not available. Please center the map at the desired location for a query.");
     }
     else {
-	var zoomtarget = max(map.getZoom(),17);
+	var zoomtarget = max(map.getZoom(),16);
 	if (z == null) {
 	    map.setView([lat,lon], zoomtarget);
 	}
@@ -482,12 +492,19 @@ function onceonload() { // What to do on page load:
 	setMapHour(currentHours);
 	if (m == 0) { dochange(); }
 	if (e == 1) { queryLocation(); }
-    }, 6000);
+    }, 2000);
     
     map.addEventListener('moveend', updateURL);
 
     //initialize you are here dialog.
-    $( "#yahdialog" ).dialog({ autoOpen: false });    
+    $( "#dialogyah" ).dialog({ autoOpen: false });    
+    $( "#dialogtotal" ).dialog({ autoOpen: false });    
+    $( "#dialogdst_walk" ).dialog({ autoOpen: false });    
+    $( "#dialogdirection" ).dialog({ autoOpen: false });    
+    $( "#dialogpu_wait" ).dialog({ autoOpen: false });    
+    $( "#dialogdo_pu_ratio" ).dialog({ autoOpen: false });    
+    $( "#dialogintersection_name" ).dialog({ autoOpen: false });    
+    //['total','dst_walk','direction','pu_wait','do_pu_ratio','intersection_name']
 
 }//end of onceonload
 
