@@ -82,8 +82,8 @@ interval along with some other information based on the query location.
         #grp3min = [r for r in resultl if r['walkmins']>5.0]
 
 
-        
-        grp1min.sort(key=lambda x: x['pu_wait'])
+        ##sensible version, sort by expected wait time and amount of time walking
+        grp1min.sort(key=lambda x: x['pu_wait']+x['walkmins'])
         #grp2min.sort(key=lambda x: x['pu_wait'])
         #grp3min.sort(key=lambda x: x['pu_wait'])
 
@@ -92,6 +92,7 @@ interval along with some other information based on the query location.
         resultl = resultl[:k]
         for i, result in enumerate(resultl):
             result['rank'] = i+1
+            result['total'] = "<div class='rowgetter' id='rowgetter%d'>%.2f</div>"%(i+1,result['pu_wait']+result['walkmins'])
             result['dst_mi'] = "%.3f"%result['dst_mi']
             result['dst_walk'] = "%s %.2f"%(glyph(result['walkmins']),result['walkmins'])
             result['lat_txt'] = "%.3f"%result['lat']
