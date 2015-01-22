@@ -20,9 +20,9 @@
     <script type="text/javascript" src="/static/jsonTable.js"></script>
     <script src='/static/jquery.datetimepicker.js'></script>
     <link href='/static/jquery.datetimepicker.css' rel='stylesheet' />
-
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
     <style>
-      body { margin:0; padding:0; background-color:#000000; font: 13px/1.5 "Verdana", sans-serif; } 
+      body { margin:0; padding:0; background-color:#000000; font: 12px/1.5 "Verdana", sans-serif; } 
       #map { top:0; bottom:0; margin-bottom: 2px; width:100%; height: 500px; }
       #cover {
       position: fixed;
@@ -98,7 +98,7 @@
 </center></div>
       <div id="divqueryoutput">  
 	<table id="dataTable" class="tablesorter" style=" width: 100%; position:relative; ">
-	  <thead><tr><th>#</th><th>Walk<br/>(mins)</th><th>Direction</th><th>Avg. Wait<br/>(mins)</th><th>DO:PU ratio</th><th>Intersection</th></tr></thead>
+	  <thead><tr><th>Walk +<br/>Wait (mins)</th><th>Walk<br/>(mins)</th><th>Direction</th><th>Avg. Wait<br/>(mins)</th><th>Dropoff &divide;<br/>Pickup ratio</th><th>Intersection</th></tr></thead>
 	  <tbody>
 	    <tr><td colspan="6"><center><b>Set your location to center of map and query to start ...</b></center></td></tr>
 	    <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
@@ -116,6 +116,8 @@
       </div>  
     </div>	
 
+    <div id="yahdialog" title="Location Info" style="display: none;">You are here. All distances are based on this location as a starting point.</div>    
+    <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
     <script src="/ui.js"></script>
     <script type="text/javascript">
       {{ addscript }}

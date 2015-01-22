@@ -10,8 +10,8 @@ $('#wgtimeinput').datetimepicker({
 $('#wgdateinput').datetimepicker({
     defaultSelect:true,
     timepicker:false,
-    format:'Y/m/d',
-    formatDate:'Y/m/d'
+    format:'Y-m-d',
+    formatDate:'Y-m-d'
 });
 
 // Populate map layer.
@@ -235,8 +235,8 @@ function queryLocation() { // query busyness and add info to map
 
 	}),
 	title: 'You are here',
-	//alt: 'You are here',
-	opacity: 0.7,
+	alt: 'You are here',
+	opacity: 0.85,
 	riseOnHover: true,
 	clickable: true
     })
@@ -244,7 +244,9 @@ function queryLocation() { // query busyness and add info to map
     //popup.closeOnClick = true;
     //popup.offset = L.Point(9, 9);
     //popup.closeButton = false;
+    
     //newmarker.bindPopup(popup);
+    newmarker.on('click', function() { $( "#yahdialog" ).dialog( "open" ); return false; });
     markerl.push(newmarker);
     newmarker.addTo(map);
     
@@ -285,7 +287,7 @@ function queryLocation() { // query busyness and add info to map
 	    ///////////////////////////////
 	    // Test on a pre-existing table
 	    $("#dataTable").jsonTable({
-		head : ['Total<br/>Time (min)','Walk<br/>(min)','Direction','Avg. Wait<br/>(min)','DO:PU ratio','Intersection'],
+		head : ['Wait +<br/>Walk (mins)','Walk<br/>(mins)','Direction','Avg. Wait<br/>(mins)','Dropoff &divide; Pickup ratio','Intersection'],
 		json : ['total','dst_walk','direction','pu_wait','do_pu_ratio','intersection_name']
 	    });
 	    $("#dataTable").jsonTableUpdate(options);
@@ -294,19 +296,59 @@ function queryLocation() { // query busyness and add info to map
 	    while (newlocationl.length > 0) {
 		newlocation = newlocationl.shift();
 		markerlatlng = [newlocation.lat, newlocation.lon];
-		console.log("adding marker at"+markerlatlng);
+		//console.log("adding marker at"+markerlatlng);
+		var markerid = '#rowgetter'+i;
+		var markerobjid =  'marker'+i;
 		newmarker = L.marker(markerlatlng, {
 		    icon: L.divIcon({
 			// Specify a class name we can refer to in CSS.
-			className: 'count-icon',
+			className: 'count-icon '+markerobjid,
 			// Define what HTML goes in each marker.
 			html: i,
 			// Set a markers width and height.
-			iconSize: [37, 37]
+			iconSize: [37, 37],
+			id: markerobjid //needed to use a closure below instead
 		    }),
 		    clickable: true
+		    
 		})
-		newmarker.on('click',function(e) { alert('clicked on marker '+i); } );
+		newmarker.on('click',(function (markerid,markerclass) { return function() {
+		    //$('#highlightmarker').each(function() { this.classList.remove('highlightmarker'); });
+		    var highlightl = document.getElementsByClassName('highlightmarker');
+		    console.log('highlightl size'+highlightl.length);
+		    for (i=0; i<highlightl.length; i++) {
+			highlightl[i].classList.remove('highlightmarker');
+		    }
+		    document.getElementsByClassName(markerclass)[0].classList.add('highlightmarker');
+		    
+		    $('body').scrollTo(markerid,1000);
+		    //$('#rowhighlight').each(function() { this.classList.remove('rowhighlight'); });
+		    var highlightl = document.getElementsByClassName('rowhighlight');
+		    for (i=0; i<highlightl.length; i++) {
+			highlightl[i].classList.remove('rowhighlight');
+		    }
+		    $(markerid)[0].parentNode.parentNode.classList.add('rowhighlight');
+		    return false; } })(markerid,markerobjid) );
+		
+		var tmphighlightfn = (function (markerid,markerclass) { return function() {
+		    //$('#highlightmarker').each(function() { this.classList.remove('highlightmarker'); });
+		    var highlightl = document.getElementsByClassName('highlightmarker');
+		    console.log('highlightl size'+highlightl.length);
+		    for (i=0; i<highlightl.length; i++) {
+			highlightl[i].classList.remove('highlightmarker');
+		    }
+		    document.getElementsByClassName(markerclass)[0].classList.add('highlightmarker');
+		    
+		    $('body').scrollTo(markerid,1000);
+		    //$('#rowhighlight').each(function() { this.classList.remove('rowhighlight'); });
+		    var highlightl = document.getElementsByClassName('rowhighlight');
+		    for (i=0; i<highlightl.length; i++) {
+			highlightl[i].classList.remove('rowhighlight');
+		    }
+		    $(markerid)[0].parentNode.parentNode.classList.add('rowhighlight');
+		    return false; } })(markerid,markerobjid);
+//		$(markerid)[0].onclick=tmphighlightfn;
+		$(markerid).parent().parent().each(function() { this.onclick=tmphighlightfn; });
 		markerl.push(newmarker);
 		newmarker.addTo(map);
 		var line = Array();
@@ -322,13 +364,13 @@ function queryLocation() { // query busyness and add info to map
 		markerl.push(polyline);
 		i=i+1;
 	    }
-	    console.log("finished parsing nearby places");
+	    //console.log("finished parsing nearby places");
 	    unanimateWG("#querylocationicon",['fa-spin','fa-spinner'],['fa-gears']);
 	    permithourchange = 1;
 	    setTimeout(function() { setMapHour(json.hour2digit); },1000);
 
-	    setTimeout(function() { toggleDrawer();
-				  },2500);
+	    //setTimeout(function() { toggleDrawer();
+	//			  },2500);
 
 	}
 
@@ -393,12 +435,6 @@ function dismissInstructions(){
 function onceonload() { // What to do on page load:
     updateOrientation(); 
 
-    //set query time fields here to current date and time
-    var curdate = new Date();
-    var tinput = document.getElementById('wgtimeinput');
-    tinput.value = ("0" + curdate.getHours()).slice(-2)+":"+("0" + curdate.getMinutes()).slice(-2);
-    var dinput = document.getElementById('wgdateinput');
-    dinput.value = curdate.getFullYear() + '/' + String.leftPad(curdate.getMonth() + 1, 2, '0') + '/' + String.leftPad(curdate.getDate(), 2, '0');;
 
     
     var qsobj = $.QueryString;
@@ -408,6 +444,8 @@ function onceonload() { // What to do on page load:
     var m = parseInt(qsobj['m']);
     var q = parseInt(qsobj['q']);
     var e = parseInt(qsobj['e']);
+    var indate = qsobj['date'];
+    var intime = qsobj['time'];
     if (isNaN(lat)) { lat = 40.7; }
     if (isNaN(lon)) { lon = -74.0; }
     //if (lat != null) { setTimeout(function() { console.log('before kick'+map.getCenter()); console.log('kick!'+lat+' '+lon); setMapCenter(lat, lon, null); console.log('before kick'+map.getCenter()); },5000); }
@@ -415,6 +453,17 @@ function onceonload() { // What to do on page load:
     if (isNaN(m)) { m = 1; }
     if ((false == isNaN(q)) && q == 1) { showInstructions(); }
     if (isNaN(e)) { e = 0; }
+
+    //set query time fields here to current date and time
+    var curdate = new Date();
+    var tinput = document.getElementById('wgtimeinput');
+    if (null == intime) {
+	tinput.value = ("0" + curdate.getHours()).slice(-2)+":"+("0" + curdate.getMinutes()).slice(-2);
+    } else { tinput.value = intime; }    
+    var dinput = document.getElementById('wgdateinput');
+    if (null == indate) {
+	dinput.value = curdate.getFullYear() + '-' + String.leftPad(curdate.getMonth() + 1, 2, '0') + '-' + String.leftPad(curdate.getDate(), 2, '0');;
+    } else { dinput.value = indate; }
     
     map = new L.Map('map', {center: [lat, lon], zoom:z});
     
@@ -433,18 +482,21 @@ function onceonload() { // What to do on page load:
 	if (e == 1) { queryLocation(); }
     }, 6000);
     
-    map.addEventListener('moveend',function (v) {
-	latlng = map.getCenter();
-	//showPositionWG({'coords':{'latitude':latlng.lat, 'longitude':latlng.lng}});
-	history.pushState('page', 'caption', '/ui?lat='+latlng.lat+'&lon='+latlng.lng+'&z='+map.getZoom()+'&m='+dopumode+'&e='+queryexecdone);
-	//console.log('moveend width height'+$(window).width()+' '+$(window).height());
-    });
+    map.addEventListener('moveend', updateURL);
 
-    
-    
+    //initialize you are here dialog.
+    $( "#yahdialog" ).dialog({ autoOpen: false });    
 
 }//end of onceonload
 
+function updateURL(v) {
+    latlng = map.getCenter();
+    //showPositionWG({'coords':{'latitude':latlng.lat, 'longitude':latlng.lng}});
+    var tinput = document.getElementById('wgtimeinput');	
+    var dinput = document.getElementById('wgdateinput');	
+    history.pushState('page', 'caption', '/ui?lat='+latlng.lat+'&lon='+latlng.lng+'&z='+map.getZoom()+'&m='+dopumode+'&e='+queryexecdone+'&date='+dinput.value+'&time='+tinput.value);
+    //console.log('moveend width height'+$(window).width()+' '+$(window).height());
+}
 
 //results drawer code
 var drawermode = 0; //0 at top, 1 at bottom 
@@ -495,5 +547,11 @@ function eventchangetime()
 	  setMapHour(hourset);
       }
   }
+  updateURL(null);
 }
 $('#wgtimeinput')[0].onchange = eventchangetime;
+$('#wgtimeinput')[0].onmouseup = eventchangetime;
+
+$('#wgdateinput')[0].onchange = eventchangetime;
+$('#wgdateinput')[0].onmouseup = eventchangetime;
+
