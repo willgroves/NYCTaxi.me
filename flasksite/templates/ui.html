@@ -67,17 +67,17 @@
     </style>
   </head>
   <body onload="onceonload()"  onorientationchange="updateOrientation();">
-
+    <div id='nothingattop' ></div>
     <div id='cover' >&nbsp;</div>
     <img id='instructions' src="/static/instructions.svg"/>
     <nav id='menu-ui' class='menu-ui'></nav>
     <div id='map' ></div>
-    <div class="drawer-label" style=" background-color:#000000; color:white; " onclick="toggleDrawer();">
+    <div class="drawer-label" style=" background-color:#000000; color:white; " onclick="toggleDrawer(null); return false;">
       <center>
 	<table><tr><td>
 	      <div style="width:250px; height:30px; ">
-		<img id="legendpu" src="/static/waittimepu.svg" style="width:250px;position:absolute;" />
-		<img id="legenddo" src="/static/waittimedo.svg" style="width:250px;position:absolute;visibility:hidden;" />
+		<img id="legendpu" src="/static/waittimegrey.svg" style="width:250px;position:absolute;" />
+		<img id="legenddo" src="/static/waittimegreen.svg" style="width:250px;position:absolute;visibility:hidden;" />
 </div>
 	</td>
 	<td>
