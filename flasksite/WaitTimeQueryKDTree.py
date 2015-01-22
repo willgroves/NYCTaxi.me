@@ -60,6 +60,7 @@ interval along with some other information based on the query location.
 
         #print("how many relevant:", len(relinterl))
         #print("relevant intersections:\n",relinterl)
+        dstfn = np.vectorize(lambda x,y: distancelonlatlonlat(place[0],place[1],x,y))
         dstfn = np.vectorize(lambda x,y: distancelonlatlonlatman(place[0],place[1],x,y))
         relinterl['dst_mi'] = dstfn(relinterl.lon,
                                                 relinterl.lat)
@@ -73,26 +74,26 @@ interval along with some other information based on the query location.
         relinterl['intersection_name'] = np.vectorize(lambda x: formatInterName(x))(relinterl['roadname'])
 
         ##estimate walking time
-        relinterl['walkmins'] = relinterl['dst_mi']/0.066 #assume 20 mins per mile
+        relinterl['walkmins'] = relinterl['dst_mi']/0.05#0.066 #assume 20 mins per mile
         resultl = relinterl.to_dict(orient='records')
 
-        grp1min = [r for r in resultl if r['walkmins']<2.0]
-        grp2min = [r for r in resultl if r['walkmins']>=2.0 and r['walkmins']<5.0]
-        grp3min = [r for r in resultl if r['walkmins']>5.0]
+        grp1min = [r for r in resultl if r['walkmins']>=0.0]
+        #grp2min = [r for r in resultl if r['walkmins']>=2.0 and r['walkmins']<5.0]
+        #grp3min = [r for r in resultl if r['walkmins']>5.0]
 
 
         
         grp1min.sort(key=lambda x: x['pu_wait'])
-        grp2min.sort(key=lambda x: x['pu_wait'])
-        grp3min.sort(key=lambda x: x['pu_wait'])
+        #grp2min.sort(key=lambda x: x['pu_wait'])
+        #grp3min.sort(key=lambda x: x['pu_wait'])
 
         #resultl.sort(key=lambda x: x['dst_mi'])
-        resultl = grp1min[:3]+grp2min[:2]+grp3min[:5]
+        resultl = grp1min#grp1min[:3]+grp2min[:2]+grp3min[:5]
         resultl = resultl[:k]
         for i, result in enumerate(resultl):
             result['rank'] = i+1
             result['dst_mi'] = "%.3f"%result['dst_mi']
-            result['dst_walk'] = "%s %.1f"%(glyph(result['walkmins']),result['walkmins'])
+            result['dst_walk'] = "%s %.2f"%(glyph(result['walkmins']),result['walkmins'])
             result['lat_txt'] = "%.3f"%result['lat']
             result['lon_txt'] = "%.3f"%result['lon']
             result['pu_wait'] = "%.2f"%result['pu_wait']
