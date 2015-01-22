@@ -2,6 +2,7 @@
 # Created by https://www.gitignore.io
 
 localconfig.py
+*.pyc
 
 ### OSX ###
 .DS_Store
