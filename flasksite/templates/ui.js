@@ -133,6 +133,7 @@ addButton('<i class="fa fa-check-square" id="pickcheckicon"></i> Pickup Intensit
     unanimateWG("#dropcheckicon",['fa-check-square'],['fa-square']);
     permithourchange = 1;
     setMapHour(hourset);
+    updateURL(null);
 } });
 //addButton('Dropoff Intensity',false);
 //addButton('Pickup Intensity',false);
