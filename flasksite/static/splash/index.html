@@ -15,7 +15,7 @@
 	<![endif]-->
   </head>
 
-  <body>
+  <body style="display: none;">
     <div class="splash fade-in">
       <h1 class="splash-title fade-in" style=" font-size:
 					      29pt;">nyctaxi.me</h1>
@@ -41,14 +41,17 @@
 	  <i class="fa fa-cab fa-2x"> Find a Taxi</i></a></center></td></tr>
 	  <tr><td><hr width="0%"/></td></tr>
 	  <tr><td>
-	  Please click on the "Find a Taxi" button above to get information about the best direction to walk from your current location.</td></tr>
-	  <tr><td><hr width="80%"/></td></tr>
+	  Please click on the "Find a Taxi" button to get information about the best direction to walk from your current location.</td></tr>
+	 <!-- <tr><td><hr width="80%"/></td></tr>
 	  <tr>
 	  <td style=" align: center; "><center><a class="btn btn-lg btn-success" href="#"><i class="fa fa-area-chart fa-2x"> Analysis</i></a></center></td></tr>
 	  <tr><td><hr width="0%"/></td></tr>
 
-	<tr><td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor, velit sapiente facere tempora ullam accusamus minus laborum porro odit sequi dolorum enim optio alias at nulla laudantium voluptatibus quibusdam q</td></tr></table>
+	<tr><td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor, velit sapiente facere tempora ullam accusamus minus laborum porro odit sequi dolorum enim optio alias at nulla laudantium voluptatibus quibusdam q</td></tr>
+	-->
+	</table>
 	<hr />
+
       </section>
 
       <footer>
@@ -60,6 +63,8 @@
     <script type="text/javascript" src="js/main.js"></script>
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-
+    <script type="text/javascript">
+      $('body')[0].style.display='';
+    </script>
   </body>
 </html>

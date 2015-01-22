@@ -122,6 +122,7 @@ function dochange() { if (dopumode == 1) {
     unanimateWG("#pickcheckicon",['fa-check-square'],['fa-square']);
     permithourchange = 1;
     setMapHour(hourset);
+    updateURL(null);
 }
 		    }
 addButton('<i class="fa fa-square" id="dropcheckicon"></i> Dropoff Intensity',dochange);

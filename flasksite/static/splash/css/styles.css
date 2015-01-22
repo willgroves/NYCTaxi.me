@@ -24,6 +24,7 @@ table {
     cellpadding: 4px;
     cellspacing: 4px;
     border: 0;
+
 }
 
 .cf:before,
@@ -74,7 +75,8 @@ html, body {
 	width: 100%;
 	height: 100%;
 }
-body { font: normal 1em/1.5em 'Open Sans', sans-serif; color: #333; margin-bottom: 20px; }
+body { font: normal 1em/1.5em 'Open Sans', sans-serif; color: #333; margin-bottom: 20px;
+     }
 
 a { color: #333; text-decoration: none; }
 a:hover { color: #b2c3e8; }
