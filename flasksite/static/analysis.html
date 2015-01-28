@@ -2,8 +2,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>NYCTaxi.me</title>
-    <link rel="stylesheet" href="css/styles.css" />
+    <title>NYCTaxi.me -- Analysis</title>
+    <link rel="stylesheet" href="splash/css/styles.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href='http://fonts.googleapis.com/css?family=Oswald:400,700|Open+Sans:400italic,600italic,700italic,400,600,700' rel='stylesheet' type='text/css' />
     <!-- Adding Bootstrap and Font-Awesome -->
@@ -16,15 +16,9 @@
   </head>
 
   <body>
-    <div class="splash fade-in">
-      <h1 class="splash-title fade-in" style=" font-size:
-					      29pt;">nyctaxi.me</h1>
-      <h3 class="splash-text fade-in">Finding the best direction to go for a fast taxi hail in NYC!</h3>
-      <a href="#" class="splash-arrow fade-in"><img src="img/down-arrow.png" alt="" /></a>
-    </div>
     <div class="wrapper">
       <header class="cf">
-	<h1><a href="#">nyctaxi.me</a></h1>
+	<h1><a href="#">nyctaxi.me -- Analysis</a></h1>
 	<nav>
 	  <!--  <ul>
 	       <li><a href="#" class="active">Welcome</a></li>
@@ -37,27 +31,42 @@
       
       <section id="main-content">
 	<table style="width: 100%">
-	  <tr><td style=" align: center; "><center><a class="btn btn-lg btn-success" href="/ui">
-	  <i class="fa fa-cab fa-2x"> Find a Taxi</i></a></center></td></tr>
+	  <tr><td style=" align: center; "><center><a class="btn btn-lg btn-success" href="/segment">
+	  <i class="fa fa-expand fa-2x"> Segment Advice</i></a></center></td></tr>
 	  <tr><td><hr width="0%"/></td></tr>
-	  <tr><td>
-	  Please click on the "Find a Taxi" button above to get information about the best direction to walk from your current location.</td></tr>
+	  <tr><td> Are there locations in NYC where the "Fina a Taxi"
+	  walking direction advice is especially beneficial?
+	  Analytically this can be phrased as: Are there streets where
+	  the differential in taxi frequency at each end is very
+	  large? This analysis map explores the benefit of the walking
+	  direction advice by comparing the taxi pickup frequency at
+	  each end of road segments.</td>
 	  <tr><td><hr width="80%"/></td></tr>
-	  <tr>
-	  <td style=" align: center; "><center><a class="btn btn-lg btn-success" href="/static/analysis.html"><i class="fa fa-area-chart fa-2x"> Analysis</i></a></center></td></tr>
+ 	  <tr>
+	  <td style=" align: center; "><center><a class="btn btn-lg btn-success" href="/intersection"><i class="fa fa-line-chart fa-2x"> Dropoff/Pickup Imbalance</i></a></center></td></tr>
 	  <tr><td><hr width="0%"/></td></tr>
-
-	  <tr><td>The analysis section uncovers insights about the direction recommendation construced by the "Find a Taxi" function of the site. Regions where the
-	      direction recommendations are most informative are shown. Also, the difference between pickup and drop off rates for frequently visited intersections are
-	examined in detail. Additional information about how these recommendations are generated is also provided.</td></tr></table>
+	  <tr><td>Are there areas in the city where the difference
+	  between pickups and dropoffs at an intersection is very
+	  large and persistent. This analysis examines places where it
+	  may be especially easy or hard to find a taxi based on the
+	  relative frequencies of pickups and dropoffs.</td></tr>
+	  <tr><td><hr width="80%"/></td></tr>
+ 	  <tr>
+	  <td style=" align: center; "><center><a class="btn btn-lg btn-success" href="#"><i class="fa fa-gears fa-2x"> Implementation Details</i></a></center></td></tr>
+	  <tr><td><hr width="0%"/></td></tr>
+	  <tr><td>Describes the analysis techniques behind these visualizations.</td></tr>
+	  
+	  <tr><td><hr width="80%"/></td></tr>
+ 	  
+	</table>
 	<hr />
       </section>
 
       <footer>
 	<p>&copy; 2015 - nyctaxi.me</p>
       </footer>
-    </div> <!-- END .wrapper -->
-
+    </div>
+    
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
     <!-- Latest compiled and minified JavaScript -->
