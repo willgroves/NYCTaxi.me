@@ -173,6 +173,49 @@ def suggestapistub():
     app.logger.debug("sending response")
     return flask.jsonify(**f)
 
+@app.route('/interapi', methods=['GET'])
+def interapi():
+    app.logger.debug("request contents"+str(request))
+    #app.logger.debug("dir request"+str(dir(request)))
+    app.logger.debug("get args"+str(request.args))
+    k = int(request.args.get('k',10))
+    lat = request.args.get('lat',40.33)
+    lng = request.args.get('lng',-78.8888)
+    epoch = request.args.get('time',0)
+    time_st = time.localtime(float(epoch))
+    weekday = time_st.tm_wday
+    hour = time_st.tm_hour
+    datahour = getNearestDataHour2Digit(hour)
+    record = interobj.list(k)
+    f = {
+         'query': {'k':k},
+         'record': record,
+    }
+    app.logger.debug("sending response")
+    return flask.jsonify(**f)
+
+@app.route('/interoneapi', methods=['GET'])
+def interoneapi():
+    app.logger.debug("request contents"+str(request))
+    #app.logger.debug("dir request"+str(dir(request)))
+    app.logger.debug("get args"+str(request.args))
+    i = request.args.get('i',10)
+    lat = request.args.get('lat',40.33)
+    lng = request.args.get('lng',-78.8888)
+    epoch = request.args.get('time',0)
+    time_st = time.localtime(float(epoch))
+    weekday = time_st.tm_wday
+    hour = time_st.tm_hour
+    datahour = getNearestDataHour2Digit(hour)
+    record = interobj.query(i)
+    f = {
+         'query': {'i':i},
+         'record': record,
+    }
+    app.logger.debug("sending response")
+    return flask.jsonify(**f)
+
+
 if __name__ == "__main__":
     print "loading data to allow queries:"
 
