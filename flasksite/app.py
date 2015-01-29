@@ -151,7 +151,7 @@ def segmentapi():
     weekday = time_st.tm_wday
     hour = time_st.tm_hour
     datahour = getNearestDataHour2Digit(hour)
-    record = segobj.query(lat, lng, datahour)
+    record = segobj.query(lat, lng, epoch)
     f = {
          'query': {'time':epoch,'latlng':[lat,lng]},
          'record': record,

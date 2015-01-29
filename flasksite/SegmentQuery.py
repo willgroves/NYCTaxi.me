@@ -37,6 +37,8 @@ interval along with some other information based on the query location.
         hour = time_st.tm_hour
         qhr = int(time_st.tm_min/15)
 
+        print("query epoch:", lat, lng, epoch, time_st, hour) 
+        
         identifi = identifier(weekday,hour,qhr)
         if self.loadedid != identifi:
             ##do a load
@@ -49,7 +51,7 @@ interval along with some other information based on the query location.
             self.loadeddf = df
             self.loadedid = identifi
         else:
-            print("already loaded!!")
+            print("already loaded!!", identifi)
             df = self.loadeddf
         
         place = float(lng), float(lat)

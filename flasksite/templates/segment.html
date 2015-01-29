@@ -181,6 +181,29 @@
       padding:10px;
       margin:0;
       }      
+      .wgcontainer {
+      height: 550px;
+      position: relative;
+      }
+      
+	  .wgnavi	   {
+	  width: 100%;
+	  height: 100%;
+	  position: absolute;
+
+	  }
+	  
+	  .wginfoi {
+	  //width: 100%;
+	  //height: 100%;
+      position: absolute;
+      bottom: 0px;
+      left: 20px;
+	  }
+
+	  .wginfoi {
+	  z-index: 101;
+	  }
     </style>
   </head>
   <body onload="onceonload()"  onorientationchange="updateOrientation();">
@@ -202,7 +225,42 @@
     <div class="row">
       <div class="col-md-8" style="padding-right: 5px; padding-left: 5px; padding: 15px;">
 	<center>
-	<div id='map'></div>
+	  <div class="wgcontainer">
+
+	    <div id='map' class="wgnavi"></div>
+	    <nav id='menu-ui' class='menu-ui'></nav>
+	    <div class="wginfoi" style=" display: none;">
+	      <table class="tablesorter" style=" width: initial; ">
+		<thead><tr><td colspan="6"><center>Legend Arrows</center></td></tr></thead>
+		<tbody>
+		  <tr>
+		    <td><center><img src="/static/arrow-up1c.svg"/><br/>A/B ratio: 1.15<br/>Avg. Wait: 60 mins</center></td>
+		    <td><center><img src="/static/arrow-up2c.svg"/><br/>A/B ratio: 1.3<br/>Avg. Wait: 60 mins</center></td>
+		    <td><center><img src="/static/arrow-up3c.svg"/><br/>A/B ratio: 1.6<br/>Avg. Wait: 60 mins</center></td>
+		    <td><center><img src="/static/arrow-up4c.svg"/><br/>A/B ratio: 2.0<br/>Avg. Wait: 60 mins</center></td>
+		    <td><center><img src="/static/arrow-up5c.svg"/><br/>A/B ratio: 4.0<br/>Avg. Wait: 60 mins</center></td>
+		    <td><center><img src="/static/arrow-up6c.svg"/><br/>A/B ratio: 8.0<br/>Avg. Wait: 60 mins</center></td>		    
+		  </tr>
+		  <tr>
+		    <td><center><img src="/static/arrow-up1b.svg"/><br/>A/B ratio: 1.15<br/>Avg. Wait: 10 mins</center></td>
+		    <td><center><img src="/static/arrow-up2b.svg"/><br/>A/B ratio: 1.3<br/>Avg. Wait: 10 mins</center></td>
+		    <td><center><img src="/static/arrow-up3b.svg"/><br/>A/B ratio: 1.6<br/>Avg. Wait: 10 mins</center></td>
+		    <td><center><img src="/static/arrow-up4b.svg"/><br/>A/B ratio: 2.0<br/>Avg. Wait: 10 mins</center></td>
+		    <td><center><img src="/static/arrow-up5b.svg"/><br/>A/B ratio: 4.0<br/>Avg. Wait: 10 mins</center></td>
+		    <td><center><img src="/static/arrow-up6b.svg"/><br/>A/B ratio: 8.0<br/>Avg. Wait: 10 mins</center></td>		    
+		  </tr>
+		  <tr>
+		    <td><center><img src="/static/arrow-up1.svg"/><br/>A/B ratio: 1.15<br/>Avg. Wait: 2 mins</center></td>
+		    <td><center><img src="/static/arrow-up2.svg"/><br/>A/B ratio: 1.3<br/>Avg. Wait: 2 mins</center></td>
+		    <td><center><img src="/static/arrow-up3.svg"/><br/>A/B ratio: 1.6<br/>Avg. Wait: 2 mins</center></td>
+		    <td><center><img src="/static/arrow-up4.svg"/><br/>A/B ratio: 2.0<br/>Avg. Wait: 2 mins</center></td>
+		    <td><center><img src="/static/arrow-up5.svg"/><br/>A/B ratio: 4.0<br/>Avg. Wait: 2 mins</center></td>
+		    <td><center><img src="/static/arrow-up6.svg"/><br/>A/B ratio: 8.0<br/>Avg. Wait: 2 mins</center></td>		    
+		    </tr>
+		</tbody>
+	      </table>
+	    </div>
+	  </div>
 	</center>
       </div>
       <div class="col-md-4" style="padding-left:5px; padding: 15px;">
