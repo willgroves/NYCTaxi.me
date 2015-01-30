@@ -22,7 +22,7 @@ var tilejson = {
 		    };
 		with (obj||{}) {
 		    // add content and hoverbox
-		    __p.push('<div class="hoverbox" style="top: 10px; margin-top:10px;">Walk toward intersection:<br/>' + obj.roadname_prefer + '</div>');
+		    __p.push('<div class="hoverbox" style="margin-left: 69px; top: 10px; margin-top:10px;">'+ JSON.stringify(obj) + '</div>');
 		};
 		return __p.join('');
 	    },
@@ -58,14 +58,14 @@ function clickcontent(d) {
     //
     console.log("making segment query: "+JSON.stringify(d));
 
-    ttime = new Date();//document.getElementById('time').value);
-    var yr = parseFloat($('#wgdateinput')[0].value.slice(0,4));
-    ttime.setYear(yr);
-    ttime.setMonth(parseFloat($('#wgdateinput')[0].value.slice(5,7))-1);
-    ttime.setDate(parseFloat($('#wgdateinput')[0].value.slice(8,10)));
-    ttime.setHours(parseFloat($('#wgtimeinput')[0].value.slice(0,2)));
-    ttime.setMinutes(parseFloat($('#wgtimeinput')[0].value.slice(3,5)));
-    console.log('querying time:'+ttime);
+
+    eraseAndAddMarker(d);
+    //fire highlight event:
+    jsonarraybyindex[d.index]();
+    
+}
+
+function eraseAndAddMarker(d) {
 
     for (i=0; i<markerl.length; i++) {
 	console.log('removing an old marker');
@@ -77,27 +77,7 @@ function clickcontent(d) {
 					        fillOpacity: 0.5})
     marker.addTo(map);
     markerl[markerl.length] = marker;
-    
-        $.ajax({
-	dataType: "json",
-	url: "/segmentapi",
-	    data: {'lat':d.lat,'lng':d.lon,'roadname_prefer':d.roadname_prefer,'time':Math.round(ttime.getTime()/1000)},
-	success: function( json ) {
-	    console.log("received json!" + JSON.stringify(json));
-	    //outputdiv = document.getElementById('divqueryoutput');
-	    //outputdiv.innerHTML = JSON.stringify(json);
 
-	    //newlocationl = json.nearestplaces;
-	    
-	    var updatecelllist = document.getElementsByClassName('updatecell');
-	    for (i=0;i<updatecelllist.length; i++) {
-		updatecelllist[i].innerHTML = json['record'][0][updatecelllist[i].id];
-	    }
-
-	    $(".highlightable").effect("highlight", {color: "#ff5555"}, 1000);
-
-	}
-	});
 }
 
 
@@ -172,7 +152,7 @@ function addButton(name, func) {
     layers.appendChild(link);
 }
 
-addButton('Toggle<br/>Legend', function() { $('.wginfoi').toggle(500); });
+//addButton('Toggle<br/>Legend', function() { $('.wginfoi').toggle(500); });
 
 function animateWG(id,arradd) {
     elem = $(id)[0]
@@ -231,177 +211,6 @@ var permithourchange = 0; //only allow change of hour once per call
 
 var hourset = "00";
 
-function queryLocation() { // query busyness and add info to map
-    queryexecdone = 1;
-    outputdiv = document.getElementById('divqueryoutput');
-    //outputdiv.innerHTML = "Removing existing markers and querying...";
-    
-    //remove all existing markers
-    console.log("removing all markers");
-    while (markerl.length > 0) {
-	newmarker = markerl.pop();
-	map.removeLayer(newmarker);
-    }
-    console.log("all markers removed");
-    
-    latlng = map.getCenter();
-    newmarker = L.marker([
-	latlng.lat, latlng.lng
-    ], {
-	icon: L.divIcon({
-	    // Specify a class name we can refer to in CSS.
-	    className: 'count-icon',
-	    // Define what HTML goes in each marker.
-	    html: 'X',
-	    // Set a markers width and height.
-	    iconSize: [37, 37]
-
-	}),
-	title: 'You are here',
-	alt: 'You are here',
-	opacity: 0.85,
-	riseOnHover: true,
-	clickable: true
-    })
-    //var popup = L.popup({className: 'map-popup'}).setContent('<p><strong>You are here</strong><br /></p>');
-    //popup.closeOnClick = true;
-    //popup.offset = L.Point(9, 9);
-    //popup.closeButton = false;
-    
-    //newmarker.bindPopup(popup);
-    newmarker.on('click', function() { $( "#yahdialog" ).dialog( "open" ); return false; });
-    markerl.push(newmarker);
-    newmarker.addTo(map);
-    
-    ttime = new Date();//document.getElementById('time').value);
-    var yr = parseFloat($('#wgdateinput')[0].value.slice(0,4));
-    ttime.setYear(yr);
-    ttime.setMonth(parseFloat($('#wgdateinput')[0].value.slice(5,7))-1);
-    ttime.setDate(parseFloat($('#wgdateinput')[0].value.slice(8,10)));
-    ttime.setHours(parseFloat($('#wgtimeinput')[0].value.slice(0,2)));
-    ttime.setMinutes(parseFloat($('#wgtimeinput')[0].value.slice(3,5)));
-    console.log('querying time:'+ttime);
-    $.ajax({
-	dataType: "json",
-	url: "/suggestapi",
-	data: {'lat':latlng.lat,'lng':latlng.lng,'time':Math.round(ttime.getTime()/1000)},
-	success: function( json ) {
-	    console.log("received json!" + JSON.stringify(json));
-	    outputdiv = document.getElementById('divqueryoutput');
-	    //outputdiv.innerHTML = JSON.stringify(json);
-
-	    newlocationl = json.nearestplaces;
-	    
-	    var tparent = document.getElementById('dataTable');
-	    while(tparent.hasChildNodes())
-	    {
-		tparent.removeChild(tparent.firstChild);
-	    }
-	    
-	    
-	    //ADD JSON TABLE HANDLING HERE
-	    var options = {
-		source: json.nearestplaces,
-		rowClass: "classy",
-		callback: function(){
-		}
-	    };
-	    
-	    ///////////////////////////////
-	    // Test on a pre-existing table
-	    $("#dataTable").jsonTable({
-		head : ['Wait +<br/>Walk (mins)','Walk<br/>(mins)','Direction','Avg. Wait<br/>(mins)','Dropoff &divide; Pickup ratio','Intersection'],
-		json : ['total','dst_walk','direction','pu_wait','do_pu_ratio','intersection_name']
-	    });
-	    $("#dataTable").jsonTableUpdate(options);
-	    
-	    i = 1;
-	    while (newlocationl.length > 0) {
-		newlocation = newlocationl.shift();
-		markerlatlng = [newlocation.lat, newlocation.lon];
-		//console.log("adding marker at"+markerlatlng);
-		var markerid = '#rowgetter'+i;
-		var markerobjid =  'marker'+i;
-		newmarker = L.marker(markerlatlng, {
-		    icon: L.divIcon({
-			// Specify a class name we can refer to in CSS.
-			className: 'count-icon '+markerobjid,
-			// Define what HTML goes in each marker.
-			html: i,
-			// Set a markers width and height.
-			iconSize: [37, 37],
-			id: markerobjid //needed to use a closure below instead
-		    }),
-		    clickable: true
-		    
-		})
-		newmarker.on('click',(function (markerid,markerclass) { return function() {
-		    //$('#highlightmarker').each(function() { this.classList.remove('highlightmarker'); });
-		    var highlightl = document.getElementsByClassName('highlightmarker');
-		    console.log('highlightl size'+highlightl.length);
-		    for (i=0; i<highlightl.length; i++) {
-			highlightl[i].classList.remove('highlightmarker');
-		    }
-		    document.getElementsByClassName(markerclass)[0].classList.add('highlightmarker');
-		    
-		    $('body').scrollTo(markerid,1000);
-		    //$('#rowhighlight').each(function() { this.classList.remove('rowhighlight'); });
-		    var highlightl = document.getElementsByClassName('rowhighlight');
-		    for (i=0; i<highlightl.length; i++) {
-			highlightl[i].classList.remove('rowhighlight');
-		    }
-		    $(markerid)[0].parentNode.parentNode.classList.add('rowhighlight');
-		    return false; } })(markerid,markerobjid) );
-		
-		var tmphighlightfn = (function (markerid,markerclass) { return function() {
-		    //$('#highlightmarker').each(function() { this.classList.remove('highlightmarker'); });
-		    var highlightl = document.getElementsByClassName('highlightmarker');
-		    console.log('highlightl size'+highlightl.length);
-		    for (i=0; i<highlightl.length; i++) {
-			highlightl[i].classList.remove('highlightmarker');
-		    }
-		    document.getElementsByClassName(markerclass)[0].classList.add('highlightmarker');
-		    
-		    $('body').scrollTo(markerid,1000);
-		    //$('#rowhighlight').each(function() { this.classList.remove('rowhighlight'); });
-		    var highlightl = document.getElementsByClassName('rowhighlight');
-		    for (i=0; i<highlightl.length; i++) {
-			highlightl[i].classList.remove('rowhighlight');
-		    }
-		    $(markerid)[0].parentNode.parentNode.classList.add('rowhighlight');
-		    return false; } })(markerid,markerobjid);
-//		$(markerid)[0].onclick=tmphighlightfn;
-		$(markerid).parent().parent().each(function() { this.onclick=tmphighlightfn; });
-		markerl.push(newmarker);
-		newmarker.addTo(map);
-		var line = Array();
-		line.push(latlng);
-		line.push(markerlatlng);
-		var polyline_options = {
-		    color: '#000',
-		    opacity: 0.5,         // Stroke opacity
-		    weight: 5         // Stroke weight
-		};
-
-		var polyline = L.polyline(line, polyline_options).addTo(map);
-		markerl.push(polyline);
-		i=i+1;
-	    }
-	    //console.log("finished parsing nearby places");
-	    unanimateWG("#querylocationicon",['fa-spin','fa-spinner'],['fa-gears']);
-	    permithourchange = 1;
-	    setTimeout(function() { setMapHour(json.hour2digit); },1000);
-
-	    //setTimeout(function() { toggleDrawer();
-	//			  },2500);
-
-	}
-
-    });
-
-
-} //end of queryLocation
-
 function setMapCenter(lat, lon, z) {
     console.log("set map center fired"+lat+" "+lon);
     if ((lat - 40.7) > 0.9 || (lon + 74) > 0.9) {
@@ -428,27 +237,12 @@ function max(a,b) {
 }
 
 function updateOrientation() {
-
+    $('#map').height(($(window).height()-8) /2 );
+    $('#chartdiv').height(($(window).height()-8) /2);
 }
-
-
-
-function showInstructions(){
-    updateOrientation();
-    $("#cover").show();
-    $("#instructions").show( "slow" );
-};
-
-function dismissInstructions(){
-    $("#instructions").fadeOut( "fast" );
-    $("#cover").hide();
-};
-
 
 function onceonload() { // What to do on page load:
     updateOrientation(); 
-
-
     
     var qsobj = $.QueryString;
     lat = parseFloat(qsobj['lat']);
@@ -474,7 +268,7 @@ function onceonload() { // What to do on page load:
     //set query time fields here to current date and time
     var curdate = new Date();
     
-    map = new L.Map('map', {center: [lat, lon], zoom:zoom, minZoom: 13,
+    map = new L.Map('map', {center: [lat, lon], zoom:zoom, minZoom: 11,
 			    maxZoom: 17});
     
     oldlayer.addTo(map);
@@ -487,7 +281,7 @@ function updateURL(v) {
     //showPositionWG({'coords':{'latitude':latlng.lat, 'longitude':latlng.lng}});
     var tinput = document.getElementById('wgtimeinput');	
     var dinput = document.getElementById('wgdateinput');	
-    history.pushState('page', 'caption', '/segment?lat='+latlng.lat+'&lon='+latlng.lng+'&z='+map.getZoom()+'&e='+queryexecdone+'&time='+tinput.value+'qlat='+qlat+'&qlon='+qlon);
+    history.pushState('page', 'caption', '/intersection?lat='+latlng.lat+'&lon='+latlng.lng+'&z='+map.getZoom()+'&e='+queryexecdone+'&time='+tinput.value+'qlat='+qlat+'&qlon='+qlon);
     //console.log('moveend width height'+$(window).width()+' '+$(window).height());
 }
 
@@ -507,29 +301,5 @@ function distanceFromViewportTop(id) {
 	elementOffset = $(id).offset().top,
 	distance      = (elementOffset - scrollTop);
     return distance;
-}
-
-//change map on change of time
-//if changing the query time or day, then modify the map
-function eventchangetime() 
-{ console.log('onchange fired for the time input box');
-
-  var ttime = new Date();//document.getElementById('time').value);
-  var yr = parseFloat($('#wgdateinput')[0].value.slice(0,4));
-  ttime.setYear(yr);
-  ttime.setMonth(parseFloat($('#wgdateinput')[0].value.slice(5,7))-1);
-  ttime.setDate(parseFloat($('#wgdateinput')[0].value.slice(8,10)));
-  ttime.setHours(parseFloat($('#wgtimeinput')[0].value.slice(0,2)));
-  ttime.setMinutes(parseFloat($('#wgtimeinput')[0].value.slice(3,5)));
-  console.log('querying time:'+ttime);
-  if (ttime.getHours() >= 0 && ttime.getHours() <= 23) { 
-      var twodigithr = ("0" + ttime.getHours()).slice(-2);
-      if (hourset != twodigithr) {
-	  permithourchange = 1;
-	  hourset = twodigithr;
-	  setMapHour(hourset);
-      }
-  }
-  updateURL(null);
 }
 

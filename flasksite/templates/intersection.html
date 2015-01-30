@@ -44,7 +44,7 @@
     <script type="text/javascript" src="/static/amcharts/amcharts/themes/none.js"></script>
 
     <style>
-      body { margin:0; padding:0; background-color:#aaaaaa; font: 12px/1.5 "Verdana", sans-serif; } 
+      body { margin:0; padding:0; background-color:#ffffff; font: 12px/1.5 "Verdana", sans-serif; } 
       #map { top:0px; left:10px; margin-bottom: 2px; height:280px; width:98%;  }
       #info { top:20px; right:20px; margin-bottom: 2px; width:200px; height: 50px; }
 
@@ -224,13 +224,20 @@
 	</div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-5" style="padding-right: 5px; padding-left: 5px; padding: 15px;">
-
+    <div class="row" style="">
+      <div class="col-md-6" style="padding-right: 5px; padding-left: 5px; padding: 15px;">
+	<div>
+	  <ul><li>
+	      Explore the 2000 most frequently visited intersections by NYC taxis in the table below. The table (initially sorted by most frequently visited to least frequently visited) shows the mean of the inter-arrival times for both pickups and dropoffs at each intersection. </li><li>Selecting a row in the table will show its location on the map and show the corresponding arrival rate time series in the chart. 
+	  </li><li>
+	      The pickup and dropoff arrival rate at each interection varies across the city. The map visualization indicates the relative precentage of taxi pickups compared to dropoffs. Green dots <img src="/static/wggreen.svg" width="23px"/> indicate more dropoffs than pickups; orange dots <img src="/static/wgorange.svg" width="23px"/> indicate more pickups than dropoffs. The dot size is a proxy for the number taxis visiting the location (larger dots indicate more taxis).</li>
+	    </ul>
+  </div>
+	
         <center>
 
-<div class="">
-  <table  id="dataTable" class="tablesorter highlightable" style="width: 94%; left:2px; border-collapse: separate; border-spacing: 3px;">
+<div class="" style="padding: 15px;">
+  <table  id="dataTable" class="tablesorter highlightable" style="width: 99%; left:30px; border-collapse: separate; border-spacing: 1px;">
     <col width="160px"/>
     <thead>
               </thead>
@@ -242,27 +249,13 @@
 </center>
 
 
-<div>
-    Instructions:
-    <br/>
-    1. Select the time period for the map using the slider in the top.
-    <br/>
-    2. Click on a street on the map at the right (colored arrows).
-    <br/>
-    3. The recommended walking direction at that location will be
-    shown in the table. It is possible to run a "Find a Taxi" query at
-    that street midpoint using the link in the table.
-    <br/>
-  </div>
-
-
       </div>
-      <div class="col-md-7" style="padding-left:5px; padding: 15px;">
+      <div class="col-md-6" style="padding-left:0px; padding-right:5px; padding: 1px; width:50%; position: fixed; right: 12px; top: 0;">
 	<!-- put chart here -->
-	<div id="chartdiv" style="width: 100%; height: 330px; overflow: hidden; text-align: left;"></div>
+	<div id="chartdiv" style="width: 100%; height: 340px; overflow: hidden; text-align: left;"></div>
 	<div class="wgcontainer">
 	    <div id='map' class="wgnavi"></div>
-	    <nav id='menu-ui' class='menu-ui'></nav>
+	    <!-- <nav id='menu-ui' class='menu-ui'></nav> -->
 	</div>
 	
 
@@ -280,14 +273,17 @@
 <script type="text/javascript">
 makecharts();
 
+var jsondata = false;
+var jsonsortstatus = false;
+var jsonarraybyindex = new Array();
     $.ajax({
 	dataType: "json",
 	url: "/interapi",
-	data: {k:100},
+	data: {k:10000},
 	success: function( json ) {
-	    console.log("received json!" + JSON.stringify(json));
-	    
-	    
+	    //console.log("received json!" + JSON.stringify(json));
+            jsondata = json;
+
 	    //ADD JSON TABLE HANDLING HERE
 	    var options = {
 		source: json.record,
@@ -299,10 +295,68 @@ makecharts();
 	    ///////////////////////////////
 	    // Test on a pre-existing table
 	    $("#dataTable").jsonTable({
-		head : ['Road Name','Pickups/Hr','Dropoffs/Hr','Dropoff Excess','#'],
-                json : ['roadname','pph','dph','doexcess','index']
+		head : ['Road Name','Pickup Wait<br/>(mins)','Dropoff Wait<br/>(mins)','Dropoff<br/>Percentage','Rank'],
+                json : ['roadname','pph','dph','doexcess','rank']
 	    });
             $("#dataTable").jsonTableUpdate(options);
+            $("#dataTable").tablesorter();
+
+            for (i = 0 ; i < json.record.length; i++) {
+			     var markerid = "#rowgetter"+(i+1);
+			     var markerobjid = "";
+			     
+			     var tmphighlightfn = (function (markerid,markerclass,idx) {
+
+			     return function() {
+		    //$('#highlightmarker').each(function() { this.classList.remove('highlightmarker'); });
+		    var highlightl = document.getElementsByClassName('highlightmarker');
+		    console.log('highlightl size'+highlightl.length);
+		    for (i=0; i<highlightl.length; i++) {
+			highlightl[i].classList.remove('highlightmarker');
+		    }
+		    //document.getElementsByClassName(markerclass)[0].classList.add('highlightmarker');
+		    
+		    //$('body').scrollTo('#chartdiv',1000);
+		    //$('#rowhighlight').each(function() { this.classList.remove('rowhighlight'); });
+		    var highlightl = document.getElementsByClassName('rowhighlight');
+		    for (i=0; i<highlightl.length; i++) {
+			highlightl[i].classList.remove('rowhighlight');
+		    }
+		    $(markerid)[0].parentNode.parentNode.classList.add('rowhighlight');
+						   //add marker at location
+		    //eraseAndAddMarker(jsondata.record[idx]);
+						   
+						   
+		    //update the chart
+		     $.ajax({
+	                 dataType: "json",
+	                 url: "/interoneapi",
+          	         data: {i:idx},
+	                 success: function( json ) {
+						   console.log("received json from interoneapi!" + JSON.stringify(json));
+						   makechartswithdata(json.record,[
+						   {"name":"dots","axis":0,"description":"Dropoff Wait (mins)"},
+						   {"name":"puts","axis":0,"description":"Pickup Wait (mins)"}
+						   ]);
+						   
+						   }
+						   });
+						   
+	            
+						   //update the map
+		    setMapCenter(json.record[idx].lat_txt,json.record[idx].lon_txt,14);				   
+		    return false; } })(markerid,markerobjid,i);
+//		$(markerid)[0].onclick=tmphighlightfn;
+		jsonarraybyindex[json.record[i].index] = tmphighlightfn;//json.record[i];
+			
+						   $(markerid).parent().parent().each(function() { this.onclick=tmphighlightfn; });
+
+						   if (i == 0) { //auto fire on this one
+						   setTimeout(tmphighlightfn,4);
+						   };
+						   
+}
+						   
 }
 });
 

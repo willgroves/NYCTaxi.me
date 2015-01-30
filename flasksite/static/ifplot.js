@@ -34,28 +34,20 @@ function makechartswithdata(dataprovider,variablel) {
     categoryAxis.minorGridEnabled = true;
     categoryAxis.axisColor = "#DADADA";
     categoryAxis.twoLineMode = false;
-   
+    categoryAxis.title = "Hour";
 
     // first value axis (on the left)
     var valueAxis1 = new AmCharts.ValueAxis();
     valueAxis1.axisColor = "#FF6600";
     valueAxis1.axisThickness = 2;
     valueAxis1.gridAlpha = 0;
+    valueAxis1.title="Wait Time (mins)"
     chart.addValueAxis(valueAxis1);
-
-    // second value axis (on the right)
-    var valueAxis2 = new AmCharts.ValueAxis();
-    valueAxis2.position = "right"; // this line makes the axis to appear on the right
-    valueAxis2.axisColor = "#FCD202";
-    valueAxis2.gridAlpha = 0;
-    valueAxis2.axisThickness = 2;
-    chart.addValueAxis(valueAxis2);
-
 
     // GRAPHS
     // first graph
    
-    var axisl = [valueAxis1, valueAxis2];
+    var axisl = [valueAxis1];
     var bulletl = ["round","square","triangleUp"];
     var thicknessl = [1,1,1,2,2,2,4,4,4,1,1,1,1,1,1,1,1,1,1,];
     for (var graphi=0; graphi<variablel.length; graphi++) {
@@ -89,10 +81,10 @@ function makechartswithdata(dataprovider,variablel) {
     chart.addChartScrollbar(chartScrollbar);
 
     // LEGEND
-    var legend = new AmCharts.AmLegend();
-    legend.marginLeft = 110;
-    legend.useGraphSettings = true;
-    chart.addLegend(legend);
+    //var legend = new AmCharts.AmLegend();
+    //legend.marginLeft = 10;
+    //legend.useGraphSettings = true;
+    //chart.addLegend(legend);
 
     // WRITE
     chart.write("chartdiv");

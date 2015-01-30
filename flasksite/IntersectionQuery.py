@@ -26,24 +26,36 @@ class IntersectionQuery:
         resultl = tdf
 
         finall = []
+        for i,r in enumerate(resultl):
+            r['index'] = i
+        resultl.sort(key=lambda x: 0.0-(x['mudo']+x['mupu']))
         for i, r in enumerate(resultl):
             ##do necessary text processing here
             result = {}
-            result['index'] = i
+            result['index'] = r['index']
+            result['rank'] = "<div class='rowgetter' id='rowgetter%d'>%d</div>"%(i+1,i+1)
             result['lat_txt'] = "%.4f"%r['lat']
             result['lon_txt'] = "%.4f"%r['lon']
             result['roadname'] = r['roadname']
-            result['pph'] = "%.2f"%(r['mupu']*4.0/365/7.0)
-            result['dph'] = "%.2f"%(r['mudo']*4.0/365/7.0)
-            result['doexcess'] = "%.3f"%((r['mupu']-r['mudo']) * 4.0/365/7.0)
+            result['pph'] = "%.2f"%(3*30/(r['mupu']*4.0/365)) #the 3 is because k=3 in the data gathering step
+            result['dph'] = "%.2f"%(3*30/(r['mudo']*4.0/365))
+            result['doexcess'] = "%.1f"%(100.0*r['mudo']/(r['mudo']+r['mupu']))#"%.3f"%(100.0*(((r['mupu']-r['mudo']) * 4.0/365/7.0) +1.0) / 2.0)
             finall.append(result)
         return finall
     def query(self,idx):
         try:
-            record = self.loadedl[idx]
+            raw = self.loadedl[idx]
+            ##convert this into a data provider with just the needed fields
+
+
+            record = pd.DataFrame(np.concatenate([[raw['timearr']],[3*30.0/raw['dots']],[3*30.0/raw['puts']]]).T, columns=['time','dots','puts']).to_dict(orient='records')
+            for r in record:
+                r['dots'] = "%.3f"%r['dots']
+                r['puts'] = "%.3f"%r['puts']
+            print("Hello, record is:", record)
         except Exception as e:
             print("Error query exception occurred!", e)
-            record = {}
+            record = []
         return record
 if __name__ == '__main__':
 

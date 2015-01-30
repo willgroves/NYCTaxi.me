@@ -487,6 +487,9 @@ function onceonload() { // What to do on page load:
     //initialize you are here dialog.
     $( "#yahdialog" ).dialog({ autoOpen: false });    
 
+
+
+    
 }//end of onceonload
 
 function updateURL(v) {

@@ -199,7 +199,7 @@ def interoneapi():
     app.logger.debug("request contents"+str(request))
     #app.logger.debug("dir request"+str(dir(request)))
     app.logger.debug("get args"+str(request.args))
-    i = request.args.get('i',10)
+    i = int(request.args.get('i',10))
     lat = request.args.get('lat',40.33)
     lng = request.args.get('lng',-78.8888)
     epoch = request.args.get('time',0)
