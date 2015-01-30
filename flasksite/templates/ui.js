@@ -242,12 +242,7 @@ function queryLocation() { // query busyness and add info to map
 	riseOnHover: true,
 	clickable: true
     })
-    //var popup = L.popup({className: 'map-popup'}).setContent('<p><strong>You are here</strong><br /></p>');
-    //popup.closeOnClick = true;
-    //popup.offset = L.Point(9, 9);
-    //popup.closeButton = false;
     
-    //newmarker.bindPopup(popup);
     newmarker.on('click', function() { $( "#dialogyah" ).dialog( "open" ); return false; });
     markerl.push(newmarker);
     newmarker.addTo(map);
@@ -290,12 +285,12 @@ function queryLocation() { // query busyness and add info to map
 	    // Test on a pre-existing table
 	    $("#dataTable").jsonTable({
 		head : //['Wait +<br/>Walk (mins)','Walk<br/>(mins)','Direction','Avg. Wait<br/>(mins)','Dropoff &divide; Pickup ratio','Intersection'],
-	    ['<span onclick=\'$( "#dialogtotal" ).dialog( "open" ); return false;\'>Wait +<br/>Walk (mins)</span>',
-	     '<span onclick=\'$( "#dialogdst_walk" ).dialog( "open" ); return false;\'>Walk<br/>(mins)</span>',
-	     '<span onclick=\'$( "#dialogdirection" ).dialog( "open" ); return false;\'>Compass</span>',
-	     '<span onclick=\'$( "#dialogpu_wait" ).dialog( "open" ); return false;\'>Avg. Wait<br/>(mins)</span>',
-	     '<span onclick=\'$( "#dialogdo_pu_ratio" ).dialog( "open" ); return false;\'>Dropoff &divide; Pickup</span>',
-	     '<span onclick=\'$( "#dialogintersection_name" ).dialog( "open" ); return false;\'>Intersection</span>'],
+		['<span onclick=\'$( "#dialogtotal" ).dialog( "open" ); return false;\'>Wait +<br/>Walk (mins)</span>',
+		 '<span onclick=\'$( "#dialogdst_walk" ).dialog( "open" ); return false;\'>Walk<br/>(mins)</span>',
+		 '<span onclick=\'$( "#dialogdirection" ).dialog( "open" ); return false;\'>Compass</span>',
+		 '<span onclick=\'$( "#dialogpu_wait" ).dialog( "open" ); return false;\'>Avg. Wait<br/>(mins)</span>',
+		 '<span onclick=\'$( "#dialogdo_pu_ratio" ).dialog( "open" ); return false;\'>Dropoff &divide; Pickup</span>',
+		 '<span onclick=\'$( "#dialogintersection_name" ).dialog( "open" ); return false;\'>Intersection</span>'],
 
 		json : ['total','dst_walk','direction','pu_wait','do_pu_ratio','intersection_name']
 	    });
@@ -323,16 +318,13 @@ function queryLocation() { // query busyness and add info to map
 		    
 		})
 		newmarker.on('click',(function (markerid,markerclass) { return function() {
-		    //$('#highlightmarker').each(function() { this.classList.remove('highlightmarker'); });
 		    var highlightl = document.getElementsByClassName('highlightmarker');
 		    console.log('highlightl size'+highlightl.length);
 		    for (i=0; i<highlightl.length; i++) {
 			highlightl[i].classList.remove('highlightmarker');
 		    }
 		    document.getElementsByClassName(markerclass)[0].classList.add('highlightmarker');
-		    
 
-		    //$('#rowhighlight').each(function() { this.classList.remove('rowhighlight'); });
 		    var highlightl = document.getElementsByClassName('rowhighlight');
 		    for (i=0; i<highlightl.length; i++) {
 			highlightl[i].classList.remove('rowhighlight');
@@ -342,7 +334,6 @@ function queryLocation() { // query busyness and add info to map
 		    return false; } })(markerid,markerobjid) );
 		
 		var tmphighlightfn = (function (markerid,markerclass) { return function() {
-		    //$('#highlightmarker').each(function() { this.classList.remove('highlightmarker'); });
 		    var highlightl = document.getElementsByClassName('highlightmarker');
 		    console.log('highlightl size'+highlightl.length);
 		    for (i=0; i<highlightl.length; i++) {
@@ -359,7 +350,7 @@ function queryLocation() { // query busyness and add info to map
 		    $(markerid)[0].parentNode.parentNode.classList.add('rowhighlight');
 		    $('body').scrollTo('#nothingattop',1000);
 		    return false; } })(markerid,markerobjid);
-//		$(markerid)[0].onclick=tmphighlightfn;
+		//		$(markerid)[0].onclick=tmphighlightfn;
 		$(markerid).parent().parent().each(function() { this.onclick=tmphighlightfn; });
 		markerl.push(newmarker);
 		newmarker.addTo(map);
@@ -382,7 +373,7 @@ function queryLocation() { // query busyness and add info to map
 	    setTimeout(function() { setMapHour(json.hour2digit); },1000);
 
 	    //setTimeout(function() { toggleDrawer();
-	//			  },2500);
+	    //			  },2500);
 
 	}
 
@@ -526,8 +517,8 @@ var queryexecdone = 0;
 // Id is : #my-id
 function distanceFromViewportTop(id) {
     var scrollTop     = $(window).scrollTop(),
-	elementOffset = $(id).offset().top,
-	distance      = (elementOffset - scrollTop);
+    elementOffset = $(id).offset().top,
+    distance      = (elementOffset - scrollTop);
     return distance;
 }
 

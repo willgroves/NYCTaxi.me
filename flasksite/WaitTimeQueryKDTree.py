@@ -51,7 +51,7 @@ interval along with some other information based on the query location.
         place = float(lng), float(lat)
 
         model = scipy.spatial.cKDTree(np.array(df[['lon','lat']]))
-        distancearr, choicearr = model.query(np.array([[lng, lat],]),k=k*10,)
+        distancearr, choicearr = model.query(np.array([[lng, lat],]),k=k*15,)
         #dstfn = np.vectorize(lambda x,y: distancelonlatlonlat(place[0],place[1],x,y))
         #dst = dstfn(df.lon,df.lat)
         choicearr = choicearr[choicearr < len(df['lon'])]
