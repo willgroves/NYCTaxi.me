@@ -11,6 +11,8 @@ import flask, os, time
 
 #local imports
 from WaitTimeQueryKDTree import WaitTimeQuery
+from SegmentQuery import SegmentQuery
+from IntersectionQuery import IntersectionQuery
 import localconfig
 
 def getNearestDataHour2Digit(hour):
@@ -24,6 +26,8 @@ determines which hour to request based on the data we have
     return "%02d"%dsthourtupl[0][1]
     
 wtqobj = WaitTimeQuery()
+segobj = SegmentQuery()
+interobj = IntersectionQuery()
 
 app = Flask(__name__,
             instance_path=os.path.abspath('configs'),
@@ -76,6 +80,45 @@ def uijs():
     resp.mimetype='application/javascript'
     return resp
 
+
+@app.route('/segment', methods=['GET', 'POST'])
+def segment():
+    cookieval = request.cookies.get('alreadyvisited','')
+    app.logger.debug("value of the cookie:"+str(cookieval))
+    addscript = ''
+    app.logger.debug("addscript string:"+addscript)
+    resp = flask.make_response(render_template('segment.html',servername=localconfig.servername,mapserverport=localconfig.mapserverport,addscript=addscript))
+    return resp
+
+
+@app.route('/segment.js', methods=['GET', 'POST'])
+def segmentjs():
+    error = None
+    resp = flask.make_response(render_template('segment.js',servername=localconfig.servername,mapserverport=localconfig.mapserverport),
+                               )
+    resp.mimetype='application/javascript'
+    return resp
+
+
+@app.route('/intersection', methods=['GET', 'POST'])
+def intersection():
+    cookieval = request.cookies.get('alreadyvisited','')
+    app.logger.debug("value of the cookie:"+str(cookieval))
+    addscript = ''
+    app.logger.debug("addscript string:"+addscript)
+    resp = flask.make_response(render_template('intersection.html',servername=localconfig.servername,mapserverport=localconfig.mapserverport,addscript=addscript))
+    return resp
+
+
+@app.route('/intersection.js', methods=['GET', 'POST'])
+def intersectionjs():
+    error = None
+    resp = flask.make_response(render_template('intersection.js',servername=localconfig.servername,mapserverport=localconfig.mapserverport),
+                               )
+    resp.mimetype='application/javascript'
+    return resp
+
+
 @app.route('/suggestapi', methods=['GET'])
 def suggestapi():
     app.logger.debug("request contents"+str(request))
@@ -96,6 +139,27 @@ def suggestapi():
     app.logger.debug("sending response")
     return flask.jsonify(**f)
 
+@app.route('/segmentapi', methods=['GET'])
+def segmentapi():
+    app.logger.debug("request contents"+str(request))
+    #app.logger.debug("dir request"+str(dir(request)))
+    app.logger.debug("get args"+str(request.args))
+    lat = request.args.get('lat',40.33)
+    lng = request.args.get('lng',-78.8888)
+    epoch = request.args.get('time',0)
+    time_st = time.localtime(float(epoch))
+    weekday = time_st.tm_wday
+    hour = time_st.tm_hour
+    datahour = getNearestDataHour2Digit(hour)
+    record = segobj.query(lat, lng, epoch)
+    f = {
+         'query': {'time':epoch,'latlng':[lat,lng]},
+         'record': record,
+    }
+    app.logger.debug("sending response")
+    return flask.jsonify(**f)
+
+
 def suggestapistub():
     app.logger.debug("request contents"+str(request))
 
@@ -108,6 +172,49 @@ def suggestapistub():
     }
     app.logger.debug("sending response")
     return flask.jsonify(**f)
+
+@app.route('/interapi', methods=['GET'])
+def interapi():
+    app.logger.debug("request contents"+str(request))
+    #app.logger.debug("dir request"+str(dir(request)))
+    app.logger.debug("get args"+str(request.args))
+    k = int(request.args.get('k',10))
+    lat = request.args.get('lat',40.33)
+    lng = request.args.get('lng',-78.8888)
+    epoch = request.args.get('time',0)
+    time_st = time.localtime(float(epoch))
+    weekday = time_st.tm_wday
+    hour = time_st.tm_hour
+    datahour = getNearestDataHour2Digit(hour)
+    record = interobj.list(k)
+    f = {
+         'query': {'k':k},
+         'record': record,
+    }
+    app.logger.debug("sending response")
+    return flask.jsonify(**f)
+
+@app.route('/interoneapi', methods=['GET'])
+def interoneapi():
+    app.logger.debug("request contents"+str(request))
+    #app.logger.debug("dir request"+str(dir(request)))
+    app.logger.debug("get args"+str(request.args))
+    i = int(request.args.get('i',10))
+    lat = request.args.get('lat',40.33)
+    lng = request.args.get('lng',-78.8888)
+    epoch = request.args.get('time',0)
+    time_st = time.localtime(float(epoch))
+    weekday = time_st.tm_wday
+    hour = time_st.tm_hour
+    datahour = getNearestDataHour2Digit(hour)
+    record = interobj.query(i)
+    f = {
+         'query': {'i':i},
+         'record': record,
+    }
+    app.logger.debug("sending response")
+    return flask.jsonify(**f)
+
 
 if __name__ == "__main__":
     print "loading data to allow queries:"

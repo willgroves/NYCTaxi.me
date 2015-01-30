@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>NYCTaxi.me -- Analysis</title>
+    <link rel="stylesheet" href="splash/css/styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href='http://fonts.googleapis.com/css?family=Oswald:400,700|Open+Sans:400italic,600italic,700italic,400,600,700' rel='stylesheet' type='text/css' />
+    <!-- Adding Bootstrap and Font-Awesome -->
+    <link rel="stylesheet" href="/static/css/font-awesome.css"/><!-- //maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"/><!-- css/font-awesome.css"/ -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/>
+    <!--[if lt IE 9]>
+  	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <header class="cf">
+	<h1><a href="#">nyctaxi.me -- Analysis</a></h1>
+	<nav>
+	  <!--  <ul>
+	       <li><a href="#" class="active">Welcome</a></li>
+	       <li><a href="#">Go to the Map</a></li>
+	       <li><a href="#">In-Depth Analysis</a></li>
+	       <li><a href="#">About</a></li>
+	       </ul> -->
+	</nav>
+      </header>
+      
+      <section id="main-content">
+	<table style="width: 100%">
+	  <tr><td style=" align: center; "><center><a class="btn btn-lg btn-success" href="/segment">
+	  <i class="fa fa-expand fa-2x"> Segment Advice</i></a></center></td></tr>
+	  <tr><td><hr width="0%"/></td></tr>
+	  <tr><td> Are there locations in NYC where the "Fina a Taxi"
+	  walking direction advice is especially beneficial?
+	  Analytically this can be phrased as: Are there streets where
+	  the differential in taxi frequency at each end is very
+	  large? This analysis map explores the benefit of the walking
+	  direction advice by comparing the taxi pickup frequency at
+	  each end of road segments.</td>
+	  <tr><td><hr width="80%"/></td></tr>
+ 	  <tr>
+	  <td style=" align: center; "><center><a class="btn btn-lg btn-success" href="/intersection"><i class="fa fa-line-chart fa-2x"> Dropoff/Pickup Imbalance</i></a></center></td></tr>
+	  <tr><td><hr width="0%"/></td></tr>
+	  <tr><td>Are there areas in the city where the difference
+	  between pickups and dropoffs at an intersection is very
+	  large and persistent. This analysis examines places where it
+	  may be especially easy or hard to find a taxi based on the
+	  relative frequencies of pickups and dropoffs.</td></tr>
+	  <tr><td><hr width="80%"/></td></tr>
+ 	  <tr>
+	  <td style=" align: center; "><center><a class="btn btn-lg btn-success" href="#"><i class="fa fa-gears fa-2x"> Implementation Details</i></a></center></td></tr>
+	  <tr><td><hr width="0%"/></td></tr>
+	  <tr><td>Describes the analysis techniques behind these visualizations.</td></tr>
+	  
+	  <tr><td><hr width="80%"/></td></tr>
+ 	  
+	</table>
+	<hr />
+      </section>
+
+      <footer>
+	<p>&copy; 2015 - nyctaxi.me</p>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+  </body>
+</html>

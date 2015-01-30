@@ -497,6 +497,9 @@ function onceonload() { // What to do on page load:
     $( "#dialogintersection_name" ).dialog({ autoOpen: false });    
     //['total','dst_walk','direction','pu_wait','do_pu_ratio','intersection_name']
 
+
+
+    
 }//end of onceonload
 
 function updateURL(v) {
