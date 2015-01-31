@@ -22,7 +22,7 @@ var tilejson = {
 		    };
 		with (obj||{}) {
 		    // add content and hoverbox
-		    __p.push('<div class="hoverbox" style="margin-left: 69px; top: 10px; margin-top:10px;">'+ JSON.stringify(obj) + '</div>');
+		    __p.push('<div class="hoverbox" style="margin-left: 69px; top: 10px; margin-top:10px;"><center>At intersection: '+obj.roadname+'<br/>Click for pickup/dropoff time series.</center></div>');
 		};
 		return __p.join('');
 	    },
@@ -52,32 +52,27 @@ var tilejson = {
     }
 };
 
-var markerl = [];
+var oldmarker = false;
 
 function clickcontent(d) {
     //
     console.log("making segment query: "+JSON.stringify(d));
-
-
-    eraseAndAddMarker(d);
     //fire highlight event:
     jsonarraybyindex[d.index]();
+    qindex = d.index;
     
 }
 
 function eraseAndAddMarker(d) {
-
-    for (i=0; i<markerl.length; i++) {
-	console.log('removing an old marker');
-	map.removeLayer(markerl[i]);
+    console.log("call to erase and add marker:"+JSON.stringify(d));
+    if (oldmarker != false) {
+	map.removeLayer(oldmarker);
+	oldmarker = false;
     }
-    
-    markerl = [];
     var marker = L.circle([d.lat, d.lon],50, { color: '#f00', fillColor: '#f03',
-					        fillOpacity: 0.5})
+					       fillOpacity: 0.5})
     marker.addTo(map);
-    markerl[markerl.length] = marker;
-
+    oldmarker = marker;
 }
 
 
@@ -245,25 +240,16 @@ function onceonload() { // What to do on page load:
     updateOrientation(); 
     
     var qsobj = $.QueryString;
-    lat = parseFloat(qsobj['lat']);
-    lon = parseFloat(qsobj['lon']);
+    console.log("qsobj "+JSON.stringify(qsobj));
     var z = parseInt(qsobj['z']);
-    var m = parseInt(qsobj['m']);
-    var q = parseInt(qsobj['q']);
-    var e = parseInt(qsobj['e']);
-    var querylat = parseFloat(qsobj['qlat']);
-    var querylon = parseFloat(qsobj['qlon']);
-    var indate = qsobj['date'];
-    var intime = qsobj['time'];
-    if (isNaN(lat)) { lat = 40.7; }
-    if (isNaN(lon)) { lon = -74.0; }
-    //if (lat != null) { setTimeout(function() { console.log('before kick'+map.getCenter()); console.log('kick!'+lat+' '+lon); setMapCenter(lat, lon, null); console.log('before kick'+map.getCenter()); },5000); }
-    if (isNaN(z)) { zoom = 14; }
-    if (isNaN(m)) { m = 1; }
-    if ((false == isNaN(q)) && q == 1) { showInstructions(); }
-    if (isNaN(e)) { e = 0; }
-    if (isNaN(querylat)) {qlat=0;}
-    if (isNaN(querylon)) {qlon=0;}
+    var queryindex = parseInt(qsobj['qindex']);
+    if (isNaN(queryindex)) {
+	qindex=-2;}
+    else {
+	qindex=queryindex;
+	//clickcontent({index:qindex});
+	
+    }
     
     //set query time fields here to current date and time
     var curdate = new Date();
@@ -273,25 +259,117 @@ function onceonload() { // What to do on page load:
     
     oldlayer.addTo(map);
     cinteraction = wax.leaf.interaction(map,tilejson);
+    
+    makecharts();
 
+    setTimeout( function () {
+    $.ajax({
+	dataType: "json",
+	url: "/interapi",
+	data: {k:10000},
+	success: function( json ) {
+	    //console.log("received json!" + JSON.stringify(json));
+            jsondata = json;
+
+	    //ADD JSON TABLE HANDLING HERE
+	    var options = {
+		source: json.record,
+		rowClass: "classy",
+		callback: function(){
+		}
+	    };
+	    
+	    ///////////////////////////////
+	    // Test on a pre-existing table
+	    $("#dataTable").jsonTable({
+		head : ['Road Name','Pickup Wait<br/>(mins)','Dropoff Wait<br/>(mins)','Dropoff<br/>Percentage','Rank'],
+		json : ['roadname','pph','dph','doexcess','rank']
+	    });
+            $("#dataTable").jsonTableUpdate(options);
+            $("#dataTable").tablesorter();
+
+
+
+            for (i = 0 ; i < json.record.length; i++) {
+		var markerid = "#rowgetter"+(i+1);
+		var markerobjid = "";
+		
+		var tmphighlightfn = (function (markerid,markerclass,idx) {
+		    return function() {
+			console.log('querying marker'+JSON.stringify(jsondata.record[idx]));
+			eraseAndAddMarker({lat: jsondata.record[idx].lat_txt, lon: jsondata.record[idx].lon_txt});
+			qindex = jsondata.record[idx].index;
+			updateURL();		    
+			var highlightl = document.getElementsByClassName('highlightmarker');
+			console.log('highlightl size'+highlightl.length);
+			for (i=0; i<highlightl.length; i++) {
+			    highlightl[i].classList.remove('highlightmarker');
+			}
+			//$('body').scrollTo(markerid,2000);
+			var highlightl = document.getElementsByClassName('rowhighlight');
+			for (i=0; i<highlightl.length; i++) {
+			    highlightl[i].classList.remove('rowhighlight');
+			}
+			$(markerid)[0].parentNode.parentNode.classList.add('rowhighlight');
+			//add marker at location
+
+			
+			
+			//update the chart
+			$.ajax({
+	                    dataType: "json",
+	                    url: "/interoneapi",
+          	            data: {i:idx},
+	                    success: function( json ) {
+				console.log("received json from interoneapi!" + JSON.stringify(json));
+				makechartswithdata(json.record,[
+				    {"name":"dots","axis":0,"description":"Dropoff Wait (mins)"},
+				    {"name":"puts","axis":0,"description":"Pickup Wait (mins)"}
+				]);
+				
+			    }
+			});
+			
+			
+			//update the map
+			setMapCenter(json.record[idx].lat_txt,json.record[idx].lon_txt,max(14,zoom));				   
+			return false; } })(markerid,markerobjid,i);
+		//		$(markerid)[0].onclick=tmphighlightfn;
+		jsonarraybyindex[json.record[i].index] = tmphighlightfn;//json.record[i];
+		
+		$(markerid).parent().parent().each(function() { this.onclick=tmphighlightfn; });
+
+		//if (i == 0) { //auto fire on this one
+		//    tmphighlightfn();
+		//};
+		
+	    }
+
+	    if (qindex >= 0) {
+		//alert("should query!");
+		setTimeout(function () { jsonarraybyindex[qindex](); },6000);
+	    }
+	    
+	}
+    });
+
+    },1000);
+    
+    
 }//end of onceonload
 
 function updateURL(v) {
-    latlng = map.getCenter();
-    //showPositionWG({'coords':{'latitude':latlng.lat, 'longitude':latlng.lng}});
-    var tinput = document.getElementById('wgtimeinput');	
-    var dinput = document.getElementById('wgdateinput');	
-    history.pushState('page', 'caption', '/intersection?lat='+latlng.lat+'&lon='+latlng.lng+'&z='+map.getZoom()+'&e='+queryexecdone+'&time='+tinput.value+'qlat='+qlat+'&qlon='+qlon);
-    //console.log('moveend width height'+$(window).width()+' '+$(window).height());
+    history.pushState('page', 'caption', '/intersection?qindex='+qindex);
 }
 
 //results drawer code
 var drawermode = 0; //0 at top, 1 at bottom 
 var queryexecdone = 0;
+var qindex = -1;
 var qlat = 0;
 var qlon = 0;
-var lat = 0;
-var lon = 0;
+var lat = 40.8;
+var lon = -73.9;
 var zoom = 14;
 //negative value means the object is above the fold (top of viewport),
 //positive value is pixels from top
@@ -302,4 +380,9 @@ function distanceFromViewportTop(id) {
 	distance      = (elementOffset - scrollTop);
     return distance;
 }
+
+var jsondata = false;
+var jsonsortstatus = false;
+var jsonarraybyindex = new Array();
+
 

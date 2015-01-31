@@ -54,7 +54,7 @@
       width: 70%;
       z-index: 55;
       background-color: #aaaaaa;
-      opacity: .77;
+      opacity: .88;
       }
       .togglebutton {
       background-color: #21b384;
@@ -242,7 +242,7 @@
     <thead>
               </thead>
 <tbody>
-		 <tr><td>A/B Ratio<br/>(Taxis/Hr at A vs Taxis/Hr at B)</td><td class="updatecell" id="m2m1ratio"></td></tr>
+		 <tr><td>Updating table ... Please Wait.</td><td class="updatecell" id="m2m1ratio"></td></tr>
 </tbody>
 </table>
 </div>
@@ -271,94 +271,6 @@
 <script src="/static/ifplot.js"></script>
 <script src="/intersection.js"></script>
 <script type="text/javascript">
-makecharts();
-
-var jsondata = false;
-var jsonsortstatus = false;
-var jsonarraybyindex = new Array();
-    $.ajax({
-	dataType: "json",
-	url: "/interapi",
-	data: {k:10000},
-	success: function( json ) {
-	    //console.log("received json!" + JSON.stringify(json));
-            jsondata = json;
-
-	    //ADD JSON TABLE HANDLING HERE
-	    var options = {
-		source: json.record,
-		rowClass: "classy",
-		callback: function(){
-		}
-	    };
-	    
-	    ///////////////////////////////
-	    // Test on a pre-existing table
-	    $("#dataTable").jsonTable({
-		head : ['Road Name','Pickup Wait<br/>(mins)','Dropoff Wait<br/>(mins)','Dropoff<br/>Percentage','Rank'],
-                json : ['roadname','pph','dph','doexcess','rank']
-	    });
-            $("#dataTable").jsonTableUpdate(options);
-            $("#dataTable").tablesorter();
-
-            for (i = 0 ; i < json.record.length; i++) {
-			     var markerid = "#rowgetter"+(i+1);
-			     var markerobjid = "";
-			     
-			     var tmphighlightfn = (function (markerid,markerclass,idx) {
-
-			     return function() {
-		    //$('#highlightmarker').each(function() { this.classList.remove('highlightmarker'); });
-		    var highlightl = document.getElementsByClassName('highlightmarker');
-		    console.log('highlightl size'+highlightl.length);
-		    for (i=0; i<highlightl.length; i++) {
-			highlightl[i].classList.remove('highlightmarker');
-		    }
-		    //document.getElementsByClassName(markerclass)[0].classList.add('highlightmarker');
-		    
-		    //$('body').scrollTo('#chartdiv',1000);
-		    //$('#rowhighlight').each(function() { this.classList.remove('rowhighlight'); });
-		    var highlightl = document.getElementsByClassName('rowhighlight');
-		    for (i=0; i<highlightl.length; i++) {
-			highlightl[i].classList.remove('rowhighlight');
-		    }
-		    $(markerid)[0].parentNode.parentNode.classList.add('rowhighlight');
-						   //add marker at location
-		    //eraseAndAddMarker(jsondata.record[idx]);
-						   
-						   
-		    //update the chart
-		     $.ajax({
-	                 dataType: "json",
-	                 url: "/interoneapi",
-          	         data: {i:idx},
-	                 success: function( json ) {
-						   console.log("received json from interoneapi!" + JSON.stringify(json));
-						   makechartswithdata(json.record,[
-						   {"name":"dots","axis":0,"description":"Dropoff Wait (mins)"},
-						   {"name":"puts","axis":0,"description":"Pickup Wait (mins)"}
-						   ]);
-						   
-						   }
-						   });
-						   
-	            
-						   //update the map
-		    setMapCenter(json.record[idx].lat_txt,json.record[idx].lon_txt,14);				   
-		    return false; } })(markerid,markerobjid,i);
-//		$(markerid)[0].onclick=tmphighlightfn;
-		jsonarraybyindex[json.record[i].index] = tmphighlightfn;//json.record[i];
-			
-						   $(markerid).parent().parent().each(function() { this.onclick=tmphighlightfn; });
-
-						   if (i == 0) { //auto fire on this one
-						   setTimeout(tmphighlightfn,4);
-						   };
-						   
-}
-						   
-}
-});
 
 </script>
 </body>

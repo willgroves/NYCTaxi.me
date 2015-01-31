@@ -282,9 +282,9 @@
 		 <tr><td>Walk in Direction</td><td class="updatecell" id="direction"></td></tr>
 		 <tr><td>Walk Toward</td><td class="updatecell" id="roadname_prefer"></td></tr>
 		 <tr><td>Find a Taxi Query</td><td class="updatecell" id="fatquery"></td></tr>
-		 <tr><td>Taxis per Hour at<br/>recommended intersection (A)</td><td class="updatecell" id="th_prefer"></td></tr>
-		 <tr><td>Taxis per Hour at<br/>opposite intersection (B)</td><td class="updatecell" id="th_preceeding"></td></tr>
-		 <tr><td>A/B Ratio<br/>(Taxis/Hr at A vs Taxis/Hr at B)</td><td class="updatecell" id="m2m1ratio"></td></tr>
+		 <tr><td>Wait Time (mins) at (A)<br/><div class="updatecell" id="roadname_prefer"></div></td><td class="updatecell" id="th_prefer"></td></tr>
+		 <tr><td>Wait Time (mins) at (B)<br/>opposite walking direction</td><td class="updatecell" id="th_preceeding"></td></tr>
+		 <tr><td>A/B Ratio (# of Taxis<br/>at A vs # of Taxis at B)</td><td class="updatecell" id="m2m1ratio"></td></tr>
 </tbody>
 </table>
 </div>
@@ -316,6 +316,7 @@
 <script src="/static/jquery-ui.js"></script>
 <script src="/segment.js"></script>
 <script type="text/javascript">
+ {{ addscript }}
 </script>
 </body>
 </html>
