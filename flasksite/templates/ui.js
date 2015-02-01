@@ -112,8 +112,26 @@ function unanimateWG(id,arrrem,arradd) {
 var dopumode = 1; //0 is dropoff, 1 is pickup
 
 //addButton('Clear Map',false);
-addButton('<i class="fa fa-crosshairs" id="getlocationicon"></i> Get Location',function () { animateWG("#getlocationicon",['fa-spin','fa-spinner']); getLocationWG();  });
-addButton('<i class="fa fa-gears" id="querylocationicon"></i> Query Location',function () { animateWG("#querylocationicon",['fa-spin','fa-spinner']); queryLocation(); });
+
+function eraseAndAddMarker(d) {
+
+    for (i=0; i<markerl.length; i++) {
+	console.log('removing an old marker');
+	map.removeLayer(markerl[i]);
+    }    
+    markerl = [];
+    var marker = L.circle([d.lat, d.lon],50, { color: '#f00', fillColor: '#f03',
+					        fillOpacity: 0.5})
+    marker.addTo(map);
+    markerl[markerl.length] = marker;
+
+}
+
+
+function getlocbuttonfn() { animateWG("#getlocationicon",['fa-spin','fa-spinner']); getLocationWG(); }
+function querylocationbuttonfn() { animateWG("#querylocationicon",['fa-spin','fa-spinner']); queryLocation(); }
+addButton('<i class="fa fa-crosshairs" id="getlocationicon"></i> Get Location',getlocbuttonfn);
+addButton('<i class="fa fa-gears" id="querylocationicon"></i> Query Location',querylocationbuttonfn);
 addButton('<i class="fa fa-question-circle"></i> Show Help',function () { showInstructions(); });
 //addButton('----',function () {});
 function dochange() { if (dopumode == 1) {
@@ -159,6 +177,8 @@ function getLocationWG() {
 }
 
 var wgallowposupdate = 0; //only allow position update once per call
+var wgfirstrun = 1; //
+
 
 function showPositionWG(position) {
     console.log("in callback for showPositionWG"+JSON.stringify(position));
@@ -166,6 +186,15 @@ function showPositionWG(position) {
     //iboxlong.value = position.coords.longitude;
     if (wgallowposupdate == 1) {
 	setMapCenter(position.coords.latitude, position.coords.longitude, null);
+
+	eraseAndAddMarker({lat: position.coords.latitude, lon: position.coords.longitude});
+	console.log('added a marker'+JSON.stringify(position.coords));
+
+	if (wgfirstrun == 1) {
+	    setTimeout(querylocationbuttonfn,3000);
+	    wgfirstrun = 0;
+	}
+	
 	wgallowposupdate = 0;
 	unanimateWG("#getlocationicon",['fa-spin','fa-spinner'],['fa-crosshairs']);
     } else { console.log("in callback for showpositionWG redundant! not updating!"); }
@@ -324,7 +353,7 @@ function queryLocation() { // query busyness and add info to map
 			highlightl[i].classList.remove('highlightmarker');
 		    }
 		    document.getElementsByClassName(markerclass)[0].classList.add('highlightmarker');
-
+		    $('body').scrollTo(markerid,1000);
 		    var highlightl = document.getElementsByClassName('rowhighlight');
 		    for (i=0; i<highlightl.length; i++) {
 			highlightl[i].classList.remove('rowhighlight');
@@ -332,7 +361,8 @@ function queryLocation() { // query busyness and add info to map
 		    $(markerid)[0].parentNode.parentNode.classList.add('rowhighlight');
 		    $('body').scrollTo(markerid,1000);
 		    return false; } })(markerid,markerobjid) );
-		
+
+		//when highlighting a row in the table
 		var tmphighlightfn = (function (markerid,markerclass) { return function() {
 		    var highlightl = document.getElementsByClassName('highlightmarker');
 		    console.log('highlightl size'+highlightl.length);
@@ -341,8 +371,7 @@ function queryLocation() { // query busyness and add info to map
 		    }
 		    document.getElementsByClassName(markerclass)[0].classList.add('highlightmarker');
 		    
-
-		    //$('#rowhighlight').each(function() { this.classList.remove('rowhighlight'); });
+		    //$('body').scrollTo(markerid,1000);
 		    var highlightl = document.getElementsByClassName('rowhighlight');
 		    for (i=0; i<highlightl.length; i++) {
 			highlightl[i].classList.remove('rowhighlight');
@@ -350,8 +379,9 @@ function queryLocation() { // query busyness and add info to map
 		    $(markerid)[0].parentNode.parentNode.classList.add('rowhighlight');
 		    $('body').scrollTo('#nothingattop',1000);
 		    return false; } })(markerid,markerobjid);
-		//		$(markerid)[0].onclick=tmphighlightfn;
 		$(markerid).parent().parent().each(function() { this.onclick=tmphighlightfn; });
+		//could auto animate
+		//if (i==1) { setTimeout(tmphighlightfn,3000); };
 		markerl.push(newmarker);
 		newmarker.addTo(map);
 		var line = Array();
@@ -432,6 +462,7 @@ function showInstructions(){
 function dismissInstructions(){
     $("#instructions").fadeOut( "fast" );
     $("#cover").hide();
+    setTimeout(function() { if (queryexecdone == 0) { getlocbuttonfn(); }},500);
 };
 
 

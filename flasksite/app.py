@@ -60,7 +60,9 @@ def ui():
     app.logger.debug("value of the cookie:"+str(cookieval))
     addscript = ''
     if 'yes' not in cookieval: #if the cookie is not set
-        addscript = "setTimeout(showInstructions,5000);"
+        addscript = "setTimeout(showInstructions,2000);"
+    else:
+        addscript = "setTimeout(function() { if (queryexecdone == 0) { getlocbuttonfn(); }},2500);"
     app.logger.debug("addscript string:"+addscript)
     resp = flask.make_response(render_template('ui.html',servername=localconfig.servername,mapserverport=localconfig.mapserverport,addscript=addscript))
     resp.set_cookie('alreadyvisited', 'yes')
@@ -68,7 +70,7 @@ def ui():
 
 @app.route('/uifirst', methods=['GET', 'POST'])
 def uifirst():
-    addscript = "setTimeout(showInstructions,5000);"
+    addscript = "setTimeout(showInstructions,2000);"
     resp = flask.make_response(render_template('ui.html',servername=localconfig.servername,mapserverport=localconfig.mapserverport,addscript=addscript))
     return resp
 

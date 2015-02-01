@@ -74,14 +74,14 @@ interval along with some other information based on the query location.
             if result['m2m1ratio']>1.0:
                 result['heading_txt'] = "%.0f"%result['heading']
                 result['direction'] = direction(result['end1lon_m1'],result['end1lat_m1'],result['end2lon_m2'],result['end2lat_m2'])            
-                result['th_prefer'] = '%.2f'%(result['pickupcnt_m2']/365.0)
-                result['th_preceeding'] = '%.2f'%(result['pickupcnt_m1']/365.0)
+                result['th_prefer'] = '%.2f'%(30.0/(result['pickupcnt_m2']/365.0))
+                result['th_preceeding'] = '%.2f'%(30.0/(result['pickupcnt_m1']/365.0))
                 result['m2m1ratio'] = '%.2f'%(result['m2m1ratio'])
             else:
                 result['heading_txt'] = "%.0f"%result['heading']
                 result['direction'] = direction(result['end1lon_m2'],result['end1lat_m2'],result['end2lon_m1'],result['end2lat_m1'])            
-                result['th_prefer'] = '%.2f'%(result['pickupcnt_m1']/365.0)
-                result['th_preceeding'] = '%.2f'%(result['pickupcnt_m2']/365.0)
+                result['th_prefer'] = '%.2f'%(30.0/(result['pickupcnt_m1']/365.0))
+                result['th_preceeding'] = '%.2f'%(30.0/(result['pickupcnt_m2']/365.0))
                 result['m2m1ratio'] = '%.2f'%(1.0/result['m2m1ratio'])
                 
             return resultl
