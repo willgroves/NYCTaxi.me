@@ -349,18 +349,16 @@ function queryLocation() { // query busyness and add info to map
 			highlightl[i].classList.remove('highlightmarker');
 		    }
 		    document.getElementsByClassName(markerclass)[0].classList.add('highlightmarker');
-		    
 		    $('body').scrollTo(markerid,1000);
-		    //$('#rowhighlight').each(function() { this.classList.remove('rowhighlight'); });
 		    var highlightl = document.getElementsByClassName('rowhighlight');
 		    for (i=0; i<highlightl.length; i++) {
 			highlightl[i].classList.remove('rowhighlight');
 		    }
 		    $(markerid)[0].parentNode.parentNode.classList.add('rowhighlight');
 		    return false; } })(markerid,markerobjid) );
-		
+
+		//when highlighting a row in the table
 		var tmphighlightfn = (function (markerid,markerclass) { return function() {
-		    //$('#highlightmarker').each(function() { this.classList.remove('highlightmarker'); });
 		    var highlightl = document.getElementsByClassName('highlightmarker');
 		    console.log('highlightl size'+highlightl.length);
 		    for (i=0; i<highlightl.length; i++) {
@@ -368,16 +366,16 @@ function queryLocation() { // query busyness and add info to map
 		    }
 		    document.getElementsByClassName(markerclass)[0].classList.add('highlightmarker');
 		    
-		    $('body').scrollTo(markerid,1000);
-		    //$('#rowhighlight').each(function() { this.classList.remove('rowhighlight'); });
+		    //$('body').scrollTo(markerid,1000);
 		    var highlightl = document.getElementsByClassName('rowhighlight');
 		    for (i=0; i<highlightl.length; i++) {
 			highlightl[i].classList.remove('rowhighlight');
 		    }
 		    $(markerid)[0].parentNode.parentNode.classList.add('rowhighlight');
 		    return false; } })(markerid,markerobjid);
-//		$(markerid)[0].onclick=tmphighlightfn;
 		$(markerid).parent().parent().each(function() { this.onclick=tmphighlightfn; });
+		//could auto animate
+		//if (i==1) { setTimeout(tmphighlightfn,3000); };
 		markerl.push(newmarker);
 		newmarker.addTo(map);
 		var line = Array();
@@ -414,7 +412,7 @@ function setMapCenter(lat, lon, z) {
 	alert("Hello, it looks like you are not in NYC or your GPS location is not available. Please center the map at the desired location for a query.");
     }
     else {
-	var zoomtarget = max(map.getZoom(),17);
+	var zoomtarget = max(map.getZoom(),16);
 	if (z == null) {
 	    map.setView([lat,lon], zoomtarget);
 	}
@@ -458,8 +456,7 @@ function showInstructions(){
 function dismissInstructions(){
     $("#instructions").fadeOut( "fast" );
     $("#cover").hide();
-
-    setTimeout(getlocbuttonfn,500);
+    setTimeout(function() { if (queryexecdone == 0) { getlocbuttonfn(); }},500);
 };
 
 

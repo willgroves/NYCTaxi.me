@@ -62,7 +62,7 @@ def ui():
     if 'yes' not in cookieval: #if the cookie is not set
         addscript = "setTimeout(showInstructions,2000);"
     else:
-        addscript = ""
+        addscript = "setTimeout(function() { if (queryexecdone == 0) { getlocbuttonfn(); }},2500);"
     app.logger.debug("addscript string:"+addscript)
     resp = flask.make_response(render_template('ui.html',servername=localconfig.servername,mapserverport=localconfig.mapserverport,addscript=addscript))
     resp.set_cookie('alreadyvisited', 'yes')
