@@ -24,7 +24,6 @@ table {
     cellpadding: 4px;
     cellspacing: 4px;
     border: 0;
-
 }
 
 .cf:before,
@@ -80,12 +79,13 @@ html {
 
 }
 body { font: normal 1em/1.5em 'Open Sans', sans-serif; color: #333; margin-bottom: 20px;
-    // background image copyright: Vincent LaForet 2014  http://blog.vincentlaforet.com/
-    background: url(../../images/bgtry.jpg);
+/* background image copyright: Vincent LaForet 2014  http://blog.vincentlaforet.com/ */
+    background-image: url(../../images/bgtry.jpg);
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
+     }
 
 a { color: #333; text-decoration: none; }
 a:hover { color: #b2c3e8; }

@@ -153,8 +153,8 @@ addButton('<i class="fa fa-check-square" id="pickcheckicon"></i> Pickup Intensit
     setMapHour(hourset);
     updateURL(null);
 } });
-//addButton('Dropoff Intensity',false);
-//addButton('Pickup Intensity',false);
+addButton('Back',function () { window.location="//{{ servername }}/static/splash/index.html"; });
+
 
 
 ////Query location directives////

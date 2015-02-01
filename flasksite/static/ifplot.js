@@ -49,7 +49,7 @@ function makechartswithdata(dataprovider,variablel) {
    
     var axisl = [valueAxis1];
     var bulletl = ["round","square","triangleUp"];
-    var thicknessl = [1,1,1,2,2,2,4,4,4,1,1,1,1,1,1,1,1,1,1,];
+    var thicknessl = [3,3,1,2,2,2,4,4,4,1,1,1,1,1,1,1,1,1,1,];
     for (var graphi=0; graphi<variablel.length; graphi++) {
     var vard = variablel[graphi];
 
