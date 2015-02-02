@@ -280,7 +280,7 @@ function onceonload() { // What to do on page load:
 	    ///////////////////////////////
 	    // Test on a pre-existing table
 	    $("#dataTable").jsonTable({
-		head : ['Road Name','Pickup Wait<br/>(mins)','Dropoff Wait<br/>(mins)','Dropoff<br/>Percentage','Rank'],
+		head : ['Road Name','Pickup Wait<br/>(mins)','Avg. Dropoff<br/>Interval (mins)','Dropoff<br/>Percentage','Rank'],
 		json : ['roadname','pph','dph','doexcess','rank']
 	    });
             $("#dataTable").jsonTableUpdate(options);
@@ -321,7 +321,7 @@ function onceonload() { // What to do on page load:
 	                    success: function( json ) {
 				//console.log("received json from interoneapi!" + JSON.stringify(json));
 				makechartswithdata(json.record,[
-				    {"name":"dots","axis":0,"description":"Dropoff Wait (mins)"},
+				    {"name":"dots","axis":0,"description":"Avg. Dropoff Interval (mins)"},
 				    {"name":"puts","axis":0,"description":"Pickup Wait (mins)"}
 				]);
 				
