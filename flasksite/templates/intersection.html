@@ -13,7 +13,7 @@
     <link href='/static/mapbox.css' rel='stylesheet' />
     <!-- <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.css' rel='stylesheet' /> -->
     <link href='/static/map.css' rel='stylesheet' />
-    <link rel="stylesheet" href="/static/css/font-awesome.css"/><!-- //maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"/><!-- css/font-awesome.css"/ -->
+    <link rel="stylesheet" href="/static/css/font-awesome.css"/>
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> -->
     <script src="/static/jquery.min.js"></script>
     <script src="/static/jquery.scrollTo.min.js"></script>
@@ -25,200 +25,200 @@
     <link href='/static/jquery.datetimepicker.css' rel='stylesheet' />
     <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css"> -->
     <link rel="stylesheet" href="/static/jquery-ui.css">
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"> -->
-    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
-    <!-- Optional theme -->
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css"> -->
-    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap-theme.min.css">
-    <!-- Latest compiled and minified JavaScript -->
-    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script> -->
-    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+      <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"> -->
+      <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
+	<!-- Optional theme -->
+	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css"> -->
+	<link rel="stylesheet" href="/static/bootstrap/css/bootstrap-theme.min.css">
+	  <!-- Latest compiled and minified JavaScript -->
+	  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script> -->
+	  <script src="/static/bootstrap/js/bootstrap.min.js"></script>
 
-    <!-- Chart Display -->
-    <link rel="stylesheet" href="/static/amcharts/images/style.css" type="text/css">
-    <script src="/static/amcharts/amcharts/amcharts.js" type="text/javascript"></script>
-    <script src="/static/amcharts/amcharts/serial.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="/static/ifchart.css" />
-    <!-- Response Chart Display -->
-    <script type="text/javascript" src="/static/amcharts/amcharts/xy.js"></script>
-    <script type="text/javascript" src="/static/amcharts/amcharts/themes/none.js"></script>
+	  <!-- Chart Display -->
+	  <link rel="stylesheet" href="/static/amcharts/images/style.css" type="text/css">
+	    <script src="/static/amcharts/amcharts/amcharts.js" type="text/javascript"></script>
+	    <script src="/static/amcharts/amcharts/serial.js" type="text/javascript"></script>
+	    <link rel="stylesheet" href="/static/ifchart.css" />
+	    <!-- Response Chart Display -->
+	    <script type="text/javascript" src="/static/amcharts/amcharts/xy.js"></script>
+	    <script type="text/javascript" src="/static/amcharts/amcharts/themes/none.js"></script>
 
-    <style>
-      body { margin:0; padding:0; background-color:#ffffff; font: 12px/1.5 "Verdana", sans-serif;
-     
+	    <style>
+	      body { margin:0; padding:0; background-color:#ffffff; font: 12px/1.5 "Verdana", sans-serif;
+	      
 
- } 
-      #map { top:0px; left:10px; margin-bottom: 2px; height:280px; width:98%;  }
-      #info { top:20px; right:20px; margin-bottom: 2px; width:200px; height: 50px; }
+	      } 
+	      #map { top:0px; left:10px; margin-bottom: 2px; height:280px; width:98%;  }
+	      #info { top:20px; right:20px; margin-bottom: 2px; width:200px; height: 50px; }
 
-      .hoverbox {
-      top: 50px;
-      right: 50px;
-      width: 70%;
-      z-index: 55;
-      background-color: #ffffff;
-      opacity: .83;
-      font-size: 1.4em;
-      }
-      .togglebutton {
-      background-color: #21b384;
-      display: inline-block;
-      color: #FFFFFF;
-      margin-bottom: 0;
-      font-weight: normal;
-      text-align: center;
-      vertical-align: middle;
-      cursor: pointer;
-      background-image: none;
-      border: 1px solid transparent;
-      white-space: nowrap;
-      padding: 4px 8px;
-      font-size: 11px;
-      line-height: 1.42857143;
-      border-radius: 2px;
-      text-decoration: none;
-      }
+	      .hoverbox {
+	      top: 50px;
+	      right: 50px;
+	      width: 70%;
+	      z-index: 55;
+	      background-color: #ffffff;
+	      opacity: .83;
+	      font-size: 1.4em;
+	      }
+	      .togglebutton {
+	      background-color: #21b384;
+	      display: inline-block;
+	      color: #FFFFFF;
+	      margin-bottom: 0;
+	      font-weight: normal;
+	      text-align: center;
+	      vertical-align: middle;
+	      cursor: pointer;
+	      background-image: none;
+	      border: 1px solid transparent;
+	      white-space: nowrap;
+	      padding: 4px 8px;
+	      font-size: 11px;
+	      line-height: 1.42857143;
+	      border-radius: 2px;
+	      text-decoration: none;
+	      }
 
-      /* Header styles */
-      #header {
-      clear:both;
-      float:left;
-      width:100%;
-      }
-      #header {
-      border-bottom:1px solid #000;
-      }
-      #header p,
-      #header h1,
-      #header h2 {
-      v      padding:.4em 15px 0 15px;
-      margin:0;
-      }
-      #header ul {
-      clear:left;
-      float:left;
-      width:100%;
-      list-style:none;
-      margin:10px 0 0 0;
-      padding:0;
-      }
-      #header ul li {
-      display:inline;
-      list-style:none;
-      margin:0;
-      padding:0;
-      }
-      #header ul li a {
-      display:block;
-      float:left;
-      margin:0 0 0 1px;
-      padding:3px 10px;
-      text-align:center;
-      background:#eee;
-      color:#000;
-      text-decoration:none;
-      position:relative;
-      left:15px;
-      line-height:1.3em;
-      }
-      #header ul li a:hover {
-      background:#369;
-      color:#fff;
-      }
-      #header ul li a.active,
-      #header ul li a.active:hover {
-      color:#fff;
-      background:#000;
-      font-weight:bold;
-      }
-      #header ul li a span {
-      display:block;
-      }
+	      /* Header styles */
+	      #header {
+	      clear:both;
+	      float:left;
+	      width:100%;
+	      }
+	      #header {
+	      border-bottom:1px solid #000;
+	      }
+	      #header p,
+	      #header h1,
+	      #header h2 {
+	      v      padding:.4em 15px 0 15px;
+	      margin:0;
+	      }
+	      #header ul {
+	      clear:left;
+	      float:left;
+	      width:100%;
+	      list-style:none;
+	      margin:10px 0 0 0;
+	      padding:0;
+	      }
+	      #header ul li {
+	      display:inline;
+	      list-style:none;
+	      margin:0;
+	      padding:0;
+	      }
+	      #header ul li a {
+	      display:block;
+	      float:left;
+	      margin:0 0 0 1px;
+	      padding:3px 10px;
+	      text-align:center;
+	      background:#eee;
+	      color:#000;
+	      text-decoration:none;
+	      position:relative;
+	      left:15px;
+	      line-height:1.3em;
+	      }
+	      #header ul li a:hover {
+	      background:#369;
+	      color:#fff;
+	      }
+	      #header ul li a.active,
+	      #header ul li a.active:hover {
+	      color:#fff;
+	      background:#000;
+	      font-weight:bold;
+	      }
+	      #header ul li a span {
+	      display:block;
+	      }
 
-      /* 'widths' sub menu */
-      #layoutdims {
-      clear:both;
-      background:#eee;
-      border-top:4px solid #000;
-      margin:0;
-      padding:6px 15px !important;
-      text-align:right;
-      }
-      /* column container */
-      .colmask {
-      position:relative;/* This fixes the IE7 overflow hidden bug */
-      clear:both;
-      float:left;
-      width:100%;/* width of whole page */
-      overflow:hidden;/* This chops off any overhanging divs */
-      }
-      /* common column settings */
-      .colright,
-      .colmid,
-      .colleft {
-      float:left;
-      width:100%;
-      position:relative;
-      }
-      .col1,
-      .col2,
-      .col3 {
-      float:left;
-      position:relative;
-      padding:0 0 1em 0;
-      overflow:hidden;
-      }
-      /* 2 Column (left menu) settings */
-      .leftmenu {
-      background:#fff;/* right column background colour */
-      }
-      .leftmenu .colleft {
-      right:75%;/* right column width */
-      background:#f4f4f4;/* left column background colour */
-      }
-      .leftmenu .col1 {
-      width:71%;/* right column content width */
-      left:102%;/* 100% plus left column left padding */
-      }
-      .leftmenu .col2 {
-      width:21%;/* left column content width (column width minus left and right padding) */
-      left:6%;/* (right column left and right padding) plus (left column left padding) */
-      }
-      /* Footer styles */
-      #footer {
-      clear:both;
-      float:left;
-      width:100%;
-      border-top:1px solid #000;
-      }
-      #footer p {
-      padding:10px;
-      margin:0;
-      }      
-      .wgcontainer {
-      height: 550px;
-      position: relative;
-      }
-      
-	  .wgnavi	   {
-	  width: 100%;
-	  height: 100%;
-	  position: absolute;
+	      /* 'widths' sub menu */
+	      #layoutdims {
+	      clear:both;
+	      background:#eee;
+	      border-top:4px solid #000;
+	      margin:0;
+	      padding:6px 15px !important;
+	      text-align:right;
+	      }
+	      /* column container */
+	      .colmask {
+	      position:relative;/* This fixes the IE7 overflow hidden bug */
+	      clear:both;
+	      float:left;
+	      width:100%;/* width of whole page */
+	      overflow:hidden;/* This chops off any overhanging divs */
+	      }
+	      /* common column settings */
+	      .colright,
+	      .colmid,
+	      .colleft {
+	      float:left;
+	      width:100%;
+	      position:relative;
+	      }
+	      .col1,
+	      .col2,
+	      .col3 {
+	      float:left;
+	      position:relative;
+	      padding:0 0 1em 0;
+	      overflow:hidden;
+	      }
+	      /* 2 Column (left menu) settings */
+	      .leftmenu {
+	      background:#fff;/* right column background colour */
+	      }
+	      .leftmenu .colleft {
+	      right:75%;/* right column width */
+	      background:#f4f4f4;/* left column background colour */
+	      }
+	      .leftmenu .col1 {
+	      width:71%;/* right column content width */
+	      left:102%;/* 100% plus left column left padding */
+	      }
+	      .leftmenu .col2 {
+	      width:21%;/* left column content width (column width minus left and right padding) */
+	      left:6%;/* (right column left and right padding) plus (left column left padding) */
+	      }
+	      /* Footer styles */
+	      #footer {
+	      clear:both;
+	      float:left;
+	      width:100%;
+	      border-top:1px solid #000;
+	      }
+	      #footer p {
+	      padding:10px;
+	      margin:0;
+	      }      
+	      .wgcontainer {
+	      height: 550px;
+	      position: relative;
+	      }
+	      
+	      .wgnavi	   {
+	      width: 100%;
+	      height: 100%;
+	      position: absolute;
 
-	  }
-	  
-	  .wginfoi {
-	  //width: 100%;
-	  //height: 100%;
-      position: absolute;
-      bottom: 0px;
-      left: 20px;
-	  }
+	      }
+	      
+	      .wginfoi {
+	      //width: 100%;
+	      //height: 100%;
+	      position: absolute;
+	      bottom: 0px;
+	      left: 20px;
+	      }
 
-	  .wginfoi {
-	  z-index: 101;
-	  }
-    </style>
+	      .wginfoi {
+	      z-index: 101;
+	      }
+	    </style>
   </head>
   <body onload="onceonload()"  onorientationchange="updateOrientation();">
     <div class="container wrap sidebar-right">
@@ -232,51 +232,42 @@
       <div class="col-md-6" style="padding-right: 5px; padding-left: 5px; padding: 15px;">
 	<div>
 	  <ul><li>
-	      Explore the 2000 most frequently visited intersections by NYC taxis in the table below. The table (initially sorted by most frequently visited to least frequently visited) shows the mean of the inter-arrival times for both pickups and dropoffs at each intersection. </li><li>Selecting a row in the table will show its location on the map and show the corresponding arrival rate time series in the chart. 
-	  </li><li>
-	      The pickup and dropoff arrival rate at each interection varies across the city. The map visualization indicates the relative precentage of taxi pickups compared to dropoffs. Green dots <img src="/static/wggreen.svg" width="23px"/> indicate more dropoffs than pickups; orange dots <img src="/static/wgorange.svg" width="23px"/> indicate more pickups than dropoffs. The dot size is a proxy for the number taxis visiting the location (larger dots indicate more taxis).</li>
-	    </ul>
-  </div>
+	    Explore the 2000 most frequently visited intersections by NYC taxis in the table below. The table (initially sorted by most frequently visited to least frequently visited) shows the mean of the inter-arrival times for both pickups and dropoffs at each intersection. </li><li>Selecting a row in the table will show its location on the map and show the corresponding arrival rate time series in the chart. 
+	    </li><li>
+	    The pickup and dropoff arrival rate at each interection varies across the city. The map visualization indicates the relative precentage of taxi pickups compared to dropoffs. Green dots <img src="/static/wggreen.svg" width="23px"/> indicate more dropoffs than pickups; orange dots <img src="/static/wgorange.svg" width="23px"/> indicate more pickups than dropoffs. The dot size is a proxy for the number taxis visiting the location (larger dots indicate more taxis).</li>
+	  </ul>
+	</div>
 	
-        <center>
+	<center>
 
-<div class="" style="padding: 15px;">
-  <table  id="dataTable" class="tablesorter highlightable" style="width: 99%; left:30px; border-collapse: separate; border-spacing: 1px;  
-">
-    <col width="160px"/>
-    <thead>
-              </thead>
-<tbody>
-		 <tr><td>Updating table ... Please Wait.</td><td class="updatecell" id="m2m1ratio"></td></tr>
-</tbody>
-</table>
-</div>
-</center>
-
-
+	  <div class="" style="padding: 15px;">
+	    <table  id="dataTable" class="tablesorter highlightable" style="width: 99%; left:30px; border-collapse: separate; border-spacing: 1px;  										    ">
+	      <col width="160px"/>
+	      <thead>
+	      </thead>
+	      <tbody>
+		<tr><td>Updating table ... Please Wait.</td><td class="updatecell" id="m2m1ratio"></td></tr>
+	      </tbody>
+	    </table>
+	  </div>
+	</center>
       </div>
       <div class="col-md-6" style="padding-left:0px; padding-right:5px; padding: 1px; width:50%; position: fixed; right: 12px; top: 0;">
 	<!-- put chart here -->
 	<div id="chartdiv" style="width: 100%; height: 340px; overflow: hidden; text-align: left;"></div>
 	<div class="wgcontainer">
-	    <div id='map' class="wgnavi"></div>
-	    <!-- <nav id='menu-ui' class='menu-ui'></nav> -->
+	  <div id='map' class="wgnavi"></div>
 	</div>
-	
-
       </div>
-</div>
-
-<div class="footer" style="padding: 5px;"><center>
+    </div>
+    <div class="footer" style="padding: 5px;"><center>
       <div style="background-color: #FFFFFF; color: #000000; padding: 5px; margin: 5px;"> &copy; 2015 - {{ servername }}</div>
-</center>
-</div>
-
-<script src="/static/jquery-ui.js"></script>
-<script src="/static/ifplot.js"></script>
-<script src="/intersection.js"></script>
-<script type="text/javascript">
-
-</script>
-</body>
+    </center>
+    </div>
+    <script src="/static/jquery-ui.js"></script>
+    <script src="/static/ifplot.js"></script>
+    <script src="/intersection.js"></script>
+    <script type="text/javascript">
+    </script>
+  </body>
 </html>

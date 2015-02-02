@@ -21,7 +21,7 @@ var tilejson = {
     scheme: 'tms',
     tiles: ['http://{{ servername }}:{{ mapserverport }}/query3f/{z}/{x}/{y}.png'],
     grids: ['/static/tiles/query3_00/{z}/{x}/{y}.grid.json?'],
-    formatter: //function(options, data) { alert('call in formatter: '+JSON.stringify(data)); return data; }
+    formatter: 
     function(o, d) {
 
 	return {
@@ -70,7 +70,7 @@ var markerl = [];
 
 function clickcontent(d) {
     //
-    console.log("making segment query: "+JSON.stringify(d));
+    //console.log("making segment query: "+JSON.stringify(d));
 
     qlat = d.lat;
     qlon = d.lon;
@@ -84,10 +84,10 @@ function clickcontent(d) {
     ttime.setDate(parseFloat($('#wgdateinput')[0].value.slice(8,10)));
     ttime.setHours(parseFloat($('#wgtimeinput')[0].value.slice(0,2)));
     ttime.setMinutes(parseFloat($('#wgtimeinput')[0].value.slice(3,5)));
-    console.log('querying time:'+ttime);
+    //console.log('querying time:'+ttime);
 
     for (i=0; i<markerl.length; i++) {
-	console.log('removing an old marker');
+	//console.log('removing an old marker');
 	map.removeLayer(markerl[i]);
     }
     
@@ -102,11 +102,7 @@ function clickcontent(d) {
 	url: "/segmentapi",
 	    data: {'lat':d.lat,'lng':d.lon,'roadname_prefer':d.roadname_prefer,'time':Math.round(ttime.getTime()/1000)},
 	success: function( json ) {
-	    console.log("received json!" + JSON.stringify(json));
-	    //outputdiv = document.getElementById('divqueryoutput');
-	    //outputdiv.innerHTML = JSON.stringify(json);
-
-	    //newlocationl = json.nearestplaces;
+	    //console.log("received json!" + JSON.stringify(json));
 	    
 	    var updatecelllist = document.getElementsByClassName('updatecell');
 	    for (i=0;i<updatecelllist.length; i++) {
@@ -172,27 +168,6 @@ function addLayer(layer, name, zIndex) {
     layers.appendChild(link);
 }
 
-function addButton(name, func) {
-
-    // Create a simple layer switcher that
-    // toggles layers on and off.
-    var link = document.createElement('a');
-    link.href = '#';
-    link.className = 'active';
-    link.innerHTML = name;
-
-    link.onclick = function(e) {
-	e.preventDefault();
-	e.stopPropagation();
-
-	console.log('button clicked with name'+name);
-	func();
-    };
-    layers.appendChild(link);
-}
-
-//addButton('Toggle<br/>Legend', function() { $('.wginfoi').toggle(500); });
-
 function animateWG(id,arradd) {
     elem = $(id)[0]
     for (i=0; i<arradd.length; i++) {
@@ -211,8 +186,6 @@ function unanimateWG(id,arrrem,arradd) {
 }
 
 var dopumode = 1; //0 is dropoff, 1 is pickup
-
-
 
 ////Query location directives////
 var iboxlong = document.getElementById("long");
@@ -236,9 +209,7 @@ function getLocationWG() {
 var wgallowposupdate = 0; //only allow position update once per call
 
 function showPositionWG(position) {
-    console.log("in callback for showPositionWG"+JSON.stringify(position));
-    //iboxlat.value = position.coords.latitude;
-    //iboxlong.value = position.coords.longitude;
+    //console.log("in callback for showPositionWG"+JSON.stringify(position));
     if (wgallowposupdate == 1) {
 	setMapCenter(position.coords.latitude, position.coords.longitude, null);
 	wgallowposupdate = 0;
@@ -247,10 +218,7 @@ function showPositionWG(position) {
 }
 
 var permithourchange = 0; //only allow change of hour once per call
-
 var hourset = "00";
-
-//$("#waittimelegend")[0].width = "250px";
 
 function setMapHour(hour2digit) {
     if (permithourchange > 0) {
@@ -325,7 +293,7 @@ function setMapHour(hour2digit) {
 }
 
 function setMapCenter(lat, lon, z) {
-    console.log("set map center fired"+lat+" "+lon);
+    //console.log("set map center fired"+lat+" "+lon);
     if ((lat - 40.7) > 0.9 || (lon + 74) > 0.9) {
 	alert("Hello, it looks like you are not in NYC or your GPS location is not available. Please center the map at the desired location for a query.");
     }
@@ -384,7 +352,7 @@ function onceonload() { // What to do on page load:
     var intime = qsobj['time'];
     if (isNaN(lat)) { lat = 40.7; }
     if (isNaN(lon)) { lon = -74.0; }
-    //if (lat != null) { setTimeout(function() { console.log('before kick'+map.getCenter()); console.log('kick!'+lat+' '+lon); setMapCenter(lat, lon, null); console.log('before kick'+map.getCenter()); },5000); }
+
     if (isNaN(z)) { zoom = 14; } else { zoom = z; }
     if (isNaN(m)) { m = 1; }
     if ((false == isNaN(q)) && q == 1) { showInstructions(); }
@@ -434,7 +402,7 @@ function updateURL(v) {
     var tinput = document.getElementById('wgtimeinput');	
     var dinput = document.getElementById('wgdateinput');	
     history.pushState('page', 'caption', '/segment?lat='+latlng.lat+'&lon='+latlng.lng+'&z='+map.getZoom()+'&e='+queryexecdone+'&time='+tinput.value+'&qlat='+qlat+'&qlon='+qlon);
-    console.log('moveend width height'+$(window).width()+' '+$(window).height());
+    //console.log('moveend width height'+$(window).width()+' '+$(window).height());
 }
 
 //results drawer code

@@ -86,7 +86,7 @@ function addButton(name, func) {
 	e.preventDefault();
 	e.stopPropagation();
 
-	console.log('button clicked with name'+name);
+	//console.log('button clicked with name'+name);
 	func();
     };
     layers.appendChild(link);
@@ -116,7 +116,7 @@ var dopumode = 1; //0 is dropoff, 1 is pickup
 function eraseAndAddMarker(d) {
 
     for (i=0; i<markerl.length; i++) {
-	console.log('removing an old marker');
+	//console.log('removing an old marker');
 	map.removeLayer(markerl[i]);
     }    
     markerl = [];
@@ -181,14 +181,14 @@ var wgfirstrun = 1; //
 
 
 function showPositionWG(position) {
-    console.log("in callback for showPositionWG"+JSON.stringify(position));
+    //console.log("in callback for showPositionWG"+JSON.stringify(position));
     //iboxlat.value = position.coords.latitude;
     //iboxlong.value = position.coords.longitude;
     if (wgallowposupdate == 1) {
 	setMapCenter(position.coords.latitude, position.coords.longitude, null);
 
 	eraseAndAddMarker({lat: position.coords.latitude, lon: position.coords.longitude});
-	console.log('added a marker'+JSON.stringify(position.coords));
+	//console.log('added a marker'+JSON.stringify(position.coords));
 
 	if (wgfirstrun == 1) {
 	    setTimeout(querylocationbuttonfn,3000);
@@ -245,12 +245,12 @@ function queryLocation() { // query busyness and add info to map
     //outputdiv.innerHTML = "Removing existing markers and querying...";
     
     //remove all existing markers
-    console.log("removing all markers");
+    //console.log("removing all markers");
     while (markerl.length > 0) {
 	newmarker = markerl.pop();
 	map.removeLayer(newmarker);
     }
-    console.log("all markers removed");
+    //console.log("all markers removed");
     
     latlng = map.getCenter();
     newmarker = L.marker([
@@ -283,13 +283,13 @@ function queryLocation() { // query busyness and add info to map
     ttime.setDate(parseFloat($('#wgdateinput')[0].value.slice(8,10)));
     ttime.setHours(parseFloat($('#wgtimeinput')[0].value.slice(0,2)));
     ttime.setMinutes(parseFloat($('#wgtimeinput')[0].value.slice(3,5)));
-    console.log('querying time:'+ttime);
+    //console.log('querying time:'+ttime);
     $.ajax({
 	dataType: "json",
 	url: "/suggestapi",
 	data: {'lat':latlng.lat,'lng':latlng.lng,'time':Math.round(ttime.getTime()/1000)},
 	success: function( json ) {
-	    console.log("received json!" + JSON.stringify(json));
+	    //console.log("received json!" + JSON.stringify(json));
 	    outputdiv = document.getElementById('divqueryoutput');
 	    //outputdiv.innerHTML = JSON.stringify(json);
 
@@ -348,7 +348,7 @@ function queryLocation() { // query busyness and add info to map
 		})
 		newmarker.on('click',(function (markerid,markerclass) { return function() {
 		    var highlightl = document.getElementsByClassName('highlightmarker');
-		    console.log('highlightl size'+highlightl.length);
+		    
 		    for (i=0; i<highlightl.length; i++) {
 			highlightl[i].classList.remove('highlightmarker');
 		    }
@@ -365,7 +365,7 @@ function queryLocation() { // query busyness and add info to map
 		//when highlighting a row in the table
 		var tmphighlightfn = (function (markerid,markerclass) { return function() {
 		    var highlightl = document.getElementsByClassName('highlightmarker');
-		    console.log('highlightl size'+highlightl.length);
+		    
 		    for (i=0; i<highlightl.length; i++) {
 			highlightl[i].classList.remove('highlightmarker');
 		    }
@@ -413,7 +413,7 @@ function queryLocation() { // query busyness and add info to map
 } //end of queryLocation
 
 function setMapCenter(lat, lon, z) {
-    console.log("set map center fired"+lat+" "+lon);
+    //console.log("set map center fired"+lat+" "+lon);
     if ((lat - 40.7) > 0.9 || (lon + 74) > 0.9) {
 	alert("Hello, it looks like you are not in NYC or your GPS location is not available. Please center the map at the desired location for a query.");
     }
@@ -573,7 +573,7 @@ function toggleDrawer(e) {
 //change map on change of time
 //if changing the query time or day, then modify the map
 function eventchangetime() 
-{ console.log('onchange fired for the time input box');
+{ //console.log('onchange fired for the time input box');
 
   var ttime = new Date();//document.getElementById('time').value);
   var yr = parseFloat($('#wgdateinput')[0].value.slice(0,4));
@@ -582,7 +582,7 @@ function eventchangetime()
   ttime.setDate(parseFloat($('#wgdateinput')[0].value.slice(8,10)));
   ttime.setHours(parseFloat($('#wgtimeinput')[0].value.slice(0,2)));
   ttime.setMinutes(parseFloat($('#wgtimeinput')[0].value.slice(3,5)));
-  console.log('querying time:'+ttime);
+  //console.log('querying time:'+ttime);
   if (ttime.getHours() >= 0 && ttime.getHours() <= 23) { 
       var twodigithr = ("0" + ttime.getHours()).slice(-2);
       if (hourset != twodigithr) {

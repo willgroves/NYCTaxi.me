@@ -56,7 +56,7 @@ var oldmarker = false;
 
 function clickcontent(d) {
     //
-    console.log("making segment query: "+JSON.stringify(d));
+    //console.log("making segment query: "+JSON.stringify(d));
     //fire highlight event:
     jsonarraybyindex[d.index]();
     qindex = d.index;
@@ -64,7 +64,7 @@ function clickcontent(d) {
 }
 
 function eraseAndAddMarker(d) {
-    console.log("call to erase and add marker:"+JSON.stringify(d));
+    //console.log("call to erase and add marker:"+JSON.stringify(d));
     if (oldmarker != false) {
 	map.removeLayer(oldmarker);
 	oldmarker = false;
@@ -141,7 +141,7 @@ function addButton(name, func) {
 	e.preventDefault();
 	e.stopPropagation();
 
-	console.log('button clicked with name'+name);
+	//console.log('button clicked with name'+name);
 	func();
     };
     layers.appendChild(link);
@@ -192,9 +192,7 @@ function getLocationWG() {
 var wgallowposupdate = 0; //only allow position update once per call
 
 function showPositionWG(position) {
-    console.log("in callback for showPositionWG"+JSON.stringify(position));
-    //iboxlat.value = position.coords.latitude;
-    //iboxlong.value = position.coords.longitude;
+    //console.log("in callback for showPositionWG"+JSON.stringify(position));
     if (wgallowposupdate == 1) {
 	setMapCenter(position.coords.latitude, position.coords.longitude, null);
 	wgallowposupdate = 0;
@@ -207,7 +205,7 @@ var permithourchange = 0; //only allow change of hour once per call
 var hourset = "00";
 
 function setMapCenter(lat, lon, z) {
-    console.log("set map center fired"+lat+" "+lon);
+    //console.log("set map center fired"+lat+" "+lon);
     if ((lat - 40.7) > 0.9 || (lon + 74) > 0.9) {
 	alert("Hello, it looks like you are not in NYC or your GPS location is not available. Please center the map at the desired location for a query.");
     }
@@ -240,7 +238,7 @@ function onceonload() { // What to do on page load:
     updateOrientation(); 
     
     var qsobj = $.QueryString;
-    console.log("qsobj "+JSON.stringify(qsobj));
+    //console.log("qsobj "+JSON.stringify(qsobj));
     var z = parseInt(qsobj['z']);
     var queryindex = parseInt(qsobj['qindex']);
     if (isNaN(queryindex)) {
@@ -296,12 +294,12 @@ function onceonload() { // What to do on page load:
 		
 		var tmphighlightfn = (function (markerid,markerclass,idx) {
 		    return function() {
-			console.log('querying marker'+JSON.stringify(jsondata.record[idx]));
+			//console.log('querying marker'+JSON.stringify(jsondata.record[idx]));
 			eraseAndAddMarker({lat: jsondata.record[idx].lat_txt, lon: jsondata.record[idx].lon_txt});
 			qindex = jsondata.record[idx].index;
 			updateURL();		    
 			var highlightl = document.getElementsByClassName('highlightmarker');
-			console.log('highlightl size'+highlightl.length);
+			//console.log('highlightl size'+highlightl.length);
 			for (j=0; j<highlightl.length; j++) {
 			    highlightl[j].classList.remove('highlightmarker');
 			}
@@ -321,7 +319,7 @@ function onceonload() { // What to do on page load:
 	                    url: "/interoneapi",
           	            data: {qi:qindex},
 	                    success: function( json ) {
-				console.log("received json from interoneapi!" + JSON.stringify(json));
+				//console.log("received json from interoneapi!" + JSON.stringify(json));
 				makechartswithdata(json.record,[
 				    {"name":"dots","axis":0,"description":"Dropoff Wait (mins)"},
 				    {"name":"puts","axis":0,"description":"Pickup Wait (mins)"}
