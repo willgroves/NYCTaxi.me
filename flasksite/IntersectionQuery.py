@@ -37,18 +37,25 @@ class IntersectionQuery:
             result['lat_txt'] = "%.4f"%r['lat']
             result['lon_txt'] = "%.4f"%r['lon']
             result['roadname'] = r['roadname']
-            result['pph'] = "%.2f"%(3*30/(r['mupu']*4.0/365)) #the 3 is because k=3 in the data gathering step
-            result['dph'] = "%.2f"%(3*30/(r['mudo']*4.0/365))
+            result['pph'] = "%.2f"%(4*1.5*30.0/(np.mean(r['puts']))) #the 3 is because k=3 in the data gathering step
+            result['dph'] = "%.2f"%(4*1.5*30.0/(np.mean(r['dots'])))
+            #result['dph'] = "%.3f %.3f"%(np.average(r['puts']),np.mean(r['puts']))
             result['doexcess'] = "%.1f"%(100.0*r['mudo']/(r['mudo']+r['mupu']))#"%.3f"%(100.0*(((r['mupu']-r['mudo']) * 4.0/365/7.0) +1.0) / 2.0)
             finall.append(result)
         return finall
     def query(self,idx):
         try:
-            raw = self.loadedl[idx]
+            raw = -1#self.loadedl[idx]
+            for i, r in enumerate(self.loadedl):
+                if r['index'] == idx:
+                    raw = r
+                    break
+            
+            print("idx:",idx,"roadname:",raw['roadname'])
             ##convert this into a data provider with just the needed fields
 
-
-            record = pd.DataFrame(np.concatenate([[raw['timearr']],[3*30.0/raw['dots']],[3*30.0/raw['puts']]]).T, columns=['time','dots','puts']).to_dict(orient='records')
+            ##30.0/
+            record = pd.DataFrame(np.concatenate([[raw['timearr']],[2.0*30.0/(raw['dots'])],[2.0*30.0/(raw['puts'])]]).T, columns=['time','dots','puts']).to_dict(orient='records')
             for r in record:
                 r['dots'] = "%.3f"%r['dots']
                 r['puts'] = "%.3f"%r['puts']

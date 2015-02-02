@@ -201,7 +201,7 @@ def interoneapi():
     app.logger.debug("request contents"+str(request))
     #app.logger.debug("dir request"+str(dir(request)))
     app.logger.debug("get args"+str(request.args))
-    i = int(request.args.get('i',10))
+    i = int(request.args.get('qi',10))
     lat = request.args.get('lat',40.33)
     lng = request.args.get('lng',-78.8888)
     epoch = request.args.get('time',0)
@@ -211,7 +211,7 @@ def interoneapi():
     datahour = getNearestDataHour2Digit(hour)
     record = interobj.query(i)
     f = {
-         'query': {'i':i},
+         'query': {'qi':i},
          'record': record,
     }
     app.logger.debug("sending response")

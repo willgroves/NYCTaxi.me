@@ -302,13 +302,13 @@ function onceonload() { // What to do on page load:
 			updateURL();		    
 			var highlightl = document.getElementsByClassName('highlightmarker');
 			console.log('highlightl size'+highlightl.length);
-			for (i=0; i<highlightl.length; i++) {
-			    highlightl[i].classList.remove('highlightmarker');
+			for (j=0; j<highlightl.length; j++) {
+			    highlightl[j].classList.remove('highlightmarker');
 			}
 			//$('body').scrollTo(markerid,2000);
 			var highlightl = document.getElementsByClassName('rowhighlight');
-			for (i=0; i<highlightl.length; i++) {
-			    highlightl[i].classList.remove('rowhighlight');
+			for (j=0; j<highlightl.length; j++) {
+			    highlightl[j].classList.remove('rowhighlight');
 			}
 			$(markerid)[0].parentNode.parentNode.classList.add('rowhighlight');
 			//add marker at location
@@ -319,7 +319,7 @@ function onceonload() { // What to do on page load:
 			$.ajax({
 	                    dataType: "json",
 	                    url: "/interoneapi",
-          	            data: {i:idx},
+          	            data: {qi:qindex},
 	                    success: function( json ) {
 				console.log("received json from interoneapi!" + JSON.stringify(json));
 				makechartswithdata(json.record,[
