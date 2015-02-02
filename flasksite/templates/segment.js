@@ -191,7 +191,7 @@ function addButton(name, func) {
     layers.appendChild(link);
 }
 
-addButton('Toggle<br/>Legend', function() { $('.wginfoi').toggle(500); });
+//addButton('Toggle<br/>Legend', function() { $('.wginfoi').toggle(500); });
 
 function animateWG(id,arradd) {
     elem = $(id)[0]
