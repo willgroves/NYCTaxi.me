@@ -164,7 +164,7 @@ var iboxtime = document.getElementById("time");
 function getLocationWG() {
     if (navigator.geolocation) {
 	if (window.location.protocol == 'file:') {
-	    showPositionWG({'coords':{'latitude':40.6,'longitude':-74.02}});
+	    showPositionWG({'coords':{'latitude':40.77115748414938,'longitude':-73.97753477096558}});
 	}
 	else {
 	    wgallowposupdate = 1;
@@ -173,12 +173,10 @@ function getLocationWG() {
     } else { 
 	iboxlong.innerHTML = "Geolocation is not supported by this browser.";
     }
-    
 }
 
 var wgallowposupdate = 0; //only allow position update once per call
 var wgfirstrun = 1; //
-
 
 function showPositionWG(position) {
     //console.log("in callback for showPositionWG"+JSON.stringify(position));
@@ -340,7 +338,7 @@ function queryLocation() { // query busyness and add info to map
 			// Define what HTML goes in each marker.
 			html: i,
 			// Set a markers width and height.
-			iconSize: [37, 37],
+			iconSize: [37+22-i*4, 37+22-i*4],
 			id: markerobjid //needed to use a closure below instead
 		    }),
 		    clickable: true
@@ -480,8 +478,8 @@ function onceonload() { // What to do on page load:
     var e = parseInt(qsobj['e']);
     var indate = qsobj['date'];
     var intime = qsobj['time'];
-    if (isNaN(lat)) { lat = 40.7; }
-    if (isNaN(lon)) { lon = -74.0; }
+    if (isNaN(lat)) { lat = 40.7711574841493; } 
+    if (isNaN(lon)) { lon = -73.97753477096558; }
     //if (lat != null) { setTimeout(function() { console.log('before kick'+map.getCenter()); console.log('kick!'+lat+' '+lon); setMapCenter(lat, lon, null); console.log('before kick'+map.getCenter()); },5000); }
     if (isNaN(z)) { z = 13; }
     if (isNaN(m)) { m = 1; }

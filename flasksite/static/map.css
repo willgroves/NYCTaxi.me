@@ -11,6 +11,14 @@
   opacity:0.87;
   }
 
+.marker {    line-height:30px; }
+.marker1 {    line-height:48px; }
+.marker2 {    line-height:44px; }
+.marker3 {    line-height:40px; }
+.marker4 {    line-height:36px; }
+.marker5 {    line-height:32px; }
+.marker6 {    line-height:28px; }
+.marker7 {    line-height:24px; }
 .map-popup {
   
   }
