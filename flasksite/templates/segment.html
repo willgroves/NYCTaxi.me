@@ -230,10 +230,24 @@
     </style>
   </head>
   <body onload="onceonload()"  onorientationchange="updateOrientation();">
+    <div class="breadcrumb-inner" style="padding: 0px 5px; margin-bottom: 0px; ">
+      <div class="container" style="margin-top: 2px;">
+	<div class="row">
+	  <div class="col-md-12">
+	    <ul class="breadcrumb" style="margin-bottom: 0px;">
+	      <li><a href="index.html"><span>NYCTaxi.me</span></a></li>
+	      <li><a href="/static/analysis.html"><span>Analysis</span></a></li>
+	      <li class="active"><span>Segment-level Analysis</span></li>
+
+	    </ul>
+	  </div>
+	</div>
+      </div>
+    </div>
     <div class="container wrap sidebar-right">
       <div class="row">
 	<div class="header col-xs-12">
-	  <div id='nothingattop' ></div><h3>Walking Direction Analysis</h3>
+	  <div id='nothingattop' ></div><h3 style="margin-top: 9px;">Walking Direction Analysis</h3>
 
 	  This visualization examines the walking direction advice at the midpoint of each road segment
 	  from <a href="/uifirst">NYCTaxi.me</a> for the 170 million fares from the 2013
