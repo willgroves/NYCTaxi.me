@@ -19,39 +19,43 @@ time of day (15-minute resolution) and day of the week.
 ## Frontend Component
 
 NYCTaxi.me has:
+
 1. a webserver and
+
 2. a map tile server component
 
 What is neeeded to deploy?
 
 1. run webserver in TaxiFrontend/ from run.py
--- It is expected that there are data files in 
+
+* It is expected that there are data files in 
   dataendpointscorenp/out_hour??.txt.s.csv
   datasegment/out_hour??.csv 
   datavariance/q4.dill q4.csv
+
 2. run tile server in ../TileStache/ with go.sh
 
 ## Data Analysis Component
 
 Tools used to generate data used in frontend.
 
-* Assume that the taxi data is available and preprocessed using the
+Assume that the taxi data is available and preprocessed using the
   information in the Data Sources section. The data files should
   be of the form: clean_??.csv . One file for each month (1-12).
 
-* The data files are not exactly sorted in time order, so it is
+The data files are not exactly sorted in time order, so it is
   useful to sort them by timestamp. Use getsorted.sh to generate 
   clean_??_sorted.csv.
 
-* To generate:  dataendpointscorenp/out_hour??.txt.s.csv
+To generate:  dataendpointscorenp/out_hour??.txt.s.csv
 
 Use: TaxiAnalsyis -- ScoreEndpointNP.py
 
-* To generate:  datasegment/out_hour??.csv 
+To generate:  datasegment/out_hour??.csv 
 
 Use: TaxiAnalysis -- Query3SegmentGradient.py
 
-* To generate:  datavariance/q4.dill q4.csv
+To generate:  datavariance/q4.dill q4.csv
 
 Use: TaxiAnalysis -- Query4TimeSeries.py
 
