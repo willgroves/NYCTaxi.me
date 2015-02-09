@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>NYCTaxi.me -- Analysis</title>
+    <link rel="stylesheet" href="splash/css/styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href='http://fonts.googleapis.com/css?family=Oswald:400,700|Open+Sans:400italic,600italic,700italic,400,600,700' rel='stylesheet' type='text/css' />
+    <!-- Adding Bootstrap and Font-Awesome -->
+    <link rel="stylesheet" href="/static/css/font-awesome.css"/><!-- //maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"/><!-- css/font-awesome.css"/ -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/>
+    <!--[if lt IE 9]>
+  	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+  </head>
+
+  <body>
+    <div class="breadcrumb-inner" style="padding: 0px 15px; margin-bottom: 0px; ">
+      <div class="container" style="margin-top: 2px;">
+	<div class="row">
+	  <div class="col-md-12">
+	    <ul class="breadcrumb" style="margin-bottom: 0px;">
+	      <li><a href="/static/splash/nosplash.html"><span>NYCTaxi.me</span></a></li>
+	      <li class="active"><span>Analysis</span></li>
+	    </ul>
+	  </div>
+	</div>
+      </div>
+    </div>
+    <div class="wrapper">
+      <header class="cf">
+	<center><h1 style="margin: 5px; margin-bottom:1px;">NYC Taxi Hail Optimizer - Analysis</h1></center>
+	<nav>
+	  <!--  <ul>
+	       <li><a href="#" class="active">Welcome</a></li>
+	       <li><a href="#">Go to the Map</a></li>
+	       <li><a href="#">In-Depth Analysis</a></li>
+	       <li><a href="#">About</a></li>
+	       </ul> -->
+	</nav>
+      </header>
+      
+      <section id="main-content">
+	<table style="width: 100%">
+	  
+	  <tr class="hidemobile"><td style=" align: center; "><center><a class="btn btn-lg btn-success" href="/segment?lat=40.74049401829621&lon=-73.98819923400879&z=15&e=1&time=18:00&qlat=40.741857&qlon=-73.984425">
+	  <i class="fa fa-expand"> Segment Advice</i></a></center></td></tr>
+	  <tr class="hidemobile"><td><hr width="0%"/></td></tr>
+	  <tr class="hidemobile"><td> Are there locations in NYC where the "Find a Taxi"
+	  walking direction advice is especially beneficial?
+	  Analytically this can be phrased as: Are there streets where
+	  the differential in taxi frequency at each end is very
+	  large? This analysis map explores the benefit of the walking
+	  direction advice by comparing the taxi pickup frequency at
+	  each end of road segments.</td>
+	  <tr class="hidemobile"><td><hr width="80%"/></td></tr>
+ 	  <tr class="hidemobile">
+	  <td style=" align: center; "><center><a class="btn btn-lg btn-success" href="/intersection?qindex=633"><i class="fa fa-line-chart"> Dropoff/Pickup Imbalance</i></a></center></td></tr>
+	  <tr class="hidemobile"><td><hr width="0%"/></td></tr>
+	  <tr class="hidemobile"><td>Are there areas in the city where the difference
+	  between pickups and dropoffs at an intersection is very
+	  large and persistent. This analysis examines places where it
+	  may be especially easy or hard to find a taxi based on the
+	  relative frequencies of pickups and dropoffs.</td></tr>
+	  <tr><td><hr width="80%"/></td></tr>
+
+ 	  <tr>
+	  <td style=" align: center; "><center><a class="btn btn-lg btn-success" href="https://a.tiles.mapbox.com/v4/groves.l3mpph1p/page.html?access_token=pk.eyJ1IjoiZ3JvdmVzIiwiYSI6InJVYlgxMDgifQ.ga1zqHlEQiF5ncOmZRYIhA#14/40.7620/-73.9926"><i class="fa fa-gears"> Intersection Clusters</i></a></center></td></tr>
+	  <tr><td><hr width="0%"/></td></tr>
+	  <tr><td>Which areas of the city are similar to others based on taxi behavior? This map shows the 2000 most frequented intersections by taxis clustered in terms of the dropoff-pickup time series. This visualization of 7 clusters generated using k-means clustering over the time series shows distinct clusters for Midtown East (purple), Penn Station (green), and intersections very close to a subway stop (red). Please click on the link above to explore further.</td></tr>
+	  
+	</table>
+	<hr />
+
+
+      </section>
+
+      <footer>
+	<p>&copy; 2015 - nyctaxi.me</p>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="/static/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script type="text/javascript" src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+
+var isMobile = ('DeviceOrientationEvent' in window || 'orientation' in window);
+if (/Windows NT|Macintosh|Mac OS X|Linux/i.test(navigator.userAgent)) isMobile = false;
+if (/Mobile/i.test(navigator.userAgent)) isMobile = true;
+
+
+if (isMobile == true) {
+$(".hidemobile").each(function(i,d) { d.style.display="none"; });
+}
+
+
+      </script>
+  </body>
+</html>

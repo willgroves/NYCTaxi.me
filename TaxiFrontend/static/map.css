@@ -1,0 +1,67 @@
+
+
+.count-icon {
+  background:#ff8888;
+  border:5px solid rgba(255,255,255,0.5);
+  color:#fff;
+  font-weight:bold;
+  text-align:center;
+  border-radius:50%;
+  line-height:30px;
+  opacity:0.87;
+  }
+
+.marker {    line-height:30px; }
+.marker1 {    line-height:48px; }
+.marker2 {    line-height:44px; }
+.marker3 {    line-height:40px; }
+.marker4 {    line-height:36px; }
+.marker5 {    line-height:32px; }
+.marker6 {    line-height:28px; }
+.marker7 {    line-height:24px; }
+.map-popup {
+  
+  }
+
+.highlightmarker {
+    background:#74c476;
+    opacity:0.91;
+}
+
+.menu-ui {
+  background:#fff;
+  position:absolute;
+  top:12px;right:12px;
+  z-index:1;
+  border-radius:3px;
+  width:80px;
+  border:1px solid rgba(0,0,0,0.4);
+  }
+  .menu-ui a {
+    font-size:12px;
+    color:#404040;
+    display:block;
+    margin:0;padding:0;
+    padding:5px;
+    text-decoration:none;
+    border-bottom:1px solid rgba(0,0,0,0.25);
+    text-align:center;
+    }
+    .menu-ui a:first-child {
+      border-radius:3px 3px 0 0;
+      }
+    .menu-ui a:last-child {
+      border:none;
+      border-radius:0 0 3px 3px;
+      }
+    .menu-ui a:hover {
+      background:#f8f8f8;
+      color:#404040;
+      }
+    .menu-ui a.active {
+      background:#3887BE;
+      color:#FFF;
+      }
+      .menu-ui a.active:hover {
+        background:#3074a4;
+        }

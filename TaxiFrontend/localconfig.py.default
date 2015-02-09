@@ -1,0 +1,7 @@
+'''
+put local configuration directives here
+'''
+port=5001
+servername='nyctaxi.me'
+mapserverport=5551
+

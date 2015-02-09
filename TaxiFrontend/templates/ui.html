@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=utf-8 />
+    <title>NYC Taxi Hail Optimizer -- Nearest location for your best taxi hail.</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no,minimal-ui' />
+    <link href='/static/leaflet.css' rel='stylesheet' type='text/css' />
+    <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.css' rel='stylesheet' />
+    <link href='/static/map.css' rel='stylesheet' />
+    <link rel="stylesheet" href="/static/css/font-awesome.css"/><!-- //maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"/><!-- css/font-awesome.css"/ -->
+    <link href='/static/tablesorter.css' rel='stylesheet' />
+    <link href='/static/jquery.datetimepicker.css' rel='stylesheet' />
+    <link rel="stylesheet" href="/static/jquery-ui.css" /><!--//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css"> -->
+    <style>
+      body { margin:0; padding:0; background-color:#000000; font: 12px/1.5 "Verdana", sans-serif; } 
+      #map { top:0; bottom:0; margin-bottom: 2px; width:100%; height: 500px; }
+      #cover {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 100;
+      display: none;
+      background-color: #000000;
+      opacity: .65;
+      filter:progid:DXImageTransform.Microsoft.BasicImage(opacity=.7);}
+      #instructions{
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 640px;
+      height: 700px;
+      z-index: 101;
+      opacity: .9;
+      display: none;
+      }
+      .togglebutton {
+      background-color: #21b384;
+      display: inline-block;
+      color: #FFFFFF;
+      margin-bottom: 0;
+      font-weight: normal;
+      text-align: center;
+      vertical-align: middle;
+      cursor: pointer;
+      background-image: none;
+      border: 1px solid transparent;
+      white-space: nowrap;
+      padding: 4px 8px;
+      font-size: 11px;
+      line-height: 1.42857143;
+      border-radius: 2px;
+      text-decoration: none;
+      }
+
+    </style>
+  </head>
+  <body onload="onceonload()"  onorientationchange="updateOrientation();">
+    <div id='nothingattop' ></div>
+    <div id='cover' >&nbsp;</div>
+    <img id='instructions' src="/static/instructions.svg"/>
+    <nav id='menu-ui' class='menu-ui'></nav>
+    <div id='map' ></div>
+    <div class="drawer-label" style=" background-color:#000000; color:white; " onclick="toggleDrawer(null); return false;">
+      <center>
+	<table><tr><td>
+	      <div style="width:250px; height:30px; ">
+		<img id="legendpu" src="/static/waittimegrey.svg" style="width:250px;position:absolute;" />
+		<img id="legenddo" src="/static/waittimegreen.svg" style="width:250px;position:absolute;visibility:hidden;" />
+</div>
+	</td>
+	<td>
+	  <a class="btn btn-danger togglebutton" href="#" style="">
+	    <i style=" color:#eeeeee; " class="fa fa-chevron-up" id="chevron1"></i> Show<br/>Results
+	    
+	  </a>
+	</td>
+	</tr></table>
+      </center>
+
+    </div>
+    <div class="drawer-content" style=" background-color:#eeeeee; ">
+      <div style="padding: 3px; margin-top: 0px; "><center>
+	<i class="fa fa-clock-o"></i>&nbsp;Set Query Time/Date: <input type='text' id='wgtimeinput' size='6' value=""></input> <input type='text' id='wgdateinput' size='10' value=""></input><!--<i class="fa fa-location-arrow"></i> Location (Lat/Long) -->
+	<input id='lat' size=5 value='40.7' type='hidden'></input> 
+	<input type='hidden' id='long' size=5 value='-74.00'></input> 
+</center></div>
+      <div id="divqueryoutput">  
+	<table id="dataTable" class="tablesorter" style=" width: 100%; position:relative; ">
+	  <thead>
+	  <tr><th><span style="align: center;" onclick='$( "#dialogtotal" ).dialog( "open" ); return false;'>Wait +<br/>Walk (mins)</span></th><th><span style="align: center;" onclick='$( "#dialogdst_walk" ).dialog( "open" ); return false;'>Walk<br/>(mins)</span></th><th><span style="align: center;" onclick='$( "#dialogspanection" ).dialog( "open" ); return false;'>Compass</span></th><th><span style="align: center;" onclick='$( "#dialogpu_wait" ).dialog( "open" ); return false;'>Avg. Wait<br/>(mins)</span></th><th><span style="align: center;" onclick='$( "#dialogdo_pu_ratio" ).dialog( "open" ); return false;'>Dropoff &divide; Pickup</span></th><th><span style="align: center;" onclick='$( "#dialogintersection_name" ).dialog( "open" ); return false;'>Intersection</span></th></tr></thead>
+	  <tbody>
+	    <tr><td colspan="6"><center><b>Set your location to center of map and query to start ...</b></center></td></tr>
+	    <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
+	    <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
+	    <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
+	    <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
+	    <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
+	    <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
+	    <tr><td colspan="6"><center><b>&nbsp;</b></center></td></tr>
+	  </tbody>
+	</table>
+	<center>
+	<!-- <div style="background-color: #FFFFFF; color: #000000; padding: 0px; margin: 0px;"> &copy; 2015 - {{ servername }}</div> -->
+        </center>
+      </div>  
+    </div>	
+
+    <div id="dialogyah" title="Location Info" style="display: none;">You are here. All distances are based on this location as a starting point.<br/>Center the map by dragging to set a different starting point.</div>    
+    
+    <div id="dialogtotal" title="Walking + Est. Waiting Time" style="display: none;">Sum (in minutes) of walking time plus average waiting time for this location based on walking from the starting location. Estimates entire time to get a taxi by walking to this intersection.</div> 
+    <div id="dialogdst_walk" title="Walking Time" style="display: none;">Walking distance (in minutes) from the starting location. <i class="fa fa-bicycle fa-lg"></i> denotes a long walk. <i class="fa fa-male fa-lg"></i> denotes a medium walk. <i class="fa fa-anchor fa-lg"></i> is minimal walking.</div>    
+    <div id="dialogdirection" title="Compass Walking Direction" style="display: none;">Direction of this intersection from the starting location. Assumes average walking pace of 20 mins/mile.</div>    
+    <div id="dialogpu_wait" title="Avg. Wait (in minutes)" style="display: none;">Average wait time for finding a taxi. Computed as 1/2 * <i>mean interarrival time</i>.</div>    
+    <div id="dialogdo_pu_ratio" title="Dropoff &divide; Pickup Ratio" style="display: none;">This number indicates the level of imbalance between dropoffs and pickups at this intersection. For finding a taxi, a number greater than 1 is better (i.e. more dropoffs than pickups observed).</div>    
+    <div id="dialogintersection_name" title="Intersection Name" style="display: none;">Name of the two interescting streets where taxis have been observed to pick up or drop off.</div>    
+
+    <script src='/static/reqwest.min.js'></script>
+    <script src='/static/leaflet.js'></script>
+    <script src='/static/wax.leaf.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/1.4.14/jquery.scrollTo.min.js"></script>
+    <script type="text/javascript" src="/static/jquery.tablesorter.js"></script>
+    <script type="text/javascript" src="/static/jsonTable.js"></script>
+    <script src='/static/jquery.datetimepicker.js'></script>
+    <script src="/static/jquery-ui.min.js"></script><!-- https://code.jquery.com/ui/1.11.2/jquery-ui.min.js -->
+    <script src="/ui.js"></script>
+    <script type="text/javascript">
+      {{ addscript }}
+    </script>
+  </body>
+</html>
