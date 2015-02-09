@@ -25,7 +25,7 @@ NYCTaxi.me deployment requires:
 1. a webserver and
 2. a map tile server component -- for UI display of maps with Leaflet
 
-What is neeeded to deploy?
+What is needed to deploy?
 
 1. run webserver in TaxiFrontend/ from run.py
   * It is expected that there are data files in 
@@ -47,7 +47,7 @@ What is neeeded to deploy?
   clean_??_sorted.csv.
 
 * To generate:  dataendpointscorenp/out_hour??.txt.s.csv
-  * Use: TaxiAnalsyis -- ScoreEndpointNP.py
+  * Use: TaxiAnalysis -- ScoreEndpointNP.py
 
 * To generate:  datasegment/out_hour??.csv 
   * Use: TaxiAnalysis -- Query3SegmentGradient.py
