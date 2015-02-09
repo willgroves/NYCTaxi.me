@@ -1,6 +1,8 @@
 # NYCTaxi.me 
 
-* web frontend and data analysis package for 2013 NYC Taxi data 
+* Interactive web frontend and data analysis package for 2013 New York
+  City yellow taxi data
+
 ## Overview
 
 How many of you have ever had this problem: You are standing in the
@@ -16,7 +18,6 @@ statistically analyzed using machine learning to predict the average
 expected wait time at the intersections nearest to you based on the
 time of day (15-minute resolution) and day of the week.
 
-
 ## Frontend Component
 
 NYCTaxi.me deployment requires:
@@ -25,6 +26,7 @@ NYCTaxi.me deployment requires:
 2. a map tile server component -- for UI display of maps with Leaflet
 
 What is neeeded to deploy?
+
 1. run webserver in TaxiFrontend/ from run.py
   * It is expected that there are data files in 
     * dataendpointscorenp/out_hour??.txt.s.csv
