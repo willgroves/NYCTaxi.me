@@ -169,7 +169,13 @@ function getLocationWG() {
 	else {
 	    wgallowposupdate = 1;
 	    navigator.geolocation.getCurrentPosition(showPositionWG);
-	}
+	    setTimeout(function () {
+		if (wgallowposupdate == 1) {
+		    alert('Sorry, the location API appears to be disabled in your browser. Using an arbitrary location for your query.');
+		    showPositionWG({'coords':{'latitude':40.77115748414938,'longitude':-73.97753477096558}});
+		}
+	    },10000);
+	    }
     } else { 
 	iboxlong.innerHTML = "Geolocation is not supported by this browser.";
     }
@@ -485,7 +491,8 @@ function onceonload() { // What to do on page load:
     if (isNaN(m)) { m = 1; }
     if ((false == isNaN(q)) && q == 1) { showInstructions(); }
     if (isNaN(e)) { e = 0; }
-
+    queryexecdone = e;
+    
     //set query time fields here to current date and time
     var curdate = new Date();
     var tinput = document.getElementById('wgtimeinput');
