@@ -19,8 +19,8 @@ var markerl = Array();
 var tilejson = {
     tilejson: '1.0.0',
     scheme: 'tms',
-    tiles: ['http://{{ servername }}:{{ mapserverport }}/mb_layer/{z}/{x}/{y}.png'],
-    grids: ['http://{{ servername }}:{{ mapserverport }}/mb_layer/{z}/{x}/{y}.grid.json'],
+    tiles: ['/static/tiles/mb_layer/{z}/{x}/{y}.png'],
+    grids: ['/static/tiles/mb_layer/{z}/{x}/{y}.grid.json'],
     formatter: function(options, data) { return data.NAME }
 };
 
@@ -228,8 +228,8 @@ function setMapHour(hour2digit) {
 	var tilejsonoverlay = {
 	    tilejson: '1.0.0',
 	    scheme: 'tms',
-	    tiles: ['http://{{ servername }}:{{ mapserverport }}/composite'+dropoffstr+'_o'+hour2digit+'/{z}/{x}/{y}.png'],
-	    grids: ['http://{{ servername }}:{{ mapserverport }}/composite'+dropoffstr+'_o'+hour2digit+'/{z}/{x}/{y}.grid.json'],
+	    tiles: ['/static/tiles/composite'+dropoffstr+'_o18/{z}/{x}/{y}.png'],
+	    grids: ['/static/tiles/composite'+dropoffstr+'_o18/{z}/{x}/{y}.grid.json'],
 	    formatter: function(options, data) { return data.NAME }
 	};
 

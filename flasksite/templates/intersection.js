@@ -5,7 +5,7 @@ var markerl = Array();
 var tilejson = {
     tilejson: '1.0.0',
     scheme: 'tms',
-    tiles: ['http://{{ servername }}:{{ mapserverport }}/query4f/{z}/{x}/{y}.png'],
+    tiles: ['/static/tiles/query4f/{z}/{x}/{y}.png'],
     grids: ['/static/tiles/query4/{z}/{x}/{y}.grid.json?'],
     formatter: //function(options, data) { alert('call in formatter: '+JSON.stringify(data)); return data; }
     function(o, d) {

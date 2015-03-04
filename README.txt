@@ -1,19 +1,22 @@
 
-== Frontend ==
+20150303
 
-NYCTaxi.me has:
-1. a webserver and
-2. a map tile server component
+Running ui as stand-alone demo (no tileserver, just python):
 
-What is neeeded to deploy?
+1. Make sure that the map tiles are expanded already. Look in
+flasksite/static/tiles/, there should be some directories there. If
+not, then run the ./decompress.sh file in that directory to expand the
+map files.
 
-1. run webserver in flasksite/
--- It is expected that there are data files in ../dataendpointscorenp/ of the form out_hour??.txt.s.csv
-2. run tile server in ../TileStache/ with go.sh
+2. Execuse the server in flasksite/ using 'python run.py'
 
-== Data Analysis ==
+3. Should be visible at http://localhost:5001/
 
-Tools used to generate data used in frontend.
-
-=== 
+Python Library Requirements:
+dill
+geopy
+tornado
+numpy
+scipy
+...?
 

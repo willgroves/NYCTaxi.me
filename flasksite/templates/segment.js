@@ -19,8 +19,8 @@ var markerl = Array();
 var tilejson = {
     tilejson: '1.0.0',
     scheme: 'tms',
-    tiles: ['http://{{ servername }}:{{ mapserverport }}/query3f/{z}/{x}/{y}.png'],
-    grids: ['/static/tiles/query3_00/{z}/{x}/{y}.grid.json?'],
+    tiles: ['/static/tiles/query3f_o18/{z}/{x}/{y}.png'],
+    grids: ['/static/tiles/query3_18/{z}/{x}/{y}.grid.json?'],
     formatter: 
     function(o, d) {
 
@@ -228,8 +228,8 @@ function setMapHour(hour2digit) {
 	var tilejsonoverlay = {
 	    tilejson: '1.0.0',
 	    scheme: 'tms',
-	    tiles: ['http://{{ servername }}:{{ mapserverport }}/query3f_o'+hour2digit+'/{z}/{x}/{y}.png'],
-	    grids: ['/static/tiles/query3_'+hour2digit+'/{z}/{x}/{y}.grid.json?'],
+	    tiles: ['/static/tiles/query3f_o18/{z}/{x}/{y}.png'],
+	    grids: ['/static/tiles/query3_18/{z}/{x}/{y}.grid.json?'],
 	    formatter: //function(options, data) { console.log('call in formatter for overlay:'+data.NAME); return data.NAME; }
     function(o, d) {
 

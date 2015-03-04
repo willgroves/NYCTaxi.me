@@ -14,20 +14,21 @@ def identifier(w,h,q):
     '''
 just get the identifier used for this data, for now simplify to hourly only
     '''
-    return (w,h,q,)
+    (0,18,0)
+    #return (w,h,q,)
     #return (h,)
 
 class WaitTimeQuery:
     def __init__(self):
         ##load up
         self.whqdatad = {}
-        for weekday in range(0,7):#7):
-            for hour in range(0,24):
-                for qhr in range(0,4):#4):
+        for weekday in range(0,1):#7):
+            for hour in range(18,19):#0,24):
+                for qhr in range(0,1):#4):
                     print("loading weekday,hour,q file", weekday, hour, qhr)
                     #fp = open("../../dataendpointscorenp/out_hour%02d.txt.s.csv"%identifier(weekday,hour,qhr),'r')
-                    #../dataendpointscore/out_hour%02d.txt.s.csv"%identifier(weekday,hour,qhr),'r')
-                    fp = open("/home/vagrant/workspace_taxi/dataendpointscorenp/out_weekday%02d_hour%02d_q%d.txt.s.csv"%(weekday,hour,qhr),'r')
+                    ##../dataendpointscore/out_hour%02d.txt.s.csv"%identifier(weekday,hour,qhr),'r')
+                    fp = open("../demodata/out_weekday%02d_hour%02d_q%d.txt.s.csv"%(weekday,hour,qhr),'r')
                     df = pd.DataFrame.from_csv(fp)
                     df = df.reset_index()
                     df['pickupcnt'] = 28*df['pickupcnt']
