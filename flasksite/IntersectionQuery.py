@@ -16,7 +16,7 @@ just get the identifier used for this data, for now simplify to hourly only
 class IntersectionQuery:
     def __init__(self):
         ##load up
-        self.loadedl = dill.load(open('../../datavariance/q4.dill','r'))
+        self.loadedl = dill.load(open('../demodata/q4.dill','r'))
 
     def list(self,length=5):
         '''Query the data source
